@@ -63,6 +63,8 @@ Size2 ScrollContainer::get_minimum_size() const {
 		if (v_scroll_show && v_scroll->get_parent() == this) {
 			min_size.x += v_scroll->get_minimum_size().x;
 		}
+	} else if (max_size.x > 0.0) {
+		min_size.x = MIN(max_size.x, largest_child_min_size.x);
 	}
 
 	if (vertical_scroll_mode == SCROLL_MODE_DISABLED) {
@@ -71,6 +73,8 @@ Size2 ScrollContainer::get_minimum_size() const {
 		if (h_scroll_show && h_scroll->get_parent() == this) {
 			min_size.y += h_scroll->get_minimum_size().y;
 		}
+	} else if (max_size.y > 0.0) {
+		min_size.y = MIN(max_size.y, largest_child_min_size.y);
 	}
 
 	Rect2 margins = _get_margins();
@@ -282,6 +286,20 @@ void ScrollContainer::gui_input(const Ref<InputEvent> &p_gui_input) {
 		}
 		return;
 	}
+}
+
+void ScrollContainer::set_max_size(const Size2 &p_max_size) {
+	if (max_size == p_max_size) {
+		return;
+	}
+	max_size = p_max_size.maxf(0.0);
+	ERR_FAIL_COND(p_max_size.height < 0 || p_max_size.width < 0);
+	update_minimum_size();
+	queue_sort();
+}
+
+Size2 ScrollContainer::get_max_size() const {
+	return max_size;
 }
 
 void ScrollContainer::_update_scrollbar_position() {
@@ -721,6 +739,9 @@ VScrollBar *ScrollContainer::get_v_scroll_bar() {
 }
 
 void ScrollContainer::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("set_max_size", "value"), &ScrollContainer::set_max_size);
+	ClassDB::bind_method(D_METHOD("get_max_size"), &ScrollContainer::get_max_size);
+
 	ClassDB::bind_method(D_METHOD("set_h_scroll", "value"), &ScrollContainer::set_h_scroll);
 	ClassDB::bind_method(D_METHOD("get_h_scroll"), &ScrollContainer::get_h_scroll);
 
@@ -755,6 +776,7 @@ void ScrollContainer::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("scroll_started"));
 	ADD_SIGNAL(MethodInfo("scroll_ended"));
 
+	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "max_size"), "set_max_size", "get_max_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "follow_focus"), "set_follow_focus", "is_following_focus");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "draw_focus_border"), "set_draw_focus_border", "get_draw_focus_border");
 
