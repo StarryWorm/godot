@@ -30,8 +30,11 @@
 
 #pragma once
 
+#include "core/object/object.h"
 #include "editor/scene/2d/abstract_polygon_2d_editor.h"
+#include "scene/2d/node_2d.h"
 #include "scene/2d/physics/collision_polygon_2d.h"
+#include "scene/main/node.h"
 
 class CollisionPolygon2DEditor : public AbstractPolygon2DEditor {
 	GDCLASS(CollisionPolygon2DEditor, AbstractPolygon2DEditor);

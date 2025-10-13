@@ -31,6 +31,10 @@
 #pragma once
 
 #include "core/object/object.h"
+#include "core/string/string_name.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
+#include "scene/resources/font.h"
 #include "scene/resources/theme.h"
 
 class Control;

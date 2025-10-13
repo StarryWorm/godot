@@ -30,7 +30,13 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/control.h"
 
 class Camera2D;
 class Label;

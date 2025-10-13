@@ -30,7 +30,14 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/tree.h"

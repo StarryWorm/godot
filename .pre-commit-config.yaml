@@ -30,7 +30,7 @@ repos:
         args: [--fix, --quiet, --use-color]
         types_or: [text]
         additional_dependencies: [clang-tidy==20.1.0]
-        require_serial: true
+        # require_serial: true
         stages: [manual] # Not automatically triggered, invoked via `pre-commit run --hook-stage manual clang-tidy`
 
   - repo: https://github.com/astral-sh/ruff-pre-commit

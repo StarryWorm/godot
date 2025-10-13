@@ -30,12 +30,13 @@
 
 #include "editor_script.h"
 
+#include "core/error/error_macros.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "editor/editor_interface.h"
 #include "editor/editor_node.h"
-#include "editor/editor_undo_redo_manager.h"
-#include "editor/scene/editor_scene_tabs.h"
 #include "scene/main/node.h"
-#include "scene/resources/packed_scene.h"
 
 void EditorScript::add_root_node(Node *p_node) {
 	WARN_DEPRECATED_MSG("EditorScript::add_root_node is deprecated. Use EditorInterface::add_root_node instead.");

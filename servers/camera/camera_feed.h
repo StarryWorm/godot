@@ -32,7 +32,17 @@
 
 #include "core/io/image.h"
 #include "core/math/transform_2d.h"
+#include "core/object/gdvirtual.gen.inc"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/templates/rid.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
+#include "core/variant/binder_common.h"
+#include "core/variant/dictionary.h"
 #include "servers/camera/camera_server.h"
+#include <cstdint>
 
 /**
 	The camera server is a singleton object that gives access to the various

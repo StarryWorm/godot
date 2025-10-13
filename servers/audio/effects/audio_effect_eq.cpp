@@ -30,7 +30,20 @@
 
 #include "audio_effect_eq.h"
 
+#include "core/error/error_macros.h"
+#include "core/math/audio_frame.h"
+#include "core/math/math_funcs.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/variant/variant.h"
+#include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_server.h"
+#include "servers/audio/effects/eq_filter.h"
 
 void AudioEffectEQInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 	int band_count = bands[0].size();

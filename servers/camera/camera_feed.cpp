@@ -30,7 +30,19 @@
 
 #include "camera_feed.h"
 
+#include "core/error/error_macros.h"
+#include "core/io/image.h"
+#include "core/math/transform_2d.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/rid.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
+#include "servers/camera/camera_server.h"
 #include "servers/rendering/rendering_server.h"
+#include <cstdint>
 
 void CameraFeed::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_id"), &CameraFeed::get_id);

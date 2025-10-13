@@ -30,17 +30,39 @@
 
 #include "particles_3d_editor_plugin.h"
 
+#include "core/error/error_macros.h"
+#include "core/io/image.h"
+#include "core/math/aabb.h"
+#include "core/math/face3.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/math/transform_3d.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/node_path.h"
+#include "core/string/ustring.h"
+#include "core/templates/rb_map.h"
+#include "core/templates/vector.h"
+#include "core/variant/callable.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "editor/editor_undo_redo_manager.h"
+#include "editor/scene/particles_editor_plugin.h"
 #include "editor/scene/scene_tree_editor.h"
 #include "scene/3d/cpu_particles_3d.h"
 #include "scene/3d/gpu_particles_3d.h"
 #include "scene/3d/mesh_instance_3d.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/option_button.h"
+#include "scene/gui/popup_menu.h"
 #include "scene/gui/spin_box.h"
 #include "scene/resources/image_texture.h"
 #include "scene/resources/particle_process_material.h"
+#include "scene/scene_string_names.h"
+#include <cstdint>
+#include <cstring>
 
 void Particles3DEditorPlugin::_generate_aabb() {
 	double time = generate_seconds->get_value();

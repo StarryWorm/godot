@@ -30,12 +30,20 @@
 
 #include "skeleton_2d_editor_plugin.h"
 
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/scene/canvas_item_editor_plugin.h"
+#include "scene/2d/skeleton_2d.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/menu_button.h"
+#include "scene/main/node.h"
+#include "scene/scene_string_names.h"
 
 void Skeleton2DEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

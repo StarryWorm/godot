@@ -29,6 +29,9 @@
 /**************************************************************************/
 
 #include "audio_effect.h"
+#include "core/math/audio_frame.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
 
 void AudioEffectInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 	GDVIRTUAL_CALL(_process, p_src_frames, p_dst_frames, p_frame_count);

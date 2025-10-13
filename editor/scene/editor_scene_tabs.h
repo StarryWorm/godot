@@ -30,7 +30,14 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
+#include "scene/gui/control.h"
 #include "scene/gui/margin_container.h"
+#include "scene/resources/texture.h"
 
 class Button;
 class HBoxContainer;

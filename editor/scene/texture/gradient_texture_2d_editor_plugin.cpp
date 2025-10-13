@@ -30,13 +30,31 @@
 
 #include "gradient_texture_2d_editor_plugin.h"
 
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
+#include "core/math/color.h"
+#include "core/math/math_funcs.h"
+#include "core/math/vector2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/typedefs.h"
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/gui/editor_spin_slider.h"
 #include "editor/themes/editor_scale.h"
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/flow_container.h"
 #include "scene/gui/separator.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/node.h"
 #include "scene/resources/gradient_texture.h"
+#include "scene/resources/texture.h"
+#include "scene/scene_string_names.h"
 
 Point2 GradientTexture2DEdit::_get_handle_pos(const Handle p_handle) {
 	// Get the handle's mouse position in pixels relative to offset.

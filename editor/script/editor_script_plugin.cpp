@@ -30,6 +30,12 @@
 
 #include "editor_script_plugin.h"
 
+#include "core/io/resource_loader.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/ref_counted.h"
+#include "core/object/script_language.h"
+#include "core/string/string_name.h"
+#include "core/variant/variant.h"
 #include "editor/editor_interface.h"
 #include "editor/script/editor_script.h"
 #include "editor/settings/editor_command_palette.h"

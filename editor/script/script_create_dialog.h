@@ -30,11 +30,17 @@
 
 #pragma once
 
+#include "core/object/object.h"
 #include "core/object/script_language.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
 #include "scene/gui/check_box.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/option_button.h"
-#include "scene/gui/panel_container.h"
 
 class CreateDialog;
 class EditorFileDialog;

@@ -30,10 +30,30 @@
 
 #include "lightmap_gi_gizmo_plugin.h"
 
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/math/vector2i.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/local_vector.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/settings/editor_settings.h"
 #include "scene/3d/lightmap_gi.h"
+#include "scene/3d/node_3d.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
+#include "servers/rendering/rendering_server.h"
+#include <cmath>
 
 LightmapGIGizmoPlugin::LightmapGIGizmoPlugin() {
 	// NOTE: This gizmo only renders solid spheres for previewing indirect lighting on dynamic objects.

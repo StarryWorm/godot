@@ -30,11 +30,25 @@
 
 #include "color_channel_selector.h"
 
+#include "core/error/error_macros.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector4.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/themes/editor_scale.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/panel_container.h"
-#include "scene/resources/style_box_flat.h"
+#include "scene/main/node.h"
+#include "scene/resources/style_box.h"
+#include "scene/resources/texture.h"
+#include "scene/scene_string_names.h"
+#include <cstdint>
 
 ColorChannelSelector::ColorChannelSelector() {
 	toggle_button = memnew(Button);

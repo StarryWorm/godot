@@ -31,12 +31,23 @@
 #include "editor_run.h"
 
 #include "core/config/project_settings.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/math/math_funcs.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/string/print_string.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/variant/callable.h"
+#include "core/variant/variant.h"
 #include "editor/debugger/editor_debugger_node.h"
 #include "editor/editor_node.h"
 #include "editor/run/run_instances_dialog.h"
 #include "editor/settings/editor_settings.h"
 #include "main/main.h"
 #include "servers/display/display_server.h"
+#include <climits>
 
 EditorRun::Status EditorRun::get_status() const {
 	return status;

@@ -30,7 +30,14 @@
 
 #include "line_2d_editor_plugin.h"
 
+#include "core/object/object.h"
+#include "core/os/memory.h"
+#include "core/variant/variant.h"
 #include "editor/editor_undo_redo_manager.h"
+#include "editor/scene/2d/abstract_polygon_2d_editor.h"
+#include "scene/2d/line_2d.h"
+#include "scene/2d/node_2d.h"
+#include "scene/main/node.h"
 
 Node2D *Line2DEditor::_get_node() const {
 	return node;

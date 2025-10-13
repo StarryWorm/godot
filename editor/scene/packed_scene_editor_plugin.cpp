@@ -30,8 +30,16 @@
 
 #include "packed_scene_editor_plugin.h"
 
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/editor_node.h"
+#include "editor/inspector/editor_inspector.h"
 #include "scene/resources/packed_scene.h"
+#include "scene/scene_string_names.h"
 
 void PackedSceneEditor::_on_open_scene_pressed() {
 	// Using deferred call because changing scene updates the Inspector and thus destroys this plugin.

@@ -29,6 +29,11 @@
 /**************************************************************************/
 
 #include "jolt_custom_motion_shape.h"
+#include "Jolt/Geometry/AABox.h"
+#include "Jolt/Math/MathTypes.h"
+#include "Jolt/Physics/Collision/Shape/ConvexShape.h"
+#include "Jolt/Physics/Collision/Shape/Shape.h"
+#include "Jolt/Physics/Collision/Shape/SubShapeID.h"
 
 namespace {
 

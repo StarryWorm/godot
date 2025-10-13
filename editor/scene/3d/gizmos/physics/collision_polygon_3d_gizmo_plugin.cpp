@@ -30,8 +30,20 @@
 
 #include "collision_polygon_3d_gizmo_plugin.h"
 
+#include "core/math/color.h"
 #include "core/math/geometry_2d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/collision_polygon_3d.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
+#include "servers/rendering/rendering_server.h"
 
 CollisionPolygon3DGizmoPlugin::CollisionPolygon3DGizmoPlugin() {
 	create_collision_material("shape_material", 2.0);

@@ -30,8 +30,24 @@
 
 #include "event_listener_line_edit.h"
 
+#include "core/error/error_macros.h"
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
 #include "core/input/input_map.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/keyboard.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/rid.h"
+#include "core/variant/variant.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
+#include "scene/main/node.h"
+#include "scene/scene_string_names.h"
+#include <cstddef>
+#include <cstdint>
 
 // Maps to 2*axis if value is neg, or 2*axis+1 if value is pos.
 static const char *_joy_axis_descriptions[(size_t)JoyAxis::MAX * 2] = {

@@ -30,10 +30,16 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/node_path.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/3d/multimesh_instance_3d.h"
+#include "scene/gui/control.h"
+#include "scene/gui/line_edit.h"
 #include "scene/gui/slider.h"
 #include "scene/gui/spin_box.h"
+#include "scene/main/node.h"
 
 class AcceptDialog;
 class ConfirmationDialog;

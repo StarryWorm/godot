@@ -30,10 +30,27 @@
 
 #include "particles_2d_editor_plugin.h"
 
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/io/image.h"
 #include "core/io/image_loader.h"
+#include "core/math/color.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2i.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/list.h"
+#include "core/templates/local_vector.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/gui/editor_file_dialog.h"
+#include "editor/scene/particles_editor_plugin.h"
 #include "scene/2d/cpu_particles_2d.h"
 #include "scene/2d/gpu_particles_2d.h"
 #include "scene/gui/box_container.h"
@@ -41,8 +58,11 @@
 #include "scene/gui/option_button.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/spin_box.h"
+#include "scene/main/node.h"
 #include "scene/resources/image_texture.h"
 #include "scene/resources/particle_process_material.h"
+#include "scene/scene_string_names.h"
+#include <cstdint>
 
 void GPUParticles2DEditorPlugin::_menu_callback(int p_idx) {
 	if (p_idx == MENU_GENERATE_VISIBILITY_RECT) {

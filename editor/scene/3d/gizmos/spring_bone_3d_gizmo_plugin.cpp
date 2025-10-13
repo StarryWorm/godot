@@ -30,10 +30,28 @@
 
 #include "spring_bone_3d_gizmo_plugin.h"
 
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/local_vector.h"
+#include "core/templates/vector.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/settings/editor_settings.h"
+#include "scene/3d/node_3d.h"
+#include "scene/3d/skeleton_3d.h"
+#include "scene/3d/spring_bone_collision_3d.h"
 #include "scene/3d/spring_bone_collision_capsule_3d.h"
 #include "scene/3d/spring_bone_collision_plane_3d.h"
 #include "scene/3d/spring_bone_collision_sphere_3d.h"
+#include "scene/3d/spring_bone_simulator_3d.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/shader.h"
+#include "scene/resources/surface_tool.h"
+#include <cstdint>
 
 // SpringBoneSimulator3D
 

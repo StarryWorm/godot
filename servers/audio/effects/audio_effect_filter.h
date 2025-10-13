@@ -30,6 +30,10 @@
 
 #pragma once
 
+#include "core/math/audio_frame.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/variant/binder_common.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_filter_sw.h"
 

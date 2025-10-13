@@ -30,10 +30,26 @@
 
 #include "visible_on_screen_notifier_3d_gizmo_plugin.h"
 
+#include "core/math/aabb.h"
+#include "core/math/color.h"
+#include "core/math/geometry_3d.h"
+#include "core/math/math_funcs.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/editor_undo_redo_manager.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/scene/3d/node_3d_editor_plugin.h"
 #include "editor/settings/editor_settings.h"
+#include "scene/3d/camera_3d.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/visible_on_screen_notifier_3d.h"
+#include "scene/resources/material.h"
 
 VisibleOnScreenNotifier3DGizmoPlugin::VisibleOnScreenNotifier3DGizmoPlugin() {
 	Color gizmo_color = EDITOR_GET("editors/3d_gizmos/gizmo_colors/visibility_notifier");

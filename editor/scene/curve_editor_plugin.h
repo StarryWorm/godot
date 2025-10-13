@@ -30,9 +30,20 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/io/resource.h"
+#include "core/math/color.h"
+#include "core/math/transform_2d.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/variant/dictionary.h"
 #include "editor/inspector/editor_inspector.h"
 #include "editor/inspector/editor_resource_preview.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
 #include "scene/resources/curve.h"
 
 class EditorSpinSlider;

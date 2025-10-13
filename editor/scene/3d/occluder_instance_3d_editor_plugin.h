@@ -30,9 +30,10 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/3d/occluder_instance_3d.h"
-#include "scene/resources/material.h"
 
 class EditorFileDialog;
 

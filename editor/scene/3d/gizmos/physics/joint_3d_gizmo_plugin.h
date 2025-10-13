@@ -30,7 +30,15 @@
 
 #pragma once
 
+#include "core/math/basis.h"
+#include "core/math/math_defs.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
 #include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/node_3d.h"
 
 class Timer;
 

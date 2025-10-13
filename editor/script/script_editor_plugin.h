@@ -30,12 +30,37 @@
 
 #pragma once
 
+#include "core/error/error_list.h"
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
+#include "core/io/config_file.h"
+#include "core/io/resource.h"
+#include "core/math/vector2.h"
+#include "core/object/gdvirtual.gen.inc"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
 #include "core/object/script_language.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
+#include "core/variant/callable.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/base_button.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
+#include "scene/gui/label.h"
 #include "scene/gui/panel_container.h"
+#include "scene/main/node.h"
 #include "scene/resources/syntax_highlighter.h"
 #include "scene/resources/text_file.h"
+#include "scene/resources/texture.h"
+#include <cstdint>
 
 class CodeTextEditor;
 class EditorFileDialog;

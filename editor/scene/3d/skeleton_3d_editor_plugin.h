@@ -30,15 +30,39 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
+#include "core/math/quaternion.h"
+#include "core/math/rect2.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/node_path.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/gui/editor_file_dialog.h"
 #include "editor/inspector/add_metadata_dialog.h"
+#include "editor/inspector/editor_inspector.h"
 #include "editor/inspector/editor_properties.h"
 #include "editor/plugins/editor_plugin.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/scene/3d/node_3d_editor_plugin.h"
 #include "scene/3d/camera_3d.h"
 #include "scene/3d/mesh_instance_3d.h"
 #include "scene/3d/skeleton_3d.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
 #include "scene/resources/immediate_mesh.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/shader.h"
+#include <cstdint>
 
 class EditorInspectorPluginSkeleton;
 class EditorPropertyVector3;

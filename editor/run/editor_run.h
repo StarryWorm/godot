@@ -30,7 +30,14 @@
 
 #pragma once
 
+#include "core/error/error_list.h"
+#include "core/math/vector2i.h"
 #include "core/os/os.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/callable.h"
+#include <climits>
 
 typedef void (*EditorRunInstanceStarting)(int p_index, List<String> &r_arguments);
 typedef bool (*EditorRunInstanceRequestScreenshot)(const Callable &p_callback);

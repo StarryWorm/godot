@@ -31,9 +31,13 @@
 #pragma once
 
 #include "core/math/audio_frame.h"
+#include "core/object/object.h"
 #include "core/object/ref_counted.h"
 #include "core/templates/ring_buffer.h"
+#include "core/templates/safe_refcount.h"
+#include "core/variant/variant.h"
 #include "servers/audio/audio_effect.h"
+#include <cstdint>
 
 class AudioEffectCapture;
 

@@ -30,7 +30,14 @@
 
 #pragma once
 
+#include "core/math/face3.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/string/node_path.h"
+#include "core/templates/vector.h"
+#include "editor/docks/editor_dock_manager.h"
 #include "editor/scene/particles_editor_plugin.h"
+#include "scene/main/node.h"
 
 class Particles3DEditorPlugin : public ParticlesEditorPlugin {
 	GDCLASS(Particles3DEditorPlugin, ParticlesEditorPlugin);

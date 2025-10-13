@@ -30,7 +30,22 @@
 
 #include "resource_preloader_editor_plugin.h"
 
+#include "core/error/error_macros.h"
+#include "core/input/input_enums.h"
+#include "core/io/resource.h"
 #include "core/io/resource_loader.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/dictionary.h"
 #include "editor/editor_interface.h"
 #include "editor/editor_node.h"
 #include "editor/editor_undo_redo_manager.h"
@@ -39,6 +54,10 @@
 #include "editor/settings/editor_command_palette.h"
 #include "editor/settings/editor_settings.h"
 #include "editor/themes/editor_scale.h"
+#include "scene/gui/control.h"
+#include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/scene_string_names.h"
 
 void ResourcePreloaderEditor::_notification(int p_what) {
 	switch (p_what) {

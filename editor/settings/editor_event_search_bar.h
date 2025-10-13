@@ -30,6 +30,10 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "scene/gui/box_container.h"
 
 class Button;

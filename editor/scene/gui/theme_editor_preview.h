@@ -30,7 +30,17 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/color.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/main/scene_tree.h"
+#include "scene/resources/font.h"
+#include "scene/resources/style_box.h"
 #include "scene/resources/theme.h"
 
 class Button;

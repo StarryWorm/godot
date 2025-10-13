@@ -30,7 +30,18 @@
 
 #include "audio_effect_record.h"
 
+#include "core/error/error_macros.h"
 #include "core/io/marshalls.h"
+#include "core/math/audio_frame.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
+#include "scene/resources/audio_stream_wav.h"
+#include "servers/audio/audio_effect.h"
+#include <cstdint>
 
 void AudioEffectRecordInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 	if (!is_recording) {

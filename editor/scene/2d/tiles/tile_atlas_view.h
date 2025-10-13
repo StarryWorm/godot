@@ -30,13 +30,27 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2i.h"
+#include "core/math/vector2.h"
+#include "core/math/vector2i.h"
+#include "core/math/vector3i.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/rid.h"
 #include "editor/gui/editor_zoom_widget.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
 #include "scene/gui/center_container.h"
+#include "scene/gui/control.h"
 #include "scene/gui/label.h"
 #include "scene/gui/margin_container.h"
+#include "scene/main/canvas_item.h"
 #include "scene/resources/2d/tile_set.h"
+#include "scene/resources/material.h"
+#include "scene/resources/texture.h"
 
 class ViewPanner;
 

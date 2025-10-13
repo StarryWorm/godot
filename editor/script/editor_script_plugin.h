@@ -30,6 +30,10 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
 #include "editor/plugins/editor_plugin.h"
 
 class EditorScriptPlugin : public EditorPlugin {

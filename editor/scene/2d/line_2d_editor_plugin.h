@@ -30,8 +30,12 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/variant/variant.h"
 #include "editor/scene/2d/abstract_polygon_2d_editor.h"
 #include "scene/2d/line_2d.h"
+#include "scene/2d/node_2d.h"
+#include "scene/main/node.h"
 
 class Line2DEditor : public AbstractPolygon2DEditor {
 	GDCLASS(Line2DEditor, AbstractPolygon2DEditor);

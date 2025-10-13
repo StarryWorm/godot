@@ -30,7 +30,14 @@
 
 #pragma once
 
+#include "core/error/error_list.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
 #include "scene/resources/3d/mesh_library.h"
 
 class EditorFileDialog;

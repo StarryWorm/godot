@@ -30,10 +30,21 @@
 
 #include "lightmap_probe_gizmo_plugin.h"
 
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/templates/vector.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/settings/editor_settings.h"
 #include "scene/3d/lightmap_probe.h"
+#include "scene/3d/node_3d.h"
+#include "scene/resources/material.h"
 
 LightmapProbeGizmoPlugin::LightmapProbeGizmoPlugin() {
 	// NOTE: This gizmo only renders LightmapProbe nodes as wireframes.

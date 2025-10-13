@@ -30,11 +30,27 @@
 
 #include "editor_run_native.h"
 
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/bit_field.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "editor/export/editor_export.h"
 #include "editor/export/editor_export_platform.h"
 #include "editor/settings/editor_settings.h"
 #include "editor/themes/editor_scale.h"
+#include "scene/gui/control.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/main/node.h"
+#include "scene/scene_string_names.h"
 
 void EditorRunNative::_notification(int p_what) {
 	switch (p_what) {

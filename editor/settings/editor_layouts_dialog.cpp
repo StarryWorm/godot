@@ -30,12 +30,28 @@
 
 #include "editor_layouts_dialog.h"
 
+#include "core/error/error_list.h"
+#include "core/input/input_event.h"
 #include "core/io/config_file.h"
+#include "core/math/math_defs.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/settings/editor_settings.h"
 #include "editor/themes/editor_scale.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/margin_container.h"
+#include "scene/main/node.h"
+#include "scene/scene_string_names.h"
 
 void EditorLayoutsDialog::_line_gui_input(const Ref<InputEvent> &p_event) {
 	Ref<InputEventKey> k = p_event;

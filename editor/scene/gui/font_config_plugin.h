@@ -30,9 +30,23 @@
 
 #pragma once
 
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/object_id.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/bit_field.h"
+#include "core/templates/vector.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
+#include "editor/inspector/editor_inspector.h"
 #include "editor/inspector/editor_properties.h"
 #include "editor/inspector/editor_properties_array_dict.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/resources/font.h"
 
 /*************************************************************************/
 

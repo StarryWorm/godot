@@ -30,6 +30,8 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"

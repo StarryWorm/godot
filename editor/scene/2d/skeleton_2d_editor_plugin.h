@@ -30,8 +30,12 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/2d/skeleton_2d.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
 
 class AcceptDialog;
 class MenuButton;

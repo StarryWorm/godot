@@ -30,9 +30,19 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/object/script_instance.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/variant/variant.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/tree.h"
+#include "scene/main/node.h"
 
 class EditorFileDialog;
 

@@ -30,9 +30,17 @@
 
 #include "camera_server.h"
 
+#include "core/error/error_macros.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/print_string.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/rid.h"
 #include "core/variant/typed_array.h"
+#include "core/variant/variant.h"
 #include "servers/camera/camera_feed.h"
-#include "servers/rendering/rendering_server.h"
 
 ////////////////////////////////////////////////////////
 // CameraServer

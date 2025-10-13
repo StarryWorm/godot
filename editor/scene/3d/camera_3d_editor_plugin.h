@@ -30,8 +30,12 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_plugin.h"
 #include "editor/scene/texture/texture_editor_plugin.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
 
 class Camera3D;
 class SubViewport;

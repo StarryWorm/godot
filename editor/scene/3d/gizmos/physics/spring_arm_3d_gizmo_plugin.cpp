@@ -30,7 +30,15 @@
 
 #include "spring_arm_3d_gizmo_plugin.h"
 
+#include "core/math/color.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/vector.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/spring_arm_3d.h"
+#include "scene/resources/material.h"
 
 void SpringArm3DGizmoPlugin::redraw(EditorNode3DGizmo *p_gizmo) {
 	SpringArm3D *spring_arm = Object::cast_to<SpringArm3D>(p_gizmo->get_node_3d());

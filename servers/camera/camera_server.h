@@ -30,10 +30,14 @@
 
 #pragma once
 
-#include "core/object/class_db.h"
+#include "core/object/object.h"
 #include "core/object/ref_counted.h"
+#include "core/os/memory.h"
 #include "core/os/thread_safe.h"
 #include "core/templates/rid.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/binder_common.h"
 #include "core/variant/variant.h"
 
 /**

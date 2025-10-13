@@ -31,9 +31,19 @@
 #include "run_instances_dialog.h"
 
 #include "core/config/project_settings.h"
+#include "core/input/input_enums.h"
+#include "core/math/vector2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/typed_array.h"
 #include "editor/settings/editor_settings.h"
 #include "editor/themes/editor_scale.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/check_box.h"
+#include "scene/gui/control.h"
 #include "scene/gui/grid_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
@@ -42,6 +52,7 @@
 #include "scene/gui/spin_box.h"
 #include "scene/gui/tree.h"
 #include "scene/main/timer.h"
+#include "scene/scene_string_names.h"
 
 void RunInstancesDialog::_fetch_main_args() {
 	if (!main_args_edit->has_focus()) { // Only set the text if the user is not currently editing it.

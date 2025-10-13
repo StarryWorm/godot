@@ -30,9 +30,17 @@
 
 #include "shader_baker_export_plugin_platform_d3d12.h"
 
+#include "core/error/error_macros.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
 #include "drivers/d3d12/rendering_shader_container_d3d12.h"
+#include "editor/export/editor_export_platform.h"
+#include "editor/export/editor_export_preset.h"
+#include "servers/rendering/rendering_shader_container.h"
 
-#include <windows.h>
+#include <libloaderapi.h>
+#include <minwindef.h>
 
 RenderingShaderContainerFormat *ShaderBakerExportPluginPlatformD3D12::create_shader_container_format(const Ref<EditorExportPlatform> &p_platform, const Ref<EditorExportPreset> &p_preset) {
 	if (lib_d3d12 == nullptr) {

@@ -29,6 +29,12 @@
 /**************************************************************************/
 
 #include "audio_effect_filter.h"
+#include "core/math/audio_frame.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/variant/variant.h"
+#include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_server.h"
 
 template <int S>

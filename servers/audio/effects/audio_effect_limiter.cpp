@@ -29,6 +29,14 @@
 /**************************************************************************/
 
 #include "audio_effect_limiter.h"
+#include "core/math/audio_frame.h"
+#include "core/math/math_funcs.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
+#include "servers/audio/audio_effect.h"
 
 void AudioEffectLimiterInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 	float threshdb = base->threshold;

@@ -30,7 +30,15 @@
 
 #pragma once
 
+#include "core/math/vector2i.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
+#include "editor/inspector/editor_inspector.h"
 #include "editor/inspector/editor_properties.h"
 #include "editor/plugins/editor_plugin.h"
 
@@ -39,7 +47,6 @@
 #include "scene/gui/color_rect.h"
 #include "scene/gui/dialogs.h"
 #include "scene/resources/bone_map.h"
-#include "scene/resources/texture.h"
 
 class AspectRatioContainer;
 

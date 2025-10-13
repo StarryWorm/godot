@@ -30,7 +30,12 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/node_3d.h"
+#include "scene/resources/mesh.h"
 
 class Marker3DGizmoPlugin : public EditorNode3DGizmoPlugin {
 	GDCLASS(Marker3DGizmoPlugin, EditorNode3DGizmoPlugin);

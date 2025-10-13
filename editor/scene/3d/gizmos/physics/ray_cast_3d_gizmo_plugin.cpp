@@ -30,7 +30,14 @@
 
 #include "ray_cast_3d_gizmo_plugin.h"
 
+#include "core/math/color.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/ray_cast_3d.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
 
 RayCast3DGizmoPlugin::RayCast3DGizmoPlugin() {
 	const Color gizmo_color = SceneTree::get_singleton()->get_debug_collisions_color();

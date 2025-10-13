@@ -30,7 +30,14 @@
 
 #pragma once
 
+#include "core/math/vector2i.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_set.h"
+#include "core/variant/variant.h"
+#include "editor/docks/editor_dock_manager.h"
 #include "editor/scene/particles_editor_plugin.h"
+#include "scene/main/node.h"
 
 class EditorFileDialog;
 

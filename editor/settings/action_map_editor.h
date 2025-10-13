@@ -30,7 +30,17 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
 #include "scene/gui/control.h"
+#include "scene/resources/texture.h"
 
 class AcceptDialog;
 class Button;

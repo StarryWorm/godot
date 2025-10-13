@@ -30,15 +30,31 @@
 
 #include "input_event_configuration_dialog.h"
 
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
 #include "core/input/input_map.h"
+#include "core/math/math_defs.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/ref_counted.h"
+#include "core/os/keyboard.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
 #include "editor/editor_string_names.h"
 #include "editor/settings/event_listener_line_edit.h"
 #include "editor/themes/editor_scale.h"
 #include "scene/gui/check_box.h"
+#include "scene/gui/control.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/tree.h"
+#include "scene/main/node.h"
+#include "scene/main/window.h"
+#include "scene/scene_string_names.h"
+#include "servers/text/text_server.h"
 
 void InputEventConfigurationDialog::_set_event(const Ref<InputEvent> &p_event, const Ref<InputEvent> &p_original_event, bool p_update_input_list_selection) {
 	if (p_event.is_valid()) {

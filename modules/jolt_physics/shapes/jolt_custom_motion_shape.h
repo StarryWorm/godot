@@ -30,11 +30,22 @@
 
 #pragma once
 
+#include "Jolt/Core/Color.h"
+#include "Jolt/Core/Core.h"
+#include "Jolt/Geometry/AABox.h"
+#include "Jolt/Geometry/Plane.h"
+#include "Jolt/Math/Float3.h"
+#include "Jolt/Math/MathTypes.h"
+#include "Jolt/Math/Real.h"
+#include "Jolt/Math/Vec3.h"
+#include "Jolt/Physics/Body/MassProperties.h"
+#include "Jolt/Physics/Collision/PhysicsMaterial.h"
+#include "Jolt/Physics/Collision/Shape/Shape.h"
+#include "Jolt/Physics/Collision/Shape/SubShapeID.h"
+#include "Jolt/Physics/Collision/ShapeFilter.h"
 #include "jolt_custom_shape_type.h"
 
 #include "core/error/error_macros.h"
-
-#include "Jolt/Jolt.h"
 
 #include "Jolt/Physics/Collision/Shape/ConvexShape.h"
 #include "Jolt/Physics/Collision/TransformedShape.h"

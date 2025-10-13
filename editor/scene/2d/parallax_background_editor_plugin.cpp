@@ -30,15 +30,28 @@
 
 #include "parallax_background_editor_plugin.h"
 
+#include "core/math/vector2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/undo_redo.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/variant/typed_array.h"
 #include "editor/docks/scene_tree_dock.h"
 #include "editor/editor_node.h"
 #include "editor/editor_undo_redo_manager.h"
+#include "editor/plugins/editor_plugin.h"
 #include "editor/scene/canvas_item_editor_plugin.h"
+#include "scene/2d/node_2d.h"
 #include "scene/2d/parallax_2d.h"
 #include "scene/2d/parallax_background.h"
 #include "scene/2d/parallax_layer.h"
 #include "scene/gui/box_container.h"
 #include "scene/gui/menu_button.h"
+#include "scene/main/canvas_layer.h"
+#include "scene/main/node.h"
+#include "scene/scene_string_names.h"
 
 void ParallaxBackgroundEditorPlugin::edit(Object *p_object) {
 	parallax_background = Object::cast_to<ParallaxBackground>(p_object);

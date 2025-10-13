@@ -30,10 +30,17 @@
 
 #include "physics_bone_3d_gizmo_plugin.h"
 
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/vector.h"
 #include "editor/scene/3d/gizmos/physics/joint_3d_gizmo_plugin.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/settings/editor_settings.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/physical_bone_3d.h"
 #include "scene/3d/physics/physical_bone_simulator_3d.h"
+#include "scene/resources/material.h"
 
 PhysicalBone3DGizmoPlugin::PhysicalBone3DGizmoPlugin() {
 	create_material("joint_material", EDITOR_GET("editors/3d_gizmos/gizmo_colors/joint"));

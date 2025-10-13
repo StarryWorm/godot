@@ -30,7 +30,12 @@
 
 #pragma once
 
+#include "core/math/audio_frame.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/vector.h"
 #include "servers/audio/audio_effect.h"
+#include <cstdint>
 
 class AudioEffectChorus;
 

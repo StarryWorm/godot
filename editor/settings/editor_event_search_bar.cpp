@@ -30,10 +30,19 @@
 
 #include "editor_event_search_bar.h"
 
+#include "core/input/input_event.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/settings/event_listener_line_edit.h"
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/line_edit.h"
+#include "scene/scene_string_names.h"
 
 void EditorEventSearchBar::_on_event_changed(const Ref<InputEvent> &p_event) {
 	if (p_event.is_valid() && (!p_event->is_pressed() || p_event->is_echo())) {

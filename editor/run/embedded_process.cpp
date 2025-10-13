@@ -31,11 +31,32 @@
 #include "embedded_process.h"
 
 #include "core/config/project_settings.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/input/input_enums.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2.h"
+#include "core/math/rect2i.h"
+#include "core/math/vector2.h"
+#include "core/math/vector2i.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/os/os.h"
+#include "core/string/string_name.h"
+#include "core/templates/bit_field.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
 #include "editor/editor_string_names.h"
+#include "scene/gui/control.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/node.h"
 #include "scene/main/timer.h"
 #include "scene/main/window.h"
 #include "scene/resources/style_box_flat.h"
 #include "scene/theme/theme_db.h"
+#include <cstdint>
 
 void EmbeddedProcessBase::_notification(int p_what) {
 	switch (p_what) {

@@ -30,6 +30,11 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/node_path.h"
+#include "core/string/ustring.h"
+#include "core/templates/bit_field.h"
+#include "core/variant/variant.h"
 #include "editor/inspector/editor_inspector.h"
 
 class Button;

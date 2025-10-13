@@ -30,7 +30,12 @@
 
 #pragma once
 
+#include "core/math/vector4.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include <cstdint>
 
 class PanelContainer;
 class Button;

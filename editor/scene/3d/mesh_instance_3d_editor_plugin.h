@@ -30,9 +30,19 @@
 
 #pragma once
 
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/3d/mesh_instance_3d.h"
+#include "scene/gui/control.h"
 #include "scene/gui/option_button.h"
+#include "scene/main/node.h"
+#include "scene/resources/3d/shape_3d.h"
+#include "scene/resources/mesh.h"
 
 class AcceptDialog;
 class AspectRatioContainer;

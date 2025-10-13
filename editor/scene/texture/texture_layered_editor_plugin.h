@@ -30,9 +30,17 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/color.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "editor/inspector/editor_inspector.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/control.h"
 #include "scene/gui/spin_box.h"
+#include "scene/resources/material.h"
 #include "scene/resources/shader.h"
 #include "scene/resources/texture.h"
 

@@ -31,7 +31,9 @@
 #include "reverb_filter.h"
 
 #include "core/math/audio_frame.h"
+#include "core/math/math_defs.h"
 #include "core/os/memory.h"
+#include <cmath>
 
 const float Reverb::comb_tunings[MAX_COMBS] = {
 	//freeverb comb tunings

@@ -30,14 +30,32 @@
 
 #include "joint_3d_gizmo_plugin.h"
 
+#include "core/math/basis.h"
+#include "core/math/math_defs.h"
+#include "core/math/math_funcs.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
 #include "editor/editor_node.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/settings/editor_settings.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/joints/cone_twist_joint_3d.h"
 #include "scene/3d/physics/joints/generic_6dof_joint_3d.h"
 #include "scene/3d/physics/joints/hinge_joint_3d.h"
+#include "scene/3d/physics/joints/joint_3d.h"
 #include "scene/3d/physics/joints/pin_joint_3d.h"
 #include "scene/3d/physics/joints/slider_joint_3d.h"
+#include "scene/main/node.h"
 #include "scene/main/timer.h"
+#include "scene/resources/material.h"
 
 #define BODY_A_RADIUS 0.25
 #define BODY_B_RADIUS 0.27

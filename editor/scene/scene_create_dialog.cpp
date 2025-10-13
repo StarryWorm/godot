@@ -30,7 +30,16 @@
 
 #include "scene_create_dialog.h"
 
+#include "core/error/error_macros.h"
 #include "core/io/dir_access.h"
+#include "core/io/resource_saver.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
 #include "editor/gui/create_dialog.h"
@@ -44,7 +53,10 @@
 #include "scene/gui/grid_container.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/option_button.h"
+#include "scene/main/node.h"
+#include "scene/main/window.h"
 #include "scene/resources/packed_scene.h"
+#include "scene/scene_string_names.h"
 
 void SceneCreateDialog::_notification(int p_what) {
 	switch (p_what) {

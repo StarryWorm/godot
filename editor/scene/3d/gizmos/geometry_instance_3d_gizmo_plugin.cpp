@@ -30,8 +30,19 @@
 
 #include "geometry_instance_3d_gizmo_plugin.h"
 
+#include "core/math/aabb.h"
+#include "core/math/color.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/settings/editor_settings.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/visual_instance_3d.h"
+#include "scene/resources/material.h"
 
 bool GeometryInstance3DGizmoPlugin::has_gizmo(Node3D *p_spatial) {
 	return Object::cast_to<GeometryInstance3D>(p_spatial) != nullptr;

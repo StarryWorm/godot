@@ -30,9 +30,17 @@
 
 #pragma once
 
+#include "core/error/error_macros.h"
+#include "core/object/object.h"
+#include "core/string/node_path.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/templates/pair.h"
+#include "core/variant/array.h"
 #include "editor/scene/scene_tree_editor.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/line_edit.h"
+#include "scene/main/node.h"
 
 class Button;
 class CheckBox;

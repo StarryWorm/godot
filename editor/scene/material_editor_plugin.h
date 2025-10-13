@@ -30,11 +30,24 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/io/resource.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
 #include "editor/inspector/editor_inspector.h"
 #include "editor/plugins/editor_plugin.h"
 #include "editor/plugins/editor_resource_conversion_plugin.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
 #include "scene/resources/3d/primitive_meshes.h"
+#include "scene/resources/camera_attributes.h"
+#include "scene/resources/environment.h"
 #include "scene/resources/material.h"
+#include "scene/resources/texture.h"
 
 class Camera3D;
 class ColorRect;

@@ -30,6 +30,7 @@
 
 #pragma once
 
+#include "core/error/error_macros.h"
 #include "core/math/audio_frame.h"
 #include "core/templates/safe_refcount.h"
 #include "core/typedefs.h"

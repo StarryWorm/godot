@@ -33,6 +33,8 @@
 #include "core/io/resource.h"
 #include "core/math/audio_frame.h"
 #include "core/object/gdvirtual.gen.inc"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
 #include "core/variant/native_ptr.h"
 
 class AudioEffectInstance : public RefCounted {

@@ -30,6 +30,34 @@
 
 #include "tile_set_editor.h"
 
+#include "core/error/error_macros.h"
+#include "core/input/input_event.h"
+#include "core/io/resource_loader.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector2.h"
+#include "core/math/vector2i.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/char_utils.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/bit_field.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
+#include "scene/gui/scroll_container.h"
+#include "scene/gui/tab_bar.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/node.h"
+#include "scene/resources/2d/tile_set.h"
+#include "scene/resources/texture.h"
+#include "scene/scene_string_names.h"
+#include "servers/text/text_server.h"
 #include "tile_data_editors.h"
 #include "tiles_editor_plugin.h"
 
@@ -44,6 +72,7 @@
 #include "scene/gui/box_container.h"
 #include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
+#include <climits>
 
 TileSetEditor *TileSetEditor::singleton = nullptr;
 

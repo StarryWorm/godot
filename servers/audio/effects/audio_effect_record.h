@@ -30,7 +30,11 @@
 
 #pragma once
 
+#include "core/math/audio_frame.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
 #include "core/os/thread.h"
+#include "core/templates/vector.h"
 #include "scene/resources/audio_stream_wav.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_server.h"

@@ -33,9 +33,25 @@
 #include "core/config/project_settings.h"
 #include "core/debugger/engine_debugger.h"
 #include "core/debugger/engine_profiler.h"
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/io/image.h"
+#include "core/io/resource.h"
 #include "core/io/resource_loader.h"
+#include "core/math/math_defs.h"
+#include "core/object/ref_counted.h"
 #include "core/object/script_language.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/templates/sort_array.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "servers/display/display_server.h"
+#include "servers/rendering/rendering_server.h"
+#include <cstdint>
 
 #define CHECK_SIZE(arr, expected, what) ERR_FAIL_COND_V_MSG((uint32_t)arr.size() < (uint32_t)(expected), false, String("Malformed ") + what + " message from script debugger, message too short. Expected size: " + itos(expected) + ", actual size: " + itos(arr.size()))
 #define CHECK_END(arr, expected, what) ERR_FAIL_COND_V_MSG((uint32_t)arr.size() > (uint32_t)expected, false, String("Malformed ") + what + " message from script debugger, message too long. Expected size: " + itos(expected) + ", actual size: " + itos(arr.size()))

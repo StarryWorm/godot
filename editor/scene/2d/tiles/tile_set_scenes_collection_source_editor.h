@@ -30,9 +30,18 @@
 
 #pragma once
 
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/variant/variant.h"
 #include "editor/inspector/editor_inspector.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
 #include "scene/resources/2d/tile_set.h"
+#include "scene/resources/texture.h"
 
 class Button;
 class ItemList;

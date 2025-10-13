@@ -30,7 +30,19 @@
 
 #pragma once
 
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2i.h"
+#include "core/math/vector2.h"
+#include "core/math/vector2i.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/os.h"
 #include "scene/gui/control.h"
+#include "scene/main/canvas_item.h"
+#include "scene/resources/style_box.h"
+#include "scene/resources/texture.h"
+#include <cstdint>
 
 class ScriptEditorDebugger;
 class Timer;

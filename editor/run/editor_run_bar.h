@@ -30,7 +30,13 @@
 
 #pragma once
 
-#include "editor/export/editor_export.h"
+#include "core/error/error_list.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/os.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "editor/export/editor_export_preset.h"
 #include "editor/run/editor_run.h"
 #include "scene/gui/margin_container.h"
 

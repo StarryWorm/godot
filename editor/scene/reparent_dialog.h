@@ -30,7 +30,10 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/templates/hash_set.h"
 #include "scene/gui/dialogs.h"
+#include "scene/main/node.h"
 
 class CheckBox;
 class SceneTreeEditor;

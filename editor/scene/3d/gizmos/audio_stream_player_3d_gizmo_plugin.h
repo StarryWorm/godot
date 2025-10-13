@@ -30,7 +30,13 @@
 
 #pragma once
 
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
 #include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/camera_3d.h"
+#include "scene/3d/node_3d.h"
 
 class AudioStreamPlayer3DGizmoPlugin : public EditorNode3DGizmoPlugin {
 	GDCLASS(AudioStreamPlayer3DGizmoPlugin, EditorNode3DGizmoPlugin);

@@ -30,12 +30,33 @@
 
 #pragma once
 
+#include "core/io/resource.h"
+#include "core/math/color.h"
 #include "core/math/dynamic_bvh.h"
+#include "core/math/math_defs.h"
+#include "core/math/plane.h"
+#include "core/math/transform_3d.h"
+#include "core/math/triangle_mesh.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/gdvirtual.gen.inc"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "core/templates/hash_map.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/local_vector.h"
+#include "core/templates/rid.h"
+#include "core/templates/vector.h"
+#include "core/variant/typed_array.h"
+#include "core/variant/variant.h"
 #include "scene/3d/camera_3d.h"
 #include "scene/3d/node_3d.h"
 #include "scene/3d/skeleton_3d.h"
+#include "scene/main/node.h"
+#include "scene/resources/material.h"
 #include "scene/resources/mesh.h"
+#include "scene/resources/texture.h"
 
 class Timer;
 class EditorNode3DGizmoPlugin;

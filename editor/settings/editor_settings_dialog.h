@@ -30,8 +30,23 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/bit_field.h"
+#include "core/templates/list.h"
+#include "core/variant/array.h"
+#include "core/variant/callable.h"
+#include "core/variant/variant.h"
 #include "editor/inspector/editor_inspector.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
+#include "scene/gui/label.h"
 
 class CheckButton;
 class EditorEventSearchBar;

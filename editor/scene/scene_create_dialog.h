@@ -30,7 +30,13 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "scene/gui/button.h"
 #include "scene/gui/dialogs.h"
+#include "scene/main/node.h"
 
 class ButtonGroup;
 class CheckBox;

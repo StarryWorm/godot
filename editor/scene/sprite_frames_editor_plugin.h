@@ -30,18 +30,38 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/io/resource.h"
+#include "core/math/color.h"
+#include "core/math/vector2.h"
+#include "core/math/vector2i.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/pair.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"
+#include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
 #include "scene/gui/scroll_container.h"
 #include "scene/gui/spin_box.h"
 #include "scene/gui/split_container.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tree.h"
+#include "scene/main/node.h"
 #include "scene/resources/image_texture.h"
 #include "scene/resources/sprite_frames.h"
+#include "scene/resources/texture.h"
 
 class OptionButton;
 class EditorFileDialog;

@@ -30,10 +30,25 @@
 
 #include "occluder_instance_3d_gizmo_plugin.h"
 
+#include "core/math/geometry_3d.h"
+#include "core/math/math_funcs.h"
+#include "core/math/plane.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/editor_undo_redo_manager.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/scene/3d/node_3d_editor_plugin.h"
 #include "editor/settings/editor_settings.h"
+#include "scene/3d/camera_3d.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/occluder_instance_3d.h"
+#include "scene/resources/material.h"
 
 OccluderInstance3DGizmoPlugin::OccluderInstance3DGizmoPlugin() {
 	create_material("line_material", EDITOR_GET("editors/3d_gizmos/gizmo_colors/occluder"));

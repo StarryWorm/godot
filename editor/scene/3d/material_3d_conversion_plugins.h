@@ -30,6 +30,10 @@
 
 #pragma once
 
+#include "core/io/resource.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_resource_conversion_plugin.h"
 
 class StandardMaterial3DConversionPlugin : public EditorResourceConversionPlugin {

@@ -30,11 +30,13 @@
 
 #pragma once
 
+#include "core/error/error_list.h"
 #include "servers/audio/audio_server.h"
 
 #include "core/os/mutex.h"
 #include "core/os/thread.h"
 #include "core/templates/safe_refcount.h"
+#include <cstdint>
 
 class AudioDriverDummy : public AudioDriver {
 	Thread thread;

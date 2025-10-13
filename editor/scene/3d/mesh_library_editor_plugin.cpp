@@ -30,6 +30,19 @@
 
 #include "mesh_library_editor_plugin.h"
 
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/math/transform_3d.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/variant/variant.h"
 #include "editor/docks/inspector_dock.h"
 #include "editor/editor_interface.h"
 #include "editor/editor_node.h"
@@ -41,8 +54,15 @@
 #include "scene/3d/mesh_instance_3d.h"
 #include "scene/3d/navigation/navigation_region_3d.h"
 #include "scene/3d/physics/static_body_3d.h"
+#include "scene/3d/visual_instance_3d.h"
 #include "scene/gui/menu_button.h"
+#include "scene/resources/3d/mesh_library.h"
+#include "scene/resources/3d/shape_3d.h"
+#include "scene/resources/material.h"
 #include "scene/resources/packed_scene.h"
+#include "scene/scene_string_names.h"
+#include "servers/rendering/rendering_server.h"
+#include <cstdint>
 
 void MeshLibraryEditor::edit(const Ref<MeshLibrary> &p_mesh_library) {
 	mesh_library = p_mesh_library;

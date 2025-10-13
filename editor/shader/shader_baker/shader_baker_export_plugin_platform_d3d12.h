@@ -30,6 +30,11 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "editor/export/editor_export_platform.h"
+#include "editor/export/editor_export_preset.h"
 #include "editor/export/shader_baker_export_plugin.h"
 
 class ShaderBakerExportPluginPlatformD3D12 : public ShaderBakerExportPluginPlatform {

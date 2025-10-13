@@ -31,10 +31,19 @@
 #include "camera_3d_editor_plugin.h"
 
 #include "core/config/project_settings.h"
+#include "core/math/math_defs.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/ustring.h"
 #include "editor/editor_node.h"
+#include "editor/scene/texture/texture_editor_plugin.h"
 #include "node_3d_editor_plugin.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/main/node.h"
 #include "scene/main/viewport.h"
+#include "scene/scene_string_names.h"
 
 void Camera3DEditor::_node_removed(Node *p_node) {
 	if (p_node == node) {

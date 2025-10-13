@@ -30,9 +30,26 @@
 
 #include "marker_3d_gizmo_plugin.h"
 
+#include "core/math/basis.h"
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "scene/3d/marker_3d.h"
+#include "scene/3d/node_3d.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
+#include "servers/rendering/rendering_server.h"
 
 Marker3DGizmoPlugin::Marker3DGizmoPlugin() {
 	pos3d_mesh.instantiate();

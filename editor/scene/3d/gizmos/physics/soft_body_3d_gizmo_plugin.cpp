@@ -30,8 +30,21 @@
 
 #include "soft_body_3d_gizmo_plugin.h"
 
+#include "core/error/error_macros.h"
+#include "core/math/color.h"
+#include "core/math/triangle_mesh.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
+#include "core/variant/variant.h"
 #include "editor/editor_undo_redo_manager.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/soft_body_3d.h"
+#include "scene/resources/material.h"
 
 SoftBody3DGizmoPlugin::SoftBody3DGizmoPlugin() {
 	Color gizmo_color = SceneTree::get_singleton()->get_debug_collisions_color();

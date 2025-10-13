@@ -30,11 +30,22 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/io/resource.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/3d/camera_3d.h"
 #include "scene/3d/mesh_instance_3d.h"
-#include "scene/3d/physics/collision_polygon_3d.h"
 #include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
 #include "scene/resources/immediate_mesh.h"
+#include "scene/resources/material.h"
+#include "scene/resources/mesh.h"
 
 class CanvasItemEditor;
 class MenuButton;

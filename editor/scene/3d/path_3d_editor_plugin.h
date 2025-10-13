@@ -30,10 +30,23 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/basis.h"
+#include "core/math/plane.h"
+#include "core/math/transform_3d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector3.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "editor/plugins/editor_plugin.h"
 #include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "scene/3d/camera_3d.h"
 #include "scene/3d/path_3d.h"
+#include "scene/resources/material.h"
 
 class HBoxContainer;
 class MenuButton;

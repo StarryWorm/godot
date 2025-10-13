@@ -30,9 +30,26 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/rect2.h"
+#include "core/math/transform_2d.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/bit_field.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/templates/rid.h"
+#include "core/variant/variant.h"
 #include "editor/inspector/editor_inspector.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/gui/box_container.h"
 #include "scene/gui/dialogs.h"
+#include "scene/gui/panel.h"
+#include "scene/gui/scroll_bar.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
 
 class AtlasTexture;
 class NinePatchRect;

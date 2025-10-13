@@ -30,9 +30,19 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/vector.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/2d/sprite_2d.h"
+#include "scene/gui/control.h"
+#include "scene/gui/scroll_bar.h"
 #include "scene/gui/spin_box.h"
+#include "scene/main/node.h"
 
 class AcceptDialog;
 class Button;

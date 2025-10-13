@@ -32,9 +32,26 @@
 
 #include "../spaces/jolt_query_collectors.h"
 
+#include "Jolt/Core/Color.h"
+#include "Jolt/Geometry/AABox.h"
+#include "Jolt/Math/Mat44.h"
+#include "Jolt/Math/MathTypes.h"
+#include "Jolt/Math/Real.h"
+#include "Jolt/Math/Vec3.h"
+#include "Jolt/Physics/Body/MassProperties.h"
 #include "Jolt/Physics/Collision/CastResult.h"
+#include "Jolt/Physics/Collision/CollectFacesMode.h"
+#include "Jolt/Physics/Collision/CollideShape.h"
+#include "Jolt/Physics/Collision/CollisionDispatch.h"
 #include "Jolt/Physics/Collision/RayCast.h"
+#include "Jolt/Physics/Collision/Shape/ConvexShape.h"
+#include "Jolt/Physics/Collision/Shape/Shape.h"
+#include "Jolt/Physics/Collision/Shape/SubShapeID.h"
+#include "Jolt/Physics/Collision/ShapeCast.h"
+#include "Jolt/Physics/Collision/ShapeFilter.h"
 #include "Jolt/Physics/Collision/TransformedShape.h"
+#include "core/error/error_macros.h"
+#include "modules/jolt_physics/shapes/jolt_custom_shape_type.h"
 
 #ifdef JPH_DEBUG_RENDERER
 #include "Jolt/Renderer/DebugRenderer.h"

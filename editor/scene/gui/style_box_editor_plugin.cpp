@@ -30,9 +30,22 @@
 
 #include "style_box_editor_plugin.h"
 
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/rect2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/themes/editor_scale.h"
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/gui/texture_rect.h"
+#include "scene/main/canvas_item.h"
 #include "scene/resources/style_box_texture.h"
+#include "scene/scene_string_names.h"
 
 bool StyleBoxPreview::grid_preview_enabled = true;
 

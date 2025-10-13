@@ -30,6 +30,15 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
+#include "editor/inspector/editor_inspector.h"
 #include "editor/inspector/editor_properties.h"
 #include "scene/gui/dialogs.h"
 #include "scene/gui/item_list.h"

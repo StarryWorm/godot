@@ -30,6 +30,10 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "editor/inspector/editor_inspector.h"
 #include "editor/plugins/editor_plugin.h"
 #include "scene/3d/camera_3d.h"
@@ -37,6 +41,8 @@
 #include "scene/3d/mesh_instance_3d.h"
 #include "scene/gui/subviewport_container.h"
 #include "scene/resources/camera_attributes.h"
+#include "scene/resources/mesh.h"
+#include "scene/resources/texture.h"
 
 class SubViewport;
 class Button;

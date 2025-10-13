@@ -30,9 +30,23 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/io/resource.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/vector.h"
+#include "core/variant/callable.h"
+#include "core/variant/variant.h"
 #include "editor/script/script_editor_plugin.h"
 
 #include "editor/gui/code_editor.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/gui/popup_menu.h"
+#include "scene/resources/texture.h"
 
 class TextEditor : public ScriptEditorBase {
 	GDCLASS(TextEditor, ScriptEditorBase);

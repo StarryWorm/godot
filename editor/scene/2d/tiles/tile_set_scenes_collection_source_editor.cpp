@@ -30,6 +30,21 @@
 
 #include "tile_set_scenes_collection_source_editor.h"
 
+#include "core/core_string_names.h"
+#include "core/error/error_macros.h"
+#include "core/io/resource_loader.h"
+#include "core/math/vector2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
 #include "editor/editor_node.h"
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/file_system/editor_file_system.h"
@@ -40,9 +55,15 @@
 #include "editor/themes/editor_scale.h"
 
 #include "scene/gui/button.h"
+#include "scene/gui/control.h"
 #include "scene/gui/item_list.h"
 #include "scene/gui/label.h"
+#include "scene/gui/scroll_container.h"
 #include "scene/gui/split_container.h"
+#include "scene/main/canvas_item.h"
+#include "scene/main/node.h"
+#include "scene/resources/packed_scene.h"
+#include "scene/scene_string_names.h"
 
 void TileSetScenesCollectionSourceEditor::TileSetScenesCollectionProxyObject::set_id(int p_id) {
 	ERR_FAIL_COND(p_id < 0);

@@ -30,10 +30,17 @@
 
 #include "mesh_instance_3d_gizmo_plugin.h"
 
+#include "core/math/triangle_mesh.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "editor/scene/3d/node_3d_editor_plugin.h"
 #include "scene/3d/mesh_instance_3d.h"
+#include "scene/3d/node_3d.h"
 #include "scene/3d/physics/soft_body_3d.h"
 #include "scene/resources/3d/primitive_meshes.h"
+#include "scene/resources/mesh.h"
 
 bool MeshInstance3DGizmoPlugin::has_gizmo(Node3D *p_spatial) {
 	return Object::cast_to<MeshInstance3D>(p_spatial) != nullptr && Object::cast_to<SoftBody3D>(p_spatial) == nullptr;

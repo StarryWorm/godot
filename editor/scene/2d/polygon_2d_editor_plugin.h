@@ -30,8 +30,20 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/color.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
 #include "editor/scene/2d/abstract_polygon_2d_editor.h"
+#include "scene/2d/node_2d.h"
 #include "scene/2d/polygon_2d.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/control.h"
+#include "scene/main/node.h"
 
 class AcceptDialog;
 class ButtonGroup;

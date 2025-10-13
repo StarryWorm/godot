@@ -30,6 +30,15 @@
 
 #pragma once
 
+#include "core/math/audio_frame.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/effects/eq_filter.h"
 

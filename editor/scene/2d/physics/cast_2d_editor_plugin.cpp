@@ -30,12 +30,24 @@
 
 #include "cast_2d_editor_plugin.h"
 
+#include "core/input/input_enums.h"
+#include "core/input/input_event.h"
+#include "core/math/transform_2d.h"
+#include "core/math/vector2.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/editor_node.h"
 #include "editor/editor_undo_redo_manager.h"
 #include "editor/scene/canvas_item_editor_plugin.h"
 #include "scene/2d/physics/ray_cast_2d.h"
 #include "scene/2d/physics/shape_cast_2d.h"
+#include "scene/main/node.h"
 #include "scene/main/viewport.h"
+#include "scene/resources/texture.h"
 
 void Cast2DEditor::_notification(int p_what) {
 	switch (p_what) {

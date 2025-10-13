@@ -30,7 +30,12 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
 #include "scene/gui/line_edit.h"
+#include <cstdint>
 
 enum InputType {
 	INPUT_KEY = 1,

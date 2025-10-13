@@ -31,6 +31,12 @@
 #pragma once
 
 #include "core/config/project_settings.h"
+#include "core/input/input_event.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
 #include "editor/editor_data.h"
 #include "editor/import/import_defaults_editor.h"
 #include "editor/inspector/editor_sectioned_inspector.h"
@@ -40,9 +46,12 @@
 #include "editor/settings/editor_autoload_settings.h"
 #include "editor/shader/shader_globals_editor.h"
 #include "editor/translations/localization_editor.h"
+#include "scene/gui/box_container.h"
+#include "scene/gui/option_button.h"
 #include "scene/gui/panel_container.h"
 #include "scene/gui/tab_container.h"
 #include "scene/gui/texture_rect.h"
+#include "scene/main/timer.h"
 
 class EditorVariantTypeOptionButton;
 class FileSystemDock;

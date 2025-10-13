@@ -30,8 +30,26 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/color.h"
+#include "core/math/rect2.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/object/object_id.h"
+#include "core/object/ref_counted.h"
+#include "core/os/mutex.h"
+#include "core/os/semaphore.h"
+#include "core/os/thread.h"
+#include "core/string/string_name.h"
+#include "core/templates/list.h"
+#include "core/templates/safe_refcount.h"
+#include "core/typedefs.h"
+#include "core/variant/callable.h"
 #include "editor/plugins/editor_plugin.h"
 
+#include "scene/gui/control.h"
+#include "scene/main/canvas_item.h"
+#include "scene/resources/2d/tile_set.h"
 #include "tile_map_layer_editor.h"
 #include "tile_set_editor.h"
 

@@ -30,7 +30,10 @@
 
 #pragma once
 
+#include "core/object/object.h"
+#include "core/string/ustring.h"
 #include "editor/plugins/editor_plugin.h"
+#include "scene/main/node.h"
 
 class CheckBox;
 class ConfirmationDialog;

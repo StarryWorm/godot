@@ -30,7 +30,13 @@
 
 #include "label_3d_gizmo_plugin.h"
 
+#include "core/math/triangle_mesh.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "editor/scene/3d/node_3d_editor_gizmos.h"
 #include "scene/3d/label_3d.h"
+#include "scene/3d/node_3d.h"
 
 bool Label3DGizmoPlugin::has_gizmo(Node3D *p_spatial) {
 	return Object::cast_to<Label3D>(p_spatial) != nullptr;

@@ -30,6 +30,28 @@
 
 #pragma once
 
+#include "core/input/input_event.h"
+#include "core/math/color.h"
+#include "core/math/transform_2d.h"
+#include "core/math/vector2.h"
+#include "core/math/vector2i.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/local_vector.h"
+#include "core/templates/vector.h"
+#include "core/variant/variant.h"
+#include "editor/gui/editor_zoom_widget.h"
+#include "editor/inspector/editor_inspector.h"
+#include "scene/gui/base_button.h"
+#include "scene/gui/button.h"
+#include "scene/gui/control.h"
+#include "scene/main/canvas_item.h"
+#include "scene/resources/2d/tile_set.h"
+#include "scene/resources/texture.h"
 #include "tile_atlas_view.h"
 
 #include "editor/inspector/editor_properties.h"

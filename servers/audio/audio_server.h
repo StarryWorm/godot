@@ -30,15 +30,28 @@
 
 #pragma once
 
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/io/resource.h"
 #include "core/math/audio_frame.h"
-#include "core/object/class_db.h"
+#include "core/object/object.h"
 #include "core/os/os.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/templates/local_vector.h"
 #include "core/templates/safe_list.h"
+#include "core/templates/safe_refcount.h"
+#include "core/templates/vector.h"
+#include "core/typedefs.h"
+#include "core/variant/binder_common.h"
 #include "core/variant/variant.h"
 #include "servers/audio/audio_effect.h"
 #include "servers/audio/audio_filter_sw.h"
 
 #include <atomic>
+#include <cstdint>
 
 class AudioDriverDummy;
 class AudioSample;

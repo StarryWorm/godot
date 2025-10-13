@@ -30,10 +30,29 @@
 
 #include "gpu_particles_collision_sdf_editor_plugin.h"
 
+#include "core/error/error_list.h"
+#include "core/error/error_macros.h"
+#include "core/io/config_file.h"
+#include "core/io/file_access.h"
+#include "core/io/image.h"
+#include "core/io/resource_loader.h"
+#include "core/math/vector3.h"
+#include "core/math/vector3i.h"
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/variant/variant.h"
 #include "editor/editor_interface.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
 #include "editor/gui/editor_file_dialog.h"
+#include "editor/plugins/editor_plugin.h"
+#include "scene/main/node.h"
+#include "scene/resources/texture.h"
+#include "scene/scene_string_names.h"
 
 void GPUParticlesCollisionSDF3DEditorPlugin::_bake() {
 	if (col_sdf) {

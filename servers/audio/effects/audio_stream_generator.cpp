@@ -29,6 +29,18 @@
 /**************************************************************************/
 
 #include "audio_stream_generator.h"
+#include "core/error/error_macros.h"
+#include "core/math/audio_frame.h"
+#include "core/math/math_defs.h"
+#include "core/math/vector2.h"
+#include "core/object/class_db.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/typedefs.h"
+#include "core/variant/variant.h"
+#include "servers/audio/audio_stream.h"
+#include <cstdint>
 
 void AudioStreamGenerator::set_mix_rate(float p_mix_rate) {
 	mix_rate = p_mix_rate;

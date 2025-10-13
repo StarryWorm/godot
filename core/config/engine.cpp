@@ -32,11 +32,22 @@
 
 #include "core/authors.gen.h"
 #include "core/config/project_settings.h"
+#include "core/core_globals.h"
 #include "core/donors.gen.h"
+#include "core/error/error_macros.h"
 #include "core/license.gen.h"
+#include "core/object/ref_counted.h"
+#include "core/string/print_string.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_map.h"
+#include "core/templates/list.h"
+#include "core/typedefs.h"
+#include "core/variant/array.h"
 #include "core/variant/typed_array.h"
+#include "core/variant/variant.h"
 #include "core/version.h"
 #include "servers/rendering/rendering_device.h"
+#include <cstdint>
 
 void Engine::_update_time_scale() {
 	_time_scale = _user_time_scale * _game_time_scale;

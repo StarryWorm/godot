@@ -30,10 +30,17 @@
 
 #include "skeleton_ik_3d_editor_plugin.h"
 
+#include "core/object/callable_method_pointer.h"
+#include "core/object/object.h"
+#include "core/os/memory.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
+#include "editor/plugins/editor_plugin.h"
 #include "scene/3d/skeleton_ik_3d.h"
 #include "scene/gui/button.h"
+#include "scene/scene_string_names.h"
 
 void SkeletonIK3DEditorPlugin::_play() {
 	if (!skeleton_ik) {

@@ -31,12 +31,24 @@
 #pragma once
 
 #include "core/io/resource.h"
+#include "core/math/audio_frame.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/string_name.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/binder_common.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/variant.h"
 #include "scene/property_list_helper.h"
 #include "servers/audio/audio_server.h"
 
 #include "core/object/gdvirtual.gen.inc"
 #include "core/variant/native_ptr.h"
 #include "core/variant/typed_array.h"
+#include <cstdint>
 
 class AudioStream;
 

@@ -30,6 +30,13 @@
 
 #pragma once
 
+#include "core/io/resource.h"
+#include "core/object/object.h"
+#include "core/object/ref_counted.h"
+#include "core/string/ustring.h"
+#include "core/templates/hash_set.h"
+#include "core/templates/vector.h"
+#include "core/variant/array.h"
 #include "scene/main/node.h"
 
 class EditorFolding {

@@ -30,6 +30,14 @@
 
 #pragma once
 
+#include "core/input/input_enums.h"
+#include "core/math/vector2.h"
+#include "core/object/object.h"
+#include "core/string/ustring.h"
+#include "core/templates/list.h"
+#include "core/templates/vector.h"
+#include "core/variant/dictionary.h"
+#include "core/variant/typed_array.h"
 #include "scene/gui/dialogs.h"
 
 class CheckBox;
