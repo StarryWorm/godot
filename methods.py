@@ -13,6 +13,8 @@ from io import StringIO, TextIOBase
 from pathlib import Path
 from typing import Generator, List, Optional, Union, cast
 
+from SCons.Action import Action
+
 from misc.utility.color import print_error, print_info, print_warning
 from platform_methods import detect_arch
 
@@ -37,13 +39,31 @@ def add_source_files_orig(self, sources, files, allow_gen=False):
         # Exclude .gen.cpp files from globbing, to avoid including obsolete ones.
         # They should instead be added manually.
         skip_gen_cpp = "*" in files
+        original_pattern = files
         files = self.Glob(files)
         if skip_gen_cpp and not allow_gen:
             files = [f for f in files if not str(f).endswith(".gen.cpp")]
 
+        # In syntax_only mode, also add .h files for syntax checking
+        if self.get("syntax_only", False) and "*" in original_pattern:
+            dir_path = os.path.dirname(original_pattern)
+            if dir_path:
+                h_pattern = dir_path + "/*.h"
+            else:
+                h_pattern = "*.h"
+            header_files = self.Glob(h_pattern)
+            files = list(files) + list(header_files)
+
     # Add each path as compiled Object following environment (self) configuration
     for file in files:
-        obj = self.Object(file)
+        # In syntax_only mode, .h files need special handling
+        if self.get("syntax_only", False) and str(file).endswith(".h"):
+            file_str = str(file)
+            obj_name = os.path.splitext(file_str)[0] + self["OBJSUFFIX"]
+            obj = self.Command(target=obj_name, source=file, action=Action(self["CXXCOM"], self["CXXCOMSTR"]))
+            self.NoCache(obj)
+        else:
+            obj = self.Object(file)
         if obj in sources:
             print_warning('Object "{}" already included in environment sources.'.format(obj))
             continue
@@ -585,18 +605,24 @@ def precious_program(env, program, sources, **args):
 
 
 def add_shared_library(env, name, sources, **args):
+    if env.get("syntax_only", False):
+        return []
     library = env.SharedLibrary(name, sources, **args)
     env.NoCache(library)
     return library
 
 
 def add_library(env, name, sources, **args):
+    if env.get("syntax_only", False):
+        return []
     library = env.Library(name, sources, **args)
     env.NoCache(library)
     return library
 
 
 def add_program(env, name, sources, **args):
+    if env.get("syntax_only", False):
+        return []
     program = env.Program(name, sources, **args)
     env.NoCache(program)
     return program
