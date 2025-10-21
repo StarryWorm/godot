@@ -2852,6 +2852,8 @@ Error Main::setup2(bool p_show_boot_logo) {
 	// Don't use rich formatting to prevent ANSI escape codes from being written to log files.
 	print_header(false);
 
+	register_early_editor_types();
+
 #ifdef TOOLS_ENABLED
 	int accessibility_mode_editor = 0;
 	int tablet_driver_editor = -1;
