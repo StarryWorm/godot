@@ -3525,6 +3525,7 @@ Error Main::setup2(bool p_show_boot_logo) {
 
 	// Initialize ThemeDB early so that scene types can register their theme items.
 	// Default theme will be initialized later, after modules and ScriptServer are ready.
+	register_scene_singletons();
 	initialize_theme_db();
 
 #if !defined(NAVIGATION_2D_DISABLED) || !defined(NAVIGATION_3D_DISABLED)
@@ -3540,8 +3541,6 @@ Error Main::setup2(bool p_show_boot_logo) {
 
 	register_scene_types();
 	register_driver_types();
-
-	register_scene_singletons();
 
 	{
 		OS::get_singleton()->benchmark_begin_measure("Scene", "Modules and Extensions");
