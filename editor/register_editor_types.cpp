@@ -147,6 +147,7 @@ void register_early_editor_types() {
 	EditorStringNames::create();
 
 	GDREGISTER_CLASS(EditorPaths);
+	GDREGISTER_CLASS(EditorTranslationParserPlugin);
 
 	OS::get_singleton()->benchmark_end_measure("Editor", "Early Register Types");
 }
@@ -158,7 +159,6 @@ void register_editor_types() {
 	ResourceSaver::set_timestamp_on_save(true);
 
 	GDREGISTER_CLASS(EditorPlugin);
-	GDREGISTER_CLASS(EditorTranslationParserPlugin);
 	GDREGISTER_CLASS(EditorImportPlugin);
 	GDREGISTER_CLASS(EditorScript);
 	GDREGISTER_CLASS(EditorDock);
