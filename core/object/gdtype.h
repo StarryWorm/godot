@@ -35,6 +35,8 @@
 #include "core/templates/a_hash_map.h"
 #include "core/templates/vector.h"
 
+class Variant;
+
 class GDType {
 public:
 	enum class InitState {
@@ -58,11 +60,17 @@ protected:
 	/// `name` is the first element and `Object` is the last (for `Object` types).
 	Vector<StringName> name_hierarchy;
 
-	AHashMap<StringName, int64_t> constant_map;
-	AHashMap<StringName, int64_t> self_constant_map;
+	AHashMap<StringName, int64_t> int_constant_map;
+	AHashMap<StringName, int64_t> self_int_constant_map;
+
+	AHashMap<StringName, Variant> constant_map;
+	AHashMap<StringName, Variant> self_constant_map;
 
 	AHashMap<StringName, const EnumInfo *> enum_map;
 	AHashMap<StringName, const EnumInfo *> self_enum_map;
+
+	AHashMap<StringName, int64_t> enum_cases_map;
+	AHashMap<StringName, int64_t> self_enum_cases_map;
 
 	AHashMap<StringName, const MethodInfo *> signal_map;
 	AHashMap<StringName, const MethodInfo *> self_signal_map;
@@ -82,9 +90,13 @@ public:
 	}
 	const Vector<StringName> &get_name_hierarchy() const { return name_hierarchy; }
 
-	void bind_integer_constant(const StringName &p_enum, const StringName &p_name, int64_t p_constant, bool p_is_bitfield = false);
-	const AHashMap<StringName, int64_t> &get_integer_constant_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_constant_map : constant_map; }
+	void bind_constant(const StringName &p_name, const Variant &p_constant);
+	void bind_enum(const StringName &p_name, bool p_is_bitfield = false);
+	void bind_enum_case(const StringName &p_enum, const StringName &p_name, int64_t p_constant);
+	const AHashMap<StringName, int64_t> &get_integer_constant_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_int_constant_map : int_constant_map; }
+	const AHashMap<StringName, Variant> &get_constant_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_constant_map : constant_map; }
 	const AHashMap<StringName, const EnumInfo *> &get_enum_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_enum_map : enum_map; }
+	const AHashMap<StringName, int64_t> &get_enum_cases_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_enum_cases_map : enum_cases_map; }
 	const EnumInfo *get_integer_constant_enum(const StringName &p_name, bool p_no_inheritance = false) const;
 
 	void add_signal(MethodInfo p_signal);

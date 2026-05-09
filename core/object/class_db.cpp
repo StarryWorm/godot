@@ -1204,7 +1204,12 @@ void ClassDB::bind_integer_constant(const StringName &p_class, const StringName 
 	ClassInfo *type = classes.getptr(p_class);
 	ERR_FAIL_NO_CLASS(type, p_class);
 
-	type->gdtype->bind_integer_constant(p_enum, p_name, p_constant, p_is_bitfield);
+	if (p_enum.is_empty()) {
+		type->gdtype->bind_constant(p_name, p_constant);
+	} else {
+		type->gdtype->bind_enum(p_enum, p_is_bitfield);
+		type->gdtype->bind_enum_case(p_enum, p_name, p_constant);
+	}
 }
 
 void ClassDB::get_integer_constant_list(const StringName &p_class, List<String> *p_constants, bool p_no_inheritance) {

@@ -32,6 +32,7 @@
 
 #include "core/os/memory.h"
 #include "core/os/thread.h"
+#include "core/variant/variant_internal.h"
 
 GDType::GDType(const GDType *p_super_type, StringName p_name) :
 		super_type(p_super_type), name(std::move(p_name)) {
@@ -63,42 +64,88 @@ void GDType::initialize() {
 		// parts in _bind_methods, which is called on registration.
 		super_type->init_state = InitState::FINALIZED;
 
+		int_constant_map = super_type->int_constant_map;
 		constant_map = super_type->constant_map;
 		enum_map = super_type->enum_map;
+		enum_cases_map = super_type->enum_cases_map;
 		signal_map = super_type->signal_map;
 	}
 
 	init_state = InitState::MUTABLE;
 }
 
-void GDType::bind_integer_constant(const StringName &p_enum, const StringName &p_name, int64_t p_constant, bool p_is_bitfield) {
+void GDType::bind_enum(const StringName &p_enum, bool p_is_bitfield) {
 	ERR_FAIL_COND(!Thread::is_main_thread());
 	ERR_FAIL_COND(init_state != InitState::MUTABLE);
-	ERR_FAIL_COND_MSG(self_constant_map.has(p_name), vformat("Class '%s' already has constant '%s'.", String(name), String(p_name)));
+	ERR_FAIL_COND_MSG(p_enum.is_empty(), vformat("Enum name cannot be empty."));
+
+	String enum_name = p_enum;
+	if (enum_name.contains_char('.')) {
+		enum_name = enum_name.get_slicec('.', 1);
+	}
+
+	// FIXME: Temporary solution as we currently do not bind enums directly, only their cases.
+	// In the future this should throw an error instead of silently failing.
+	// Requires compat-break for GDExtension.
+	if (enum_map.has(enum_name)) {
+		return;
+	}
+
+	EnumInfo *enum_info = memnew(EnumInfo);
+	enum_info->name = enum_name;
+	enum_info->is_bitfield = p_is_bitfield;
+	enum_map[enum_name] = enum_info;
+	self_enum_map[enum_name] = enum_info;
+}
+
+void GDType::bind_enum_case(const StringName &p_enum, const StringName &p_case, int64_t p_constant) {
+	ERR_FAIL_COND(!Thread::is_main_thread());
+	ERR_FAIL_COND(init_state != InitState::MUTABLE);
+	ERR_FAIL_COND_MSG(p_enum.is_empty(), vformat("Enum name cannot be empty."));
+	ERR_FAIL_COND_MSG(p_case.is_empty(), vformat("Enum case name cannot be empty."));
+	ERR_FAIL_COND_MSG(enum_cases_map.has(p_case), vformat("Enum case '%s' already exists in class '%s'.", String(p_case), String(name)));
+	ERR_FAIL_COND_MSG(constant_map.has(p_case), vformat("Class '%s' already has a constant named '%s'.", String(name), String(p_case)));
+
+	String enum_name = p_enum;
+	if (enum_name.contains_char('.')) {
+		enum_name = enum_name.get_slicec('.', 1);
+	}
+
+	const EnumInfo **_enum_info = self_enum_map.getptr(enum_name);
+	ERR_FAIL_COND_MSG(!_enum_info, vformat("Class '%s' does not have enum '%s'.", String(name), String(enum_name)));
+
+	EnumInfo *enum_info = const_cast<EnumInfo *>(*_enum_info);
+	enum_info->values.insert(p_case, p_constant);
+
+	enum_cases_map.insert(p_case, p_constant);
+	self_enum_cases_map.insert(p_case, p_constant);
+
+	// FIXME: Temporary solution until all internal APIs fetch enums properly instead of relying on the int constant map
+	int_constant_map[p_case] = p_constant;
+	self_int_constant_map[p_case] = p_constant;
+}
+
+void GDType::bind_constant(const StringName &p_name, const Variant &p_constant) {
+	ERR_FAIL_COND(!Thread::is_main_thread());
+	ERR_FAIL_COND(init_state != InitState::MUTABLE);
+	ERR_FAIL_COND_MSG(constant_map.has(p_name), vformat("Class '%s' already has constant '%s'.", String(name), String(p_name)));
+	ERR_FAIL_COND_MSG(enum_cases_map.has(p_name), vformat("Class '%s' already has an enum case named '%s'.", String(name), String(p_name)));
+
+	Variant::Type type = p_constant.get_type();
+	String type_name = Variant::get_type_name(type);
+	ERR_FAIL_COND_MSG(type == Variant::OBJECT || type == Variant::DICTIONARY || type_name.contains("ARRAY"),
+			vformat("Class '%s': constant '%s' has unsupported type '%s' (Object, Dictionary, and array types are not allowed).", String(name), String(p_name), type_name));
 
 	constant_map[p_name] = p_constant;
 	self_constant_map[p_name] = p_constant;
 
-	String enum_name = p_enum;
-	if (!enum_name.is_empty()) {
-		if (enum_name.contains_char('.')) {
-			enum_name = enum_name.get_slicec('.', 1);
-		}
-
-		const EnumInfo **_enum_info = self_enum_map.getptr(enum_name);
-
-		if (_enum_info != nullptr) {
-			EnumInfo *enum_info = const_cast<EnumInfo *>(*_enum_info);
-			enum_info->values.insert(p_name, p_constant);
-			enum_info->is_bitfield = p_is_bitfield;
-		} else {
-			EnumInfo *enum_info = memnew(EnumInfo);
-			enum_info->name = enum_name;
-			enum_info->is_bitfield = p_is_bitfield;
-			enum_info->values.insert(p_name, p_constant);
-			self_enum_map[enum_name] = enum_info;
-			enum_map[enum_name] = enum_info;
-		}
+	// FIXME: Temporary solution until we deprecate integer-specific constants.
+	// Requires compat-break for GDExtension and ClassDB.
+	// Remove `variant_internal.h` include when this is removed.
+	if (type == Variant::INT) {
+		int64_t value = *VariantInternal::get_int(&p_constant);
+		int_constant_map[p_name] = value;
+		self_int_constant_map[p_name] = value;
 	}
 }
 
