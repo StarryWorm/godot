@@ -1523,6 +1523,7 @@ void PlaneMesh::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "center_offset", PROPERTY_HINT_NONE, "suffix:m"), "set_center_offset", "get_center_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "orientation", PROPERTY_HINT_ENUM, "Face X,Face Y,Face Z"), "set_orientation", "get_orientation");
 
+	BIND_ENUM(Orientation);
 	BIND_ENUM_CONSTANT(FACE_X)
 	BIND_ENUM_CONSTANT(FACE_Y)
 	BIND_ENUM_CONSTANT(FACE_Z)
@@ -3034,6 +3035,7 @@ void RibbonTrailMesh::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "section_segments", PROPERTY_HINT_RANGE, "1,128,1"), "set_section_segments", "get_section_segments");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "curve", PROPERTY_HINT_RESOURCE_TYPE, Curve::get_class_static()), "set_curve", "get_curve");
 
+	BIND_ENUM(Shape);
 	BIND_ENUM_CONSTANT(SHAPE_FLAT)
 	BIND_ENUM_CONSTANT(SHAPE_CROSS)
 }

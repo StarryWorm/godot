@@ -2124,11 +2124,13 @@ void AudioServer::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("bus_layout_changed"));
 	ADD_SIGNAL(MethodInfo("bus_renamed", PropertyInfo(Variant::INT, "bus_index"), PropertyInfo(Variant::STRING_NAME, "old_name"), PropertyInfo(Variant::STRING_NAME, "new_name")));
 
+	BIND_ENUM(SpeakerMode);
 	BIND_ENUM_CONSTANT(SPEAKER_MODE_STEREO);
 	BIND_ENUM_CONSTANT(SPEAKER_SURROUND_31);
 	BIND_ENUM_CONSTANT(SPEAKER_SURROUND_51);
 	BIND_ENUM_CONSTANT(SPEAKER_SURROUND_71);
 
+	BIND_ENUM(PlaybackType);
 	BIND_ENUM_CONSTANT(PLAYBACK_TYPE_DEFAULT);
 	BIND_ENUM_CONSTANT(PLAYBACK_TYPE_STREAM);
 	BIND_ENUM_CONSTANT(PLAYBACK_TYPE_SAMPLE);

@@ -561,6 +561,7 @@ void GPUParticlesCollisionSDF3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bake_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_bake_mask", "get_bake_mask");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "texture", PROPERTY_HINT_RESOURCE_TYPE, Texture3D::get_class_static()), "set_texture", "get_texture");
 
+	BIND_ENUM(Resolution);
 	BIND_ENUM_CONSTANT(RESOLUTION_16);
 	BIND_ENUM_CONSTANT(RESOLUTION_32);
 	BIND_ENUM_CONSTANT(RESOLUTION_64);
@@ -740,6 +741,7 @@ void GPUParticlesCollisionHeightField3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "follow_camera_enabled"), "set_follow_camera_enabled", "is_follow_camera_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heightfield_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_heightfield_mask", "get_heightfield_mask");
 
+	BIND_ENUM(Resolution);
 	BIND_ENUM_CONSTANT(RESOLUTION_256);
 	BIND_ENUM_CONSTANT(RESOLUTION_512);
 	BIND_ENUM_CONSTANT(RESOLUTION_1024);
@@ -748,6 +750,7 @@ void GPUParticlesCollisionHeightField3D::_bind_methods() {
 	BIND_ENUM_CONSTANT(RESOLUTION_8192);
 	BIND_ENUM_CONSTANT(RESOLUTION_MAX);
 
+	BIND_ENUM(UpdateMode);
 	BIND_ENUM_CONSTANT(UPDATE_MODE_WHEN_MOVED);
 	BIND_ENUM_CONSTANT(UPDATE_MODE_ALWAYS);
 }

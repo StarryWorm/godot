@@ -111,6 +111,7 @@ void EditorSceneFormatImporter::_bind_methods() {
 	GDVIRTUAL_BIND(_get_import_options, "path");
 	GDVIRTUAL_BIND(_get_option_visibility, "path", "for_animation", "option");
 
+	BIND_BITFIELD(ImportFlags);
 	BIND_BITFIELD_FLAG(IMPORT_SCENE);
 	BIND_BITFIELD_FLAG(IMPORT_ANIMATION);
 	BIND_BITFIELD_FLAG(IMPORT_FAIL_ON_MISSING_DEPENDENCIES);
@@ -234,6 +235,7 @@ void EditorScenePostImportPlugin::_bind_methods() {
 	GDVIRTUAL_BIND(_pre_process, "scene");
 	GDVIRTUAL_BIND(_post_process, "scene");
 
+	BIND_ENUM(InternalImportCategory);
 	BIND_ENUM_CONSTANT(INTERNAL_IMPORT_CATEGORY_NODE);
 	BIND_ENUM_CONSTANT(INTERNAL_IMPORT_CATEGORY_MESH_3D_NODE);
 	BIND_ENUM_CONSTANT(INTERNAL_IMPORT_CATEGORY_MESH);

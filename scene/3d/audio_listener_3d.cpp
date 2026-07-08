@@ -172,6 +172,7 @@ void AudioListener3D::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "doppler_tracking", PROPERTY_HINT_ENUM, "Disabled,Idle,Physics"), "set_doppler_tracking", "get_doppler_tracking");
 
+	BIND_ENUM(DopplerTracking);
 	BIND_ENUM_CONSTANT(DOPPLER_TRACKING_DISABLED);
 	BIND_ENUM_CONSTANT(DOPPLER_TRACKING_IDLE_STEP);
 	BIND_ENUM_CONSTANT(DOPPLER_TRACKING_PHYSICS_STEP);

@@ -1783,6 +1783,7 @@ void SplitContainer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "drag_area_offset", PROPERTY_HINT_NONE, "suffix:px"), "set_drag_area_offset", "get_drag_area_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "drag_area_highlight_in_editor"), "set_drag_area_highlight_in_editor", "is_drag_area_highlight_in_editor_enabled");
 
+	BIND_ENUM(DraggerVisibility);
 	BIND_ENUM_CONSTANT(DRAGGER_VISIBLE);
 	BIND_ENUM_CONSTANT(DRAGGER_HIDDEN);
 	BIND_ENUM_CONSTANT(DRAGGER_HIDDEN_COLLAPSED);

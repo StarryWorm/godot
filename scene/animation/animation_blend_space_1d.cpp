@@ -139,10 +139,12 @@ void AnimationNodeBlendSpace1D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sync_mode", PROPERTY_HINT_ENUM, "None,Independent,Cyclic Mutable,Cyclic Constant", PROPERTY_USAGE_NO_EDITOR), "set_sync_mode", "get_sync_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "cyclic_length", PROPERTY_HINT_RANGE, "0.0,99.0,0.001,or_greater", PROPERTY_USAGE_NO_EDITOR), "set_cyclic_length", "get_cyclic_length");
 
+	BIND_ENUM(BlendMode);
 	BIND_ENUM_CONSTANT(BLEND_MODE_INTERPOLATED);
 	BIND_ENUM_CONSTANT(BLEND_MODE_DISCRETE);
 	BIND_ENUM_CONSTANT(BLEND_MODE_DISCRETE_CARRY);
 
+	BIND_ENUM(SyncMode);
 	BIND_ENUM_CONSTANT(SYNC_MODE_NONE);
 	BIND_ENUM_CONSTANT(SYNC_MODE_INDEPENDENT);
 	BIND_ENUM_CONSTANT(SYNC_MODE_CYCLIC_MUTABLE);

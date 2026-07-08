@@ -277,6 +277,7 @@ void RetargetModifier3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "use_global_pose"), "set_use_global_pose", "is_using_global_pose");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "enable", PROPERTY_HINT_FLAGS, "Position,Rotation,Scale"), "set_enable_flags", "get_enable_flags");
 
+	BIND_BITFIELD(TransformFlag);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_POSITION);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_ROTATION);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_SCALE);

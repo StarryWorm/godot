@@ -68,6 +68,7 @@ void Performance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_custom_monitor_names"), &Performance::get_custom_monitor_names);
 	ClassDB::bind_method(D_METHOD("get_custom_monitor_types"), &Performance::get_custom_monitor_types);
 
+	BIND_ENUM(Monitor);
 	BIND_ENUM_CONSTANT(TIME_FPS);
 	BIND_ENUM_CONSTANT(TIME_PROCESS);
 	BIND_ENUM_CONSTANT(TIME_PHYSICS_PROCESS);
@@ -137,6 +138,7 @@ void Performance::_bind_methods() {
 #endif // NAVIGATION_3D_DISABLED
 	BIND_ENUM_CONSTANT(MONITOR_MAX);
 
+	BIND_ENUM(MonitorType);
 	BIND_ENUM_CONSTANT(MONITOR_TYPE_QUANTITY);
 	BIND_ENUM_CONSTANT(MONITOR_TYPE_MEMORY);
 	BIND_ENUM_CONSTANT(MONITOR_TYPE_TIME);

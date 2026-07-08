@@ -352,6 +352,7 @@ void LinkButton::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_structured_text_bidi_override_options", "args"), &LinkButton::set_structured_text_bidi_override_options);
 	ClassDB::bind_method(D_METHOD("get_structured_text_bidi_override_options"), &LinkButton::get_structured_text_bidi_override_options);
 
+	BIND_ENUM(UnderlineMode);
 	BIND_ENUM_CONSTANT(UNDERLINE_MODE_ALWAYS);
 	BIND_ENUM_CONSTANT(UNDERLINE_MODE_ON_HOVER);
 	BIND_ENUM_CONSTANT(UNDERLINE_MODE_NEVER);

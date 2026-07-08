@@ -203,6 +203,7 @@ void VisibleOnScreenEnabler3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "enable_mode", PROPERTY_HINT_ENUM, "Inherit,Always,When Paused"), "set_enable_mode", "get_enable_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::NODE_PATH, "enable_node_path"), "set_enable_node_path", "get_enable_node_path");
 
+	BIND_ENUM(EnableMode);
 	BIND_ENUM_CONSTANT(ENABLE_MODE_INHERIT);
 	BIND_ENUM_CONSTANT(ENABLE_MODE_ALWAYS);
 	BIND_ENUM_CONSTANT(ENABLE_MODE_WHEN_PAUSED);

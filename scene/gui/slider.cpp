@@ -472,6 +472,7 @@ void Slider::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ticks_on_borders"), "set_ticks_on_borders", "get_ticks_on_borders");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "ticks_position", PROPERTY_HINT_ENUM), "set_ticks_position", "get_ticks_position");
 
+	BIND_ENUM(TickPosition);
 	BIND_ENUM_CONSTANT(TICK_POSITION_BOTTOM_RIGHT);
 	BIND_ENUM_CONSTANT(TICK_POSITION_TOP_LEFT);
 	BIND_ENUM_CONSTANT(TICK_POSITION_BOTH);

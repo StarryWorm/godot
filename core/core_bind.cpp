@@ -159,11 +159,13 @@ void ResourceLoader::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_resource_uid", "path"), &ResourceLoader::get_resource_uid);
 	ClassDB::bind_method(D_METHOD("list_directory", "directory_path"), &ResourceLoader::list_directory);
 
+	BIND_ENUM(ThreadLoadStatus);
 	BIND_ENUM_CONSTANT(THREAD_LOAD_INVALID_RESOURCE);
 	BIND_ENUM_CONSTANT(THREAD_LOAD_IN_PROGRESS);
 	BIND_ENUM_CONSTANT(THREAD_LOAD_FAILED);
 	BIND_ENUM_CONSTANT(THREAD_LOAD_LOADED);
 
+	BIND_ENUM(CacheMode);
 	BIND_ENUM_CONSTANT(CACHE_MODE_IGNORE);
 	BIND_ENUM_CONSTANT(CACHE_MODE_REUSE);
 	BIND_ENUM_CONSTANT(CACHE_MODE_REPLACE);
@@ -214,6 +216,7 @@ void ResourceSaver::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("remove_resource_format_saver", "format_saver"), &ResourceSaver::remove_resource_format_saver);
 	ClassDB::bind_method(D_METHOD("get_resource_id_for_path", "path", "generate"), &ResourceSaver::get_resource_id_for_path, DEFVAL(false));
 
+	BIND_BITFIELD(SaverFlags);
 	BIND_BITFIELD_FLAG(FLAG_NONE);
 	BIND_BITFIELD_FLAG(FLAG_RELATIVE_PATHS);
 	BIND_BITFIELD_FLAG(FLAG_BUNDLE_RESOURCES);
@@ -229,6 +232,7 @@ void ResourceSaver::_bind_methods() {
 void Logger::_bind_methods() {
 	GDVIRTUAL_BIND(_log_error, "function", "file", "line", "code", "rationale", "editor_notify", "error_type", "script_backtraces");
 	GDVIRTUAL_BIND(_log_message, "message", "error");
+	BIND_ENUM(ErrorType);
 	BIND_ENUM_CONSTANT(ERROR_TYPE_ERROR);
 	BIND_ENUM_CONSTANT(ERROR_TYPE_WARNING);
 	BIND_ENUM_CONSTANT(ERROR_TYPE_SCRIPT);
@@ -874,11 +878,13 @@ void OS::_bind_methods() {
 	ADD_PROPERTY_DEFAULT("low_processor_usage_mode", false);
 	ADD_PROPERTY_DEFAULT("low_processor_usage_mode_sleep_usec", 6900);
 
+	BIND_ENUM(RenderingDriver);
 	BIND_ENUM_CONSTANT(RENDERING_DRIVER_VULKAN);
 	BIND_ENUM_CONSTANT(RENDERING_DRIVER_OPENGL3);
 	BIND_ENUM_CONSTANT(RENDERING_DRIVER_D3D12);
 	BIND_ENUM_CONSTANT(RENDERING_DRIVER_METAL);
 
+	BIND_ENUM(SystemDir);
 	BIND_ENUM_CONSTANT(SYSTEM_DIR_DESKTOP);
 	BIND_ENUM_CONSTANT(SYSTEM_DIR_DCIM);
 	BIND_ENUM_CONSTANT(SYSTEM_DIR_DOCUMENTS);
@@ -888,6 +894,7 @@ void OS::_bind_methods() {
 	BIND_ENUM_CONSTANT(SYSTEM_DIR_PICTURES);
 	BIND_ENUM_CONSTANT(SYSTEM_DIR_RINGTONES);
 
+	BIND_ENUM(StdHandleType);
 	BIND_ENUM_CONSTANT(STD_HANDLE_INVALID);
 	BIND_ENUM_CONSTANT(STD_HANDLE_CONSOLE);
 	BIND_ENUM_CONSTANT(STD_HANDLE_FILE);
@@ -1152,15 +1159,18 @@ void Geometry2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("bresenham_line", "from", "to"), &Geometry2D::bresenham_line);
 
+	BIND_ENUM(PolyBooleanOperation);
 	BIND_ENUM_CONSTANT(OPERATION_UNION);
 	BIND_ENUM_CONSTANT(OPERATION_DIFFERENCE);
 	BIND_ENUM_CONSTANT(OPERATION_INTERSECTION);
 	BIND_ENUM_CONSTANT(OPERATION_XOR);
 
+	BIND_ENUM(PolyJoinType);
 	BIND_ENUM_CONSTANT(JOIN_SQUARE);
 	BIND_ENUM_CONSTANT(JOIN_ROUND);
 	BIND_ENUM_CONSTANT(JOIN_MITER);
 
+	BIND_ENUM(PolyEndType);
 	BIND_ENUM_CONSTANT(END_POLYGON);
 	BIND_ENUM_CONSTANT(END_JOINED);
 	BIND_ENUM_CONSTANT(END_BUTT);
@@ -1558,6 +1568,7 @@ void Thread::_bind_methods() {
 	ClassDB::bind_static_method("Thread", D_METHOD("set_thread_safety_checks_enabled", "enabled"), &Thread::set_thread_safety_checks_enabled);
 	ClassDB::bind_static_method("Thread", D_METHOD("is_main_thread"), &Thread::is_main_thread);
 
+	BIND_ENUM(Priority);
 	BIND_ENUM_CONSTANT(PRIORITY_LOW);
 	BIND_ENUM_CONSTANT(PRIORITY_NORMAL);
 	BIND_ENUM_CONSTANT(PRIORITY_HIGH);
@@ -1885,6 +1896,7 @@ void ClassDB::_bind_methods() {
 
 	::ClassDB::bind_method(D_METHOD("is_class_enabled", "class"), &ClassDB::is_class_enabled);
 
+	BIND_ENUM(APIType);
 	BIND_ENUM_CONSTANT(API_CORE);
 	BIND_ENUM_CONSTANT(API_EDITOR);
 	BIND_ENUM_CONSTANT(API_EXTENSION);

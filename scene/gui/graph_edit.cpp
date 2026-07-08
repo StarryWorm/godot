@@ -3130,9 +3130,11 @@ void GraphEdit::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("graph_elements_linked_to_frame_request", PropertyInfo(Variant::ARRAY, "elements"), PropertyInfo(Variant::STRING_NAME, "frame")));
 	ADD_SIGNAL(MethodInfo("scroll_offset_changed", PropertyInfo(Variant::VECTOR2, "offset")));
 
+	BIND_ENUM(PanningScheme);
 	BIND_ENUM_CONSTANT(SCROLL_ZOOMS);
 	BIND_ENUM_CONSTANT(SCROLL_PANS);
 
+	BIND_ENUM(GridPattern);
 	BIND_ENUM_CONSTANT(GRID_PATTERN_LINES);
 	BIND_ENUM_CONSTANT(GRID_PATTERN_DOTS);
 

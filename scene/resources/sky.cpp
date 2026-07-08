@@ -87,6 +87,7 @@ void Sky::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "process_mode", PROPERTY_HINT_ENUM, "Automatic,High-Quality,High-Quality Incremental,Real-Time"), "set_process_mode", "get_process_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "radiance_size", PROPERTY_HINT_ENUM, "32,64,128,256,512,1024,2048"), "set_radiance_size", "get_radiance_size");
 
+	BIND_ENUM(RadianceSize);
 	BIND_ENUM_CONSTANT(RADIANCE_SIZE_32);
 	BIND_ENUM_CONSTANT(RADIANCE_SIZE_64);
 	BIND_ENUM_CONSTANT(RADIANCE_SIZE_128);
@@ -96,6 +97,7 @@ void Sky::_bind_methods() {
 	BIND_ENUM_CONSTANT(RADIANCE_SIZE_2048);
 	BIND_ENUM_CONSTANT(RADIANCE_SIZE_MAX);
 
+	BIND_ENUM(ProcessMode);
 	BIND_ENUM_CONSTANT(PROCESS_MODE_AUTOMATIC);
 	BIND_ENUM_CONSTANT(PROCESS_MODE_QUALITY);
 	BIND_ENUM_CONSTANT(PROCESS_MODE_INCREMENTAL);

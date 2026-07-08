@@ -2031,6 +2031,7 @@ void TreeItem::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "disable_folding"), "set_disable_folding", "is_folding_disabled");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "custom_minimum_height", PROPERTY_HINT_RANGE, "0,1000,1"), "set_custom_minimum_height", "get_custom_minimum_height");
 
+	BIND_ENUM(TreeCellMode);
 	BIND_ENUM_CONSTANT(CELL_MODE_STRING);
 	BIND_ENUM_CONSTANT(CELL_MODE_CHECK);
 	BIND_ENUM_CONSTANT(CELL_MODE_RANGE);
@@ -7532,14 +7533,17 @@ void Tree::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("column_title_clicked", PropertyInfo(Variant::INT, "column"), PropertyInfo(Variant::INT, "mouse_button_index")));
 	ADD_SIGNAL(MethodInfo("nothing_selected"));
 
+	BIND_ENUM(SelectMode);
 	BIND_ENUM_CONSTANT(SELECT_SINGLE);
 	BIND_ENUM_CONSTANT(SELECT_ROW);
 	BIND_ENUM_CONSTANT(SELECT_MULTI);
 
+	BIND_ENUM(DropModeFlags);
 	BIND_ENUM_CONSTANT(DROP_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(DROP_MODE_ON_ITEM);
 	BIND_ENUM_CONSTANT(DROP_MODE_INBETWEEN);
 
+	BIND_ENUM(ScrollHintMode);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_BOTH);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_TOP);

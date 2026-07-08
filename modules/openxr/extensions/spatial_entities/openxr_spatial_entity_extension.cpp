@@ -82,6 +82,7 @@ void OpenXRSpatialEntityExtension::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_spatial_entity_context", "entity"), &OpenXRSpatialEntityExtension::get_spatial_entity_context);
 	ClassDB::bind_method(D_METHOD("free_spatial_entity", "entity"), &OpenXRSpatialEntityExtension::free_spatial_entity);
 
+	BIND_ENUM(Capability);
 	BIND_ENUM_CONSTANT(CAPABILITY_PLANE_TRACKING);
 	BIND_ENUM_CONSTANT(CAPABILITY_MARKER_TRACKING_QR_CODE);
 	BIND_ENUM_CONSTANT(CAPABILITY_MARKER_TRACKING_MICRO_QR_CODE);
@@ -89,6 +90,7 @@ void OpenXRSpatialEntityExtension::_bind_methods() {
 	BIND_ENUM_CONSTANT(CAPABILITY_MARKER_TRACKING_APRIL_TAG);
 	BIND_ENUM_CONSTANT(CAPABILITY_ANCHOR);
 
+	BIND_ENUM(ComponentType);
 	BIND_ENUM_CONSTANT(COMPONENT_TYPE_BOUNDED_2D);
 	BIND_ENUM_CONSTANT(COMPONENT_TYPE_BOUNDED_3D);
 	BIND_ENUM_CONSTANT(COMPONENT_TYPE_PARENT);

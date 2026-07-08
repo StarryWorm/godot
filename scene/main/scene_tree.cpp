@@ -1988,6 +1988,7 @@ void SceneTree::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("process_frame"));
 	ADD_SIGNAL(MethodInfo("physics_frame"));
 
+	BIND_ENUM(GroupCallFlags);
 	BIND_ENUM_CONSTANT(GROUP_CALL_DEFAULT);
 	BIND_ENUM_CONSTANT(GROUP_CALL_REVERSE);
 	BIND_ENUM_CONSTANT(GROUP_CALL_DEFERRED);

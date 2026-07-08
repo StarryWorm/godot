@@ -1008,6 +1008,7 @@ void ScrollContainer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "scroll_hint_mode", PROPERTY_HINT_ENUM, "Disabled,All,Top and Left,Bottom and Right"), "set_scroll_hint_mode", "get_scroll_hint_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "tile_scroll_hint"), "set_tile_scroll_hint", "is_scroll_hint_tiled");
 
+	BIND_ENUM(ScrollMode);
 	BIND_ENUM_CONSTANT(SCROLL_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(SCROLL_MODE_AUTO);
 	BIND_ENUM_CONSTANT(SCROLL_MODE_SHOW_ALWAYS);
@@ -1015,6 +1016,7 @@ void ScrollContainer::_bind_methods() {
 	BIND_ENUM_CONSTANT(SCROLL_MODE_RESERVE);
 	BIND_ENUM_CONSTANT(SCROLL_MODE_MAXIMIZE_FIRST);
 
+	BIND_ENUM(ScrollHintMode);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_ALL);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_TOP_AND_LEFT);

@@ -55,6 +55,7 @@ void OpenXRRenderModelManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("render_model_added", PropertyInfo(Variant::OBJECT, "render_model", PROPERTY_HINT_RESOURCE_TYPE, OpenXRRenderModel::get_class_static())));
 	ADD_SIGNAL(MethodInfo("render_model_removed", PropertyInfo(Variant::OBJECT, "render_model", PROPERTY_HINT_RESOURCE_TYPE, OpenXRRenderModel::get_class_static())));
 
+	BIND_ENUM(RenderModelTracker);
 	BIND_ENUM_CONSTANT(RENDER_MODEL_TRACKER_ANY);
 	BIND_ENUM_CONSTANT(RENDER_MODEL_TRACKER_NONE_SET);
 	BIND_ENUM_CONSTANT(RENDER_MODEL_TRACKER_LEFT_HAND);

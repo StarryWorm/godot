@@ -32,6 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "core/os/os.h"
+#include "core/os/time_enums.h"
 
 #define UNIX_EPOCH_YEAR_AD 1970 // 1970
 #define SECONDS_PER_DAY (24 * 60 * 60) // 86400
@@ -413,6 +414,7 @@ void Time::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_ticks_msec"), &Time::get_ticks_msec);
 	ClassDB::bind_method(D_METHOD("get_ticks_usec"), &Time::get_ticks_usec);
 
+	BIND_ENUM(Month);
 	BIND_ENUM_CONSTANT(MONTH_JANUARY);
 	BIND_ENUM_CONSTANT(MONTH_FEBRUARY);
 	BIND_ENUM_CONSTANT(MONTH_MARCH);
@@ -426,6 +428,7 @@ void Time::_bind_methods() {
 	BIND_ENUM_CONSTANT(MONTH_NOVEMBER);
 	BIND_ENUM_CONSTANT(MONTH_DECEMBER);
 
+	BIND_ENUM(Weekday);
 	BIND_ENUM_CONSTANT(WEEKDAY_SUNDAY);
 	BIND_ENUM_CONSTANT(WEEKDAY_MONDAY);
 	BIND_ENUM_CONSTANT(WEEKDAY_TUESDAY);

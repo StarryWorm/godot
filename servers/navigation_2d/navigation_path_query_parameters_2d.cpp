@@ -231,12 +231,15 @@ void NavigationPathQueryParameters2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "path_search_max_polygons"), "set_path_search_max_polygons", "get_path_search_max_polygons");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "path_search_max_distance"), "set_path_search_max_distance", "get_path_search_max_distance");
 
+	BIND_ENUM(PathfindingAlgorithm);
 	BIND_ENUM_CONSTANT(PATHFINDING_ALGORITHM_ASTAR);
 
+	BIND_ENUM(PathPostProcessing);
 	BIND_ENUM_CONSTANT(PATH_POSTPROCESSING_CORRIDORFUNNEL);
 	BIND_ENUM_CONSTANT(PATH_POSTPROCESSING_EDGECENTERED);
 	BIND_ENUM_CONSTANT(PATH_POSTPROCESSING_NONE);
 
+	BIND_BITFIELD(PathMetadataFlags);
 	BIND_BITFIELD_FLAG(PATH_METADATA_INCLUDE_NONE);
 	BIND_BITFIELD_FLAG(PATH_METADATA_INCLUDE_TYPES);
 	BIND_BITFIELD_FLAG(PATH_METADATA_INCLUDE_RIDS);

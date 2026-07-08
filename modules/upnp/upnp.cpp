@@ -63,6 +63,7 @@ void UPNP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_discover_ipv6"), &UPNP::is_discover_ipv6);
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "discover_ipv6"), "set_discover_ipv6", "is_discover_ipv6");
 
+	BIND_ENUM(UPNPResult);
 	BIND_ENUM_CONSTANT(UPNP_RESULT_SUCCESS);
 	BIND_ENUM_CONSTANT(UPNP_RESULT_NOT_AUTHORIZED);
 	BIND_ENUM_CONSTANT(UPNP_RESULT_PORT_MAPPING_NOT_FOUND);

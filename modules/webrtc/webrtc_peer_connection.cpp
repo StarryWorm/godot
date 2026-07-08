@@ -83,6 +83,7 @@ void WebRTCPeerConnection::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("ice_candidate_created", PropertyInfo(Variant::STRING, "media"), PropertyInfo(Variant::INT, "index"), PropertyInfo(Variant::STRING, "name")));
 	ADD_SIGNAL(MethodInfo("data_channel_received", PropertyInfo(Variant::OBJECT, "channel", PROPERTY_HINT_RESOURCE_TYPE, WebRTCDataChannel::get_class_static())));
 
+	BIND_ENUM(ConnectionState);
 	BIND_ENUM_CONSTANT(STATE_NEW);
 	BIND_ENUM_CONSTANT(STATE_CONNECTING);
 	BIND_ENUM_CONSTANT(STATE_CONNECTED);
@@ -90,10 +91,12 @@ void WebRTCPeerConnection::_bind_methods() {
 	BIND_ENUM_CONSTANT(STATE_FAILED);
 	BIND_ENUM_CONSTANT(STATE_CLOSED);
 
+	BIND_ENUM(GatheringState);
 	BIND_ENUM_CONSTANT(GATHERING_STATE_NEW);
 	BIND_ENUM_CONSTANT(GATHERING_STATE_GATHERING);
 	BIND_ENUM_CONSTANT(GATHERING_STATE_COMPLETE);
 
+	BIND_ENUM(SignalingState);
 	BIND_ENUM_CONSTANT(SIGNALING_STATE_STABLE);
 	BIND_ENUM_CONSTANT(SIGNALING_STATE_HAVE_LOCAL_OFFER);
 	BIND_ENUM_CONSTANT(SIGNALING_STATE_HAVE_REMOTE_OFFER);

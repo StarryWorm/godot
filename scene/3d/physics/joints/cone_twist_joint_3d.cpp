@@ -43,6 +43,7 @@ void ConeTwistJoint3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "softness", PROPERTY_HINT_RANGE, "0.01,16.0,0.01"), "set_param", "get_param", PARAM_SOFTNESS);
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "relaxation", PROPERTY_HINT_RANGE, "0.01,16.0,0.01"), "set_param", "get_param", PARAM_RELAXATION);
 
+	BIND_ENUM(Param);
 	BIND_ENUM_CONSTANT(PARAM_SWING_SPAN);
 	BIND_ENUM_CONSTANT(PARAM_TWIST_SPAN);
 	BIND_ENUM_CONSTANT(PARAM_BIAS);

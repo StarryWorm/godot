@@ -111,6 +111,7 @@ void MultiplayerPeer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "transfer_mode", PROPERTY_HINT_ENUM, "Unreliable,Unreliable Ordered,Reliable"), "set_transfer_mode", "get_transfer_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "transfer_channel", PROPERTY_HINT_RANGE, "0,255,1"), "set_transfer_channel", "get_transfer_channel");
 
+	BIND_ENUM(ConnectionStatus);
 	BIND_ENUM_CONSTANT(CONNECTION_DISCONNECTED);
 	BIND_ENUM_CONSTANT(CONNECTION_CONNECTING);
 	BIND_ENUM_CONSTANT(CONNECTION_CONNECTED);
@@ -118,6 +119,7 @@ void MultiplayerPeer::_bind_methods() {
 	BIND_CONSTANT(TARGET_PEER_BROADCAST);
 	BIND_CONSTANT(TARGET_PEER_SERVER);
 
+	BIND_ENUM(TransferMode);
 	BIND_ENUM_CONSTANT(TRANSFER_MODE_UNRELIABLE);
 	BIND_ENUM_CONSTANT(TRANSFER_MODE_UNRELIABLE_ORDERED);
 	BIND_ENUM_CONSTANT(TRANSFER_MODE_RELIABLE);

@@ -389,6 +389,7 @@ void PortableCompressedTexture2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "size_override", PROPERTY_HINT_NONE, "suffix:px"), "set_size_override", "get_size_override");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "keep_compressed_buffer"), "set_keep_compressed_buffer", "is_keeping_compressed_buffer");
 
+	BIND_ENUM(CompressionMode);
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_LOSSLESS);
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_LOSSY);
 	BIND_ENUM_CONSTANT(COMPRESSION_MODE_BASIS_UNIVERSAL);

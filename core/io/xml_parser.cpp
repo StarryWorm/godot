@@ -365,6 +365,7 @@ void XMLParser::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("open", "file"), &XMLParser::open);
 	ClassDB::bind_method(D_METHOD("open_buffer", "buffer"), &XMLParser::open_buffer);
 
+	BIND_ENUM(NodeType);
 	BIND_ENUM_CONSTANT(NODE_NONE);
 	BIND_ENUM_CONSTANT(NODE_ELEMENT);
 	BIND_ENUM_CONSTANT(NODE_ELEMENT_END);

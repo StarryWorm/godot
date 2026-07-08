@@ -266,6 +266,7 @@ void Decal::_bind_methods() {
 	ADD_GROUP("Cull Mask", "");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "cull_mask", PROPERTY_HINT_LAYERS_3D_RENDER), "set_cull_mask", "get_cull_mask");
 
+	BIND_ENUM(DecalTexture);
 	BIND_ENUM_CONSTANT(TEXTURE_ALBEDO);
 	BIND_ENUM_CONSTANT(TEXTURE_NORMAL);
 	BIND_ENUM_CONSTANT(TEXTURE_ORM);

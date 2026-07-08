@@ -363,6 +363,7 @@ void AudioEffectPitchShift::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "oversampling", PROPERTY_HINT_RANGE, "4,32,1"), "set_oversampling", "get_oversampling");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fft_size", PROPERTY_HINT_ENUM, "256,512,1024,2048,4096"), "set_fft_size", "get_fft_size");
 
+	BIND_ENUM(FFTSize);
 	BIND_ENUM_CONSTANT(FFT_SIZE_256);
 	BIND_ENUM_CONSTANT(FFT_SIZE_512);
 	BIND_ENUM_CONSTANT(FFT_SIZE_1024);

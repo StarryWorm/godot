@@ -324,10 +324,12 @@ void Light2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "shadow_filter_smooth", PROPERTY_HINT_RANGE, "0,64,0.1"), "set_shadow_smooth", "get_shadow_smooth");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "shadow_item_cull_mask", PROPERTY_HINT_LAYERS_2D_RENDER), "set_item_shadow_cull_mask", "get_item_shadow_cull_mask");
 
+	BIND_ENUM(ShadowFilter);
 	BIND_ENUM_CONSTANT(SHADOW_FILTER_NONE);
 	BIND_ENUM_CONSTANT(SHADOW_FILTER_PCF5);
 	BIND_ENUM_CONSTANT(SHADOW_FILTER_PCF13);
 
+	BIND_ENUM(BlendMode);
 	BIND_ENUM_CONSTANT(BLEND_MODE_ADD);
 	BIND_ENUM_CONSTANT(BLEND_MODE_SUB);
 	BIND_ENUM_CONSTANT(BLEND_MODE_MIX);

@@ -39,6 +39,7 @@
 #include "core/io/marshalls.h"
 #include "core/io/resource_uid.h"
 #include "core/object/class_db.h"
+#include "core/object/object.h"
 #include "core/os/os.h"
 #include "core/os/time.h"
 
@@ -1093,17 +1094,20 @@ void FileAccess::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "big_endian"), "set_big_endian", "is_big_endian");
 
+	BIND_ENUM(ModeFlags);
 	BIND_ENUM_CONSTANT(READ);
 	BIND_ENUM_CONSTANT(WRITE);
 	BIND_ENUM_CONSTANT(READ_WRITE);
 	BIND_ENUM_CONSTANT(WRITE_READ);
 
+	BIND_ENUM(CompressionMode);
 	BIND_ENUM_CONSTANT(COMPRESSION_FASTLZ);
 	BIND_ENUM_CONSTANT(COMPRESSION_DEFLATE);
 	BIND_ENUM_CONSTANT(COMPRESSION_ZSTD);
 	BIND_ENUM_CONSTANT(COMPRESSION_GZIP);
 	BIND_ENUM_CONSTANT(COMPRESSION_BROTLI);
 
+	BIND_BITFIELD(UnixPermissionFlags);
 	BIND_BITFIELD_FLAG(UNIX_READ_OWNER);
 	BIND_BITFIELD_FLAG(UNIX_WRITE_OWNER);
 	BIND_BITFIELD_FLAG(UNIX_EXECUTE_OWNER);

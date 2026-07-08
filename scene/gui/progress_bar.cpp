@@ -274,6 +274,7 @@ void ProgressBar::_bind_methods() {
 	ADD_GROUP("Editor", "editor_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editor_preview_indeterminate"), "set_editor_preview_indeterminate", "is_editor_preview_indeterminate_enabled");
 
+	BIND_ENUM(FillMode);
 	BIND_ENUM_CONSTANT(FILL_BEGIN_TO_END);
 	BIND_ENUM_CONSTANT(FILL_END_TO_BEGIN);
 	BIND_ENUM_CONSTANT(FILL_TOP_TO_BOTTOM);

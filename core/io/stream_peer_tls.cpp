@@ -53,6 +53,7 @@ void StreamPeerTLS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_stream"), &StreamPeerTLS::get_stream);
 	ClassDB::bind_method(D_METHOD("disconnect_from_stream"), &StreamPeerTLS::disconnect_from_stream);
 
+	BIND_ENUM(Status);
 	BIND_ENUM_CONSTANT(STATUS_DISCONNECTED);
 	BIND_ENUM_CONSTANT(STATUS_HANDSHAKING);
 	BIND_ENUM_CONSTANT(STATUS_CONNECTED);

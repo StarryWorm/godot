@@ -597,6 +597,7 @@ void FoldableContainer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "title_text_direction", PROPERTY_HINT_ENUM, "Auto,Left-to-Right,Right-to-Left,Inherited"), "set_title_text_direction", "get_title_text_direction");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "language", PROPERTY_HINT_LOCALE_ID), "set_language", "get_language");
 
+	BIND_ENUM(TitlePosition);
 	BIND_ENUM_CONSTANT(POSITION_TOP);
 	BIND_ENUM_CONSTANT(POSITION_BOTTOM);
 

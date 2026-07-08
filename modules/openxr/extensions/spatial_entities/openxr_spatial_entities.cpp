@@ -97,6 +97,7 @@ void OpenXRSpatialEntityTracker::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("spatial_tracking_state_changed", PropertyInfo(Variant::INT, "spatial_tracking_state")));
 
+	BIND_ENUM(EntityTrackingState);
 	BIND_ENUM_CONSTANT(ENTITY_TRACKING_STATE_STOPPED);
 	BIND_ENUM_CONSTANT(ENTITY_TRACKING_STATE_PAUSED);
 	BIND_ENUM_CONSTANT(ENTITY_TRACKING_STATE_TRACKING);

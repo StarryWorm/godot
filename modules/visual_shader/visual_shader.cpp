@@ -452,6 +452,7 @@ void VisualShaderNode::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "expanded_output_ports", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_INTERNAL), "_set_output_ports_expanded", "_get_output_ports_expanded");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "linked_parent_graph_frame", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR), "set_frame", "get_frame");
 
+	BIND_ENUM(PortType);
 	BIND_ENUM_CONSTANT(PORT_TYPE_SCALAR);
 	BIND_ENUM_CONSTANT(PORT_TYPE_SCALAR_INT);
 	BIND_ENUM_CONSTANT(PORT_TYPE_SCALAR_UINT);
@@ -3221,6 +3222,7 @@ void VisualShader::_bind_methods() {
 
 	ADD_PROPERTY_DEFAULT("code", ""); // Inherited from Shader, prevents showing default code as override in docs.
 
+	BIND_ENUM(Type);
 	BIND_ENUM_CONSTANT(TYPE_VERTEX);
 	BIND_ENUM_CONSTANT(TYPE_FRAGMENT);
 	BIND_ENUM_CONSTANT(TYPE_LIGHT);
@@ -3234,10 +3236,12 @@ void VisualShader::_bind_methods() {
 	BIND_ENUM_CONSTANT(TYPE_TEXTURE_BLIT);
 	BIND_ENUM_CONSTANT(TYPE_MAX);
 
+	BIND_ENUM(VaryingMode);
 	BIND_ENUM_CONSTANT(VARYING_MODE_VERTEX_TO_FRAG_LIGHT);
 	BIND_ENUM_CONSTANT(VARYING_MODE_FRAG_TO_LIGHT);
 	BIND_ENUM_CONSTANT(VARYING_MODE_MAX);
 
+	BIND_ENUM(VaryingType);
 	BIND_ENUM_CONSTANT(VARYING_TYPE_FLOAT);
 	BIND_ENUM_CONSTANT(VARYING_TYPE_INT);
 	BIND_ENUM_CONSTANT(VARYING_TYPE_UINT);
@@ -4472,6 +4476,7 @@ void VisualShaderNodeParameter::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "qualifier", PROPERTY_HINT_ENUM, "None,Global,Instance,Instance + Index"), "set_qualifier", "get_qualifier");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "instance_index", PROPERTY_HINT_RANGE, "0,15,1"), "set_instance_index", "get_instance_index");
 
+	BIND_ENUM(Qualifier);
 	BIND_ENUM_CONSTANT(QUAL_NONE);
 	BIND_ENUM_CONSTANT(QUAL_GLOBAL);
 	BIND_ENUM_CONSTANT(QUAL_INSTANCE);

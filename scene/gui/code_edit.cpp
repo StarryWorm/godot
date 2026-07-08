@@ -3166,6 +3166,7 @@ void CodeEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_code_hint_draw_below", "draw_below"), &CodeEdit::set_code_hint_draw_below);
 
 	/* Code Completion */
+	BIND_ENUM(CodeCompletionKind);
 	BIND_ENUM_CONSTANT(KIND_CLASS);
 	BIND_ENUM_CONSTANT(KIND_FUNCTION);
 	BIND_ENUM_CONSTANT(KIND_SIGNAL);
@@ -3178,6 +3179,7 @@ void CodeEdit::_bind_methods() {
 	BIND_ENUM_CONSTANT(KIND_PLAIN_TEXT);
 	BIND_ENUM_CONSTANT(KIND_KEYWORD);
 
+	BIND_ENUM(CodeCompletionLocation);
 	BIND_ENUM_CONSTANT(LOCATION_LOCAL);
 	BIND_ENUM_CONSTANT(LOCATION_PARENT_MASK);
 	BIND_ENUM_CONSTANT(LOCATION_OTHER_USER_CODE)

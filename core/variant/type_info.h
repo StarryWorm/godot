@@ -260,6 +260,11 @@ inline StringName __constant_get_enum_name(T param) {
 	return GetTypeInfo<T>::get_class_info().class_name;
 }
 
+template <typename T>
+inline StringName __enum_get_name() {
+	return GetTypeInfo<T>::get_class_info().class_name;
+}
+
 inline StringName __constant_get_enum_value_name(const char *p_name) {
 	return String(p_name).get_slice("::", 1);
 }
@@ -288,6 +293,12 @@ template <typename T>
 inline StringName __constant_get_bitfield_name(T param) {
 	return GetTypeInfo<BitField<T>>::get_class_info().class_name;
 }
+
+template <typename T>
+inline StringName __bitfield_get_name() {
+	return GetTypeInfo<BitField<T>>::get_class_info().class_name;
+}
+
 #define CLASS_INFO(m_type) (GetTypeInfo<m_type *>::get_class_info())
 
 #define VARIANT_ENUM_CAST(m_enum) MAKE_ENUM_TYPE_INFO(m_enum, m_enum)

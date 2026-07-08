@@ -224,6 +224,7 @@ void StreamPeerSocket::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_status"), &StreamPeerSocket::get_status);
 	ClassDB::bind_method(D_METHOD("disconnect_from_host"), &StreamPeerSocket::disconnect_from_host);
 
+	BIND_ENUM(Status);
 	BIND_ENUM_CONSTANT(STATUS_NONE);
 	BIND_ENUM_CONSTANT(STATUS_CONNECTING);
 	BIND_ENUM_CONSTANT(STATUS_CONNECTED);

@@ -775,6 +775,7 @@ void EditorSpinSlider::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editing_integer"), "set_editing_integer", "is_editing_integer");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "deferred_drag_mode"), "set_deferred_drag_mode_enabled", "is_deferred_drag_mode_enabled");
 
+	BIND_ENUM(ControlState);
 	BIND_ENUM_CONSTANT(CONTROL_STATE_DEFAULT);
 	BIND_ENUM_CONSTANT(CONTROL_STATE_PREFER_SLIDER);
 	BIND_ENUM_CONSTANT(CONTROL_STATE_HIDE);

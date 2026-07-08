@@ -916,9 +916,11 @@ void PhysicalBone3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR3, "angular_velocity", PROPERTY_HINT_NONE, U"radians_as_degrees,suffix:\u00B0/s"), "set_angular_velocity", "get_angular_velocity");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "can_sleep"), "set_can_sleep", "is_able_to_sleep");
 
+	BIND_ENUM(DampMode);
 	BIND_ENUM_CONSTANT(DAMP_MODE_COMBINE);
 	BIND_ENUM_CONSTANT(DAMP_MODE_REPLACE);
 
+	BIND_ENUM(JointType);
 	BIND_ENUM_CONSTANT(JOINT_TYPE_NONE);
 	BIND_ENUM_CONSTANT(JOINT_TYPE_PIN);
 	BIND_ENUM_CONSTANT(JOINT_TYPE_CONE);

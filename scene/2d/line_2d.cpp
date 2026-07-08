@@ -412,14 +412,17 @@ void Line2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "round_precision", PROPERTY_HINT_RANGE, "1,32,1"), "set_round_precision", "get_round_precision");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "antialiased"), "set_antialiased", "get_antialiased");
 
+	BIND_ENUM(LineJointMode);
 	BIND_ENUM_CONSTANT(LINE_JOINT_SHARP);
 	BIND_ENUM_CONSTANT(LINE_JOINT_BEVEL);
 	BIND_ENUM_CONSTANT(LINE_JOINT_ROUND);
 
+	BIND_ENUM(LineCapMode);
 	BIND_ENUM_CONSTANT(LINE_CAP_NONE);
 	BIND_ENUM_CONSTANT(LINE_CAP_BOX);
 	BIND_ENUM_CONSTANT(LINE_CAP_ROUND);
 
+	BIND_ENUM(LineTextureMode);
 	BIND_ENUM_CONSTANT(LINE_TEXTURE_NONE);
 	BIND_ENUM_CONSTANT(LINE_TEXTURE_TILE);
 	BIND_ENUM_CONSTANT(LINE_TEXTURE_STRETCH);

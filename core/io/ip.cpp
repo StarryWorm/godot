@@ -311,6 +311,7 @@ void IP::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_local_interfaces"), &IP::_get_local_interfaces);
 	ClassDB::bind_method(D_METHOD("clear_cache", "hostname"), &IP::clear_cache, DEFVAL(""));
 
+	BIND_ENUM(ResolverStatus);
 	BIND_ENUM_CONSTANT(RESOLVER_STATUS_NONE);
 	BIND_ENUM_CONSTANT(RESOLVER_STATUS_WAITING);
 	BIND_ENUM_CONSTANT(RESOLVER_STATUS_DONE);
@@ -319,6 +320,7 @@ void IP::_bind_methods() {
 	BIND_CONSTANT(RESOLVER_MAX_QUERIES);
 	BIND_CONSTANT(RESOLVER_INVALID_ID);
 
+	BIND_ENUM(Type);
 	BIND_ENUM_CONSTANT(TYPE_NONE);
 	BIND_ENUM_CONSTANT(TYPE_IPV4);
 	BIND_ENUM_CONSTANT(TYPE_IPV6);

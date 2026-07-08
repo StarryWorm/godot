@@ -248,9 +248,12 @@ void VirtualJoystick::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("flicked", PropertyInfo(Variant::VECTOR2, "input_vector")));
 	ADD_SIGNAL(MethodInfo("flick_canceled"));
 
+	BIND_ENUM(JoystickMode);
 	BIND_ENUM_CONSTANT(JOYSTICK_FIXED);
 	BIND_ENUM_CONSTANT(JOYSTICK_DYNAMIC);
 	BIND_ENUM_CONSTANT(JOYSTICK_FOLLOWING);
+
+	BIND_ENUM(VisibilityMode);
 	BIND_ENUM_CONSTANT(VISIBILITY_ALWAYS);
 	BIND_ENUM_CONSTANT(VISIBILITY_WHEN_TOUCHED);
 

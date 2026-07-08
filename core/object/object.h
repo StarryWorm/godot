@@ -53,6 +53,13 @@
 #define ADD_SUBGROUP_INDENT(m_name, m_prefix, m_depth) ::ClassDB::add_property_subgroup(get_class_static(), m_name, m_prefix, m_depth)
 #define ADD_LINKED_PROPERTY(m_property, m_linked_property) ::ClassDB::add_linked_property(get_class_static(), m_property, m_linked_property)
 
+#define BIND_ENUM(m_enum) get_gdtype_static_mutable().bind_enum(__enum_get_name<m_enum>())
+#define BIND_ENUM_CONSTANT(m_constant) get_gdtype_static_mutable().bind_enum_case(__constant_get_enum_name(m_constant), __constant_get_enum_value_name(#m_constant), m_constant);
+#define BIND_BITFIELD(m_bitfield) get_gdtype_static_mutable().bind_enum(__bitfield_get_name<m_bitfield>(), true)
+#define BIND_BITFIELD_FLAG(m_constant) get_gdtype_static_mutable().bind_enum_case(__constant_get_bitfield_name(m_constant), __constant_get_enum_value_name(#m_constant), m_constant);
+
+#define BIND_CONSTANT(m_constant) get_gdtype_static_mutable().bind_constant(__constant_get_enum_value_name(#m_constant), m_constant);
+
 #ifdef TOOLS_ENABLED
 #define ADD_CLASS_DEPENDENCY(m_class) ::ClassDB::add_class_dependency(get_class_static(), m_class)
 #else

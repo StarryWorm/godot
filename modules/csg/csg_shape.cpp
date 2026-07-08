@@ -1210,6 +1210,7 @@ void CSGShape3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "collision_priority"), "set_collision_priority", "get_collision_priority");
 #endif // PHYSICS_3D_DISABLED
 
+	BIND_ENUM(Operation);
 	BIND_ENUM_CONSTANT(OPERATION_UNION);
 	BIND_ENUM_CONSTANT(OPERATION_INTERSECTION);
 	BIND_ENUM_CONSTANT(OPERATION_SUBTRACTION);
@@ -2773,14 +2774,17 @@ void CSGPolygon3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "smooth_faces"), "set_smooth_faces", "get_smooth_faces");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "material", PROPERTY_HINT_RESOURCE_TYPE, "BaseMaterial3D,ShaderMaterial"), "set_material", "get_material");
 
+	BIND_ENUM(Mode);
 	BIND_ENUM_CONSTANT(MODE_DEPTH);
 	BIND_ENUM_CONSTANT(MODE_SPIN);
 	BIND_ENUM_CONSTANT(MODE_PATH);
 
+	BIND_ENUM(PathRotation);
 	BIND_ENUM_CONSTANT(PATH_ROTATION_POLYGON);
 	BIND_ENUM_CONSTANT(PATH_ROTATION_PATH);
 	BIND_ENUM_CONSTANT(PATH_ROTATION_PATH_FOLLOW);
 
+	BIND_ENUM(PathIntervalType);
 	BIND_ENUM_CONSTANT(PATH_INTERVAL_DISTANCE);
 	BIND_ENUM_CONSTANT(PATH_INTERVAL_SUBDIVIDE);
 }

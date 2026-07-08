@@ -180,10 +180,12 @@ void AnimationNodeStateMachineTransition::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING_NAME, "advance_condition"), "set_advance_condition", "get_advance_condition");
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "advance_expression", PROPERTY_HINT_EXPRESSION, ""), "set_advance_expression", "get_advance_expression");
 
+	BIND_ENUM(SwitchMode);
 	BIND_ENUM_CONSTANT(SWITCH_MODE_IMMEDIATE);
 	BIND_ENUM_CONSTANT(SWITCH_MODE_SYNC);
 	BIND_ENUM_CONSTANT(SWITCH_MODE_AT_END);
 
+	BIND_ENUM(AdvanceMode);
 	BIND_ENUM_CONSTANT(ADVANCE_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(ADVANCE_MODE_ENABLED);
 	BIND_ENUM_CONSTANT(ADVANCE_MODE_AUTO);
@@ -1871,6 +1873,7 @@ void AnimationNodeStateMachine::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "allow_transition_to_self"), "set_allow_transition_to_self", "is_allow_transition_to_self");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "reset_ends"), "set_reset_ends", "are_ends_reset");
 
+	BIND_ENUM(StateMachineType);
 	BIND_ENUM_CONSTANT(STATE_MACHINE_TYPE_ROOT);
 	BIND_ENUM_CONSTANT(STATE_MACHINE_TYPE_NESTED);
 	BIND_ENUM_CONSTANT(STATE_MACHINE_TYPE_GROUPED);

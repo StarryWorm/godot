@@ -123,6 +123,8 @@ void HashingContext::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("start", "type"), &HashingContext::start);
 	ClassDB::bind_method(D_METHOD("update", "chunk"), &HashingContext::update);
 	ClassDB::bind_method(D_METHOD("finish"), &HashingContext::finish);
+
+	BIND_ENUM(HashType);
 	BIND_ENUM_CONSTANT(HASH_MD5);
 	BIND_ENUM_CONSTANT(HASH_SHA1);
 	BIND_ENUM_CONSTANT(HASH_SHA256);

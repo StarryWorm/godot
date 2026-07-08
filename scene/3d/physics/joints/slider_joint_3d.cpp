@@ -60,6 +60,7 @@ void SliderJoint3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "angular_ortho/restitution", PROPERTY_HINT_RANGE, "0.01,16.0,0.01"), "set_param", "get_param", PARAM_ANGULAR_ORTHOGONAL_RESTITUTION);
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "angular_ortho/damping", PROPERTY_HINT_RANGE, "0,16.0,0.01"), "set_param", "get_param", PARAM_ANGULAR_ORTHOGONAL_DAMPING);
 
+	BIND_ENUM(Param);
 	BIND_ENUM_CONSTANT(PARAM_LINEAR_LIMIT_UPPER);
 	BIND_ENUM_CONSTANT(PARAM_LINEAR_LIMIT_LOWER);
 	BIND_ENUM_CONSTANT(PARAM_LINEAR_LIMIT_SOFTNESS);

@@ -108,6 +108,7 @@ void OpenXRAPIExtension::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("update_main_swapchain_size"), &OpenXRAPIExtension::update_main_swapchain_size);
 
+	BIND_ENUM(OpenXRAlphaBlendModeSupport);
 	BIND_ENUM_CONSTANT(OPENXR_ALPHA_BLEND_MODE_SUPPORT_NONE);
 	BIND_ENUM_CONSTANT(OPENXR_ALPHA_BLEND_MODE_SUPPORT_REAL);
 	BIND_ENUM_CONSTANT(OPENXR_ALPHA_BLEND_MODE_SUPPORT_EMULATING);

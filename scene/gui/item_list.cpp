@@ -2467,13 +2467,16 @@ void ItemList::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "icon_scale"), "set_icon_scale", "get_icon_scale");
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2I, "fixed_icon_size", PROPERTY_HINT_NONE, "suffix:px"), "set_fixed_icon_size", "get_fixed_icon_size");
 
+	BIND_ENUM(IconMode);
 	BIND_ENUM_CONSTANT(ICON_MODE_TOP);
 	BIND_ENUM_CONSTANT(ICON_MODE_LEFT);
 
+	BIND_ENUM(SelectMode);
 	BIND_ENUM_CONSTANT(SELECT_SINGLE);
 	BIND_ENUM_CONSTANT(SELECT_MULTI);
 	BIND_ENUM_CONSTANT(SELECT_TOGGLE);
 
+	BIND_ENUM(ScrollHintMode);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_BOTH);
 	BIND_ENUM_CONSTANT(SCROLL_HINT_MODE_TOP);

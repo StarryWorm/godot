@@ -279,9 +279,11 @@ void ReflectionProbe::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "ambient_color", PROPERTY_HINT_COLOR_NO_ALPHA), "set_ambient_color", "get_ambient_color");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "ambient_color_energy", PROPERTY_HINT_RANGE, "0,16,0.01"), "set_ambient_color_energy", "get_ambient_color_energy");
 
+	BIND_ENUM(UpdateMode);
 	BIND_ENUM_CONSTANT(UPDATE_ONCE);
 	BIND_ENUM_CONSTANT(UPDATE_ALWAYS);
 
+	BIND_ENUM(AmbientMode);
 	BIND_ENUM_CONSTANT(AMBIENT_DISABLED);
 	BIND_ENUM_CONSTANT(AMBIENT_ENVIRONMENT);
 	BIND_ENUM_CONSTANT(AMBIENT_COLOR);

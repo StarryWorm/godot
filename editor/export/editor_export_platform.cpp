@@ -2793,11 +2793,13 @@ void EditorExportPlatform::_bind_methods() {
 
 	ClassDB::bind_static_method("EditorExportPlatform", D_METHOD("get_forced_export_files", "preset"), &EditorExportPlatform::get_forced_export_files, DEFVAL(Ref<EditorExportPreset>()));
 
+	BIND_ENUM(ExportMessageType);
 	BIND_ENUM_CONSTANT(EXPORT_MESSAGE_NONE);
 	BIND_ENUM_CONSTANT(EXPORT_MESSAGE_INFO);
 	BIND_ENUM_CONSTANT(EXPORT_MESSAGE_WARNING);
 	BIND_ENUM_CONSTANT(EXPORT_MESSAGE_ERROR);
 
+	BIND_BITFIELD(DebugFlags);
 	BIND_BITFIELD_FLAG(DEBUG_FLAG_DUMB_CLIENT);
 	BIND_BITFIELD_FLAG(DEBUG_FLAG_REMOTE_DEBUG);
 	BIND_BITFIELD_FLAG(DEBUG_FLAG_REMOTE_DEBUG_LOCALHOST);

@@ -283,6 +283,7 @@ void BoneConstraint3D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_setting_count"), &BoneConstraint3D::get_setting_count);
 	ClassDB::bind_method(D_METHOD("clear_setting"), &BoneConstraint3D::clear_settings);
 
+	BIND_ENUM(ReferenceType);
 	BIND_ENUM_CONSTANT(REFERENCE_TYPE_BONE);
 	BIND_ENUM_CONSTANT(REFERENCE_TYPE_NODE);
 }

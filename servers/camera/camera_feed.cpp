@@ -73,12 +73,14 @@ void CameraFeed::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::TRANSFORM2D, "feed_transform"), "set_transform", "get_transform");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "formats"), "", "get_formats");
 
+	BIND_ENUM(FeedDataType);
 	BIND_ENUM_CONSTANT(FEED_NOIMAGE);
 	BIND_ENUM_CONSTANT(FEED_RGB);
 	BIND_ENUM_CONSTANT(FEED_YCBCR);
 	BIND_ENUM_CONSTANT(FEED_YCBCR_SEP);
 	BIND_ENUM_CONSTANT(FEED_EXTERNAL);
 
+	BIND_ENUM(FeedPosition);
 	BIND_ENUM_CONSTANT(FEED_UNSPECIFIED);
 	BIND_ENUM_CONSTANT(FEED_FRONT);
 	BIND_ENUM_CONSTANT(FEED_BACK);

@@ -47,6 +47,7 @@ void OpenXRAction::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_toplevel_paths"), &OpenXRAction::get_toplevel_paths);
 	ADD_PROPERTY(PropertyInfo(Variant::PACKED_STRING_ARRAY, "toplevel_paths"), "set_toplevel_paths", "get_toplevel_paths");
 
+	BIND_ENUM(ActionType);
 	BIND_ENUM_CONSTANT(OPENXR_ACTION_BOOL);
 	BIND_ENUM_CONSTANT(OPENXR_ACTION_FLOAT);
 	BIND_ENUM_CONSTANT(OPENXR_ACTION_VECTOR2);

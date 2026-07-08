@@ -45,6 +45,7 @@ void XRHandModifier3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::STRING, "hand_tracker", PROPERTY_HINT_ENUM_SUGGESTION, "/user/hand_tracker/left,/user/hand_tracker/right"), "set_hand_tracker", "get_hand_tracker");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bone_update", PROPERTY_HINT_ENUM, "Full,Rotation Only"), "set_bone_update", "get_bone_update");
 
+	BIND_ENUM(BoneUpdate);
 	BIND_ENUM_CONSTANT(BONE_UPDATE_FULL);
 	BIND_ENUM_CONSTANT(BONE_UPDATE_ROTATION_ONLY);
 	BIND_ENUM_CONSTANT(BONE_UPDATE_MAX);

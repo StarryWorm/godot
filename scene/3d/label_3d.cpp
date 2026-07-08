@@ -172,12 +172,14 @@ void Label3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "structured_text_bidi_override", PROPERTY_HINT_ENUM, "Default,URI,File,Email,List,None,Custom"), "set_structured_text_bidi_override", "get_structured_text_bidi_override");
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "structured_text_bidi_override_options"), "set_structured_text_bidi_override_options", "get_structured_text_bidi_override_options");
 
+	BIND_ENUM(DrawFlags);
 	BIND_ENUM_CONSTANT(FLAG_SHADED);
 	BIND_ENUM_CONSTANT(FLAG_DOUBLE_SIDED);
 	BIND_ENUM_CONSTANT(FLAG_DISABLE_DEPTH_TEST);
 	BIND_ENUM_CONSTANT(FLAG_FIXED_SIZE);
 	BIND_ENUM_CONSTANT(FLAG_MAX);
 
+	BIND_ENUM(AlphaCutMode);
 	BIND_ENUM_CONSTANT(ALPHA_CUT_DISABLED);
 	BIND_ENUM_CONSTANT(ALPHA_CUT_DISCARD);
 	BIND_ENUM_CONSTANT(ALPHA_CUT_OPAQUE_PREPASS);

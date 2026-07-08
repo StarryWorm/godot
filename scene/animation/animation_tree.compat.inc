@@ -60,6 +60,7 @@ void AnimationTree::_bind_compatibility_methods() {
 	ClassDB::bind_method(D_METHOD("get_process_callback"), &AnimationTree::_get_process_callback_bind_compat_80813);
 	ClassDB::bind_compatibility_method(D_METHOD("set_tree_root", "root"), &AnimationTree::_set_tree_root_bind_compat_80813);
 	ClassDB::bind_compatibility_method(D_METHOD("get_tree_root"), &AnimationTree::_get_tree_root_bind_compat_80813);
+	BIND_ENUM(AnimationProcessCallback);
 	BIND_ENUM_CONSTANT(ANIMATION_PROCESS_PHYSICS);
 	BIND_ENUM_CONSTANT(ANIMATION_PROCESS_IDLE);
 	BIND_ENUM_CONSTANT(ANIMATION_PROCESS_MANUAL);

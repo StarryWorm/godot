@@ -620,6 +620,7 @@ void EditorBuildProfile::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("save_to_file", "path"), &EditorBuildProfile::save_to_file);
 	ClassDB::bind_method(D_METHOD("load_from_file", "path"), &EditorBuildProfile::load_from_file);
 
+	BIND_ENUM(BuildOption);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_3D);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_NAVIGATION_2D);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_NAVIGATION_3D);
@@ -647,6 +648,7 @@ void EditorBuildProfile::_bind_methods() {
 	BIND_ENUM_CONSTANT(BUILD_OPTION_MSDFGEN);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_MAX);
 
+	BIND_ENUM(BuildOptionCategory);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_CATEGORY_GENERAL);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_CATEGORY_GRAPHICS);
 	BIND_ENUM_CONSTANT(BUILD_OPTION_CATEGORY_PHYSICS);

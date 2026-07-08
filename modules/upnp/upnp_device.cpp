@@ -64,6 +64,7 @@ void UPNPDevice::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_igd_status"), &UPNPDevice::get_igd_status);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "igd_status", PROPERTY_HINT_ENUM), "set_igd_status", "get_igd_status");
 
+	BIND_ENUM(IGDStatus);
 	BIND_ENUM_CONSTANT(IGD_STATUS_OK);
 	BIND_ENUM_CONSTANT(IGD_STATUS_HTTP_ERROR);
 	BIND_ENUM_CONSTANT(IGD_STATUS_HTTP_EMPTY);

@@ -474,6 +474,7 @@ void GDExtensionManager::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_loaded_extensions"), &GDExtensionManager::get_loaded_extensions);
 	ClassDB::bind_method(D_METHOD("get_extension", "path"), &GDExtensionManager::get_extension);
 
+	BIND_ENUM(LoadStatus);
 	BIND_ENUM_CONSTANT(LOAD_STATUS_OK);
 	BIND_ENUM_CONSTANT(LOAD_STATUS_FAILED);
 	BIND_ENUM_CONSTANT(LOAD_STATUS_ALREADY_LOADED);

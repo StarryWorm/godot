@@ -203,6 +203,7 @@ Error ResourceFormatLoader::rename_dependencies(const String &p_path, const Hash
 }
 
 void ResourceFormatLoader::_bind_methods() {
+	BIND_ENUM(CacheMode);
 	BIND_ENUM_CONSTANT(CACHE_MODE_IGNORE);
 	BIND_ENUM_CONSTANT(CACHE_MODE_REUSE);
 	BIND_ENUM_CONSTANT(CACHE_MODE_REPLACE);

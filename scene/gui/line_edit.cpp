@@ -3449,6 +3449,7 @@ void LineEdit::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("text_submitted", PropertyInfo(Variant::STRING, "new_text")));
 	ADD_SIGNAL(MethodInfo("editing_toggled", PropertyInfo(Variant::BOOL, "toggled_on")));
 
+	BIND_ENUM(MenuItems);
 	BIND_ENUM_CONSTANT(MENU_CUT);
 	BIND_ENUM_CONSTANT(MENU_COPY);
 	BIND_ENUM_CONSTANT(MENU_PASTE);
@@ -3482,6 +3483,7 @@ void LineEdit::_bind_methods() {
 	BIND_ENUM_CONSTANT(MENU_EMOJI_AND_SYMBOL);
 	BIND_ENUM_CONSTANT(MENU_MAX);
 
+	BIND_ENUM(DisplayServerEnums::VirtualKeyboardType);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_DEFAULT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_MULTILINE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_NUMBER);
@@ -3491,6 +3493,7 @@ void LineEdit::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_PASSWORD);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_URL);
 
+	BIND_ENUM(ExpandMode);
 	BIND_ENUM_CONSTANT(EXPAND_MODE_ORIGINAL_SIZE);
 	BIND_ENUM_CONSTANT(EXPAND_MODE_FIT_TO_TEXT);
 	BIND_ENUM_CONSTANT(EXPAND_MODE_FIT_TO_LINE_EDIT);

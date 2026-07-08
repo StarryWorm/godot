@@ -758,6 +758,7 @@ void AudioStreamRandomizer::_bind_methods() {
 	ADD_ARRAY("streams", "stream_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "streams_count", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR), "set_streams_count", "get_streams_count");
 
+	BIND_ENUM(PlaybackMode);
 	BIND_ENUM_CONSTANT(PLAYBACK_RANDOM_NO_REPEATS);
 	BIND_ENUM_CONSTANT(PLAYBACK_RANDOM);
 	BIND_ENUM_CONSTANT(PLAYBACK_SEQUENTIAL);

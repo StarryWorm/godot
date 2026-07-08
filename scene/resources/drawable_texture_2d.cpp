@@ -238,6 +238,7 @@ void DrawableTexture2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("blit_rect_multi", "rect", "sources", "extra_targets", "modulate", "mipmap", "material"), &DrawableTexture2D::blit_rect_multi, DEFVAL(Color(1, 1, 1, 1)), DEFVAL(0), DEFVAL(Ref<Material>()));
 	ClassDB::bind_method(D_METHOD("generate_mipmaps"), &DrawableTexture2D::generate_mipmaps);
 
+	BIND_ENUM(DrawableFormat);
 	BIND_ENUM_CONSTANT(DRAWABLE_FORMAT_RGBA8);
 	BIND_ENUM_CONSTANT(DRAWABLE_FORMAT_RGBA8_SRGB);
 	BIND_ENUM_CONSTANT(DRAWABLE_FORMAT_RGBAH);

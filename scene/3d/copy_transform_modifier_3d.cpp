@@ -31,6 +31,7 @@
 #include "copy_transform_modifier_3d.h"
 
 #include "core/object/class_db.h"
+#include "core/object/object.h"
 
 bool CopyTransformModifier3D::_set(const StringName &p_path, const Variant &p_value) {
 	String path = p_path;
@@ -359,11 +360,13 @@ void CopyTransformModifier3D::_bind_methods() {
 
 	ADD_ARRAY_COUNT("Settings", "setting_count", "set_setting_count", "get_setting_count", "settings/");
 
+	BIND_BITFIELD(TransformFlag);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_POSITION);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_ROTATION);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_SCALE);
 	BIND_BITFIELD_FLAG(TRANSFORM_FLAG_ALL);
 
+	BIND_BITFIELD(AxisFlag);
 	BIND_BITFIELD_FLAG(AXIS_FLAG_X);
 	BIND_BITFIELD_FLAG(AXIS_FLAG_Y);
 	BIND_BITFIELD_FLAG(AXIS_FLAG_Z);

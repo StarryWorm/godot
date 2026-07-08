@@ -868,6 +868,7 @@ void GDExtension::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_library_open"), &GDExtension::is_library_open);
 	ClassDB::bind_method(D_METHOD("get_minimum_library_initialization_level"), &GDExtension::get_minimum_library_initialization_level);
 
+	BIND_ENUM(InitializationLevel);
 	BIND_ENUM_CONSTANT(INITIALIZATION_LEVEL_CORE);
 	BIND_ENUM_CONSTANT(INITIALIZATION_LEVEL_SERVERS);
 	BIND_ENUM_CONSTANT(INITIALIZATION_LEVEL_SCENE);

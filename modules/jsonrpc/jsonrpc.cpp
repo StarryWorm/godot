@@ -50,6 +50,7 @@ void JSONRPC::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("make_notification", "method", "params"), &JSONRPC::make_notification);
 	ClassDB::bind_method(D_METHOD("make_response_error", "code", "message", "id"), &JSONRPC::make_response_error, DEFVAL(Variant()));
 
+	BIND_ENUM(ErrorCode);
 	BIND_ENUM_CONSTANT(PARSE_ERROR);
 	BIND_ENUM_CONSTANT(INVALID_REQUEST);
 	BIND_ENUM_CONSTANT(METHOD_NOT_FOUND);

@@ -908,6 +908,7 @@ void VisualShaderNodeParticleRandomness::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "op_type", PROPERTY_HINT_ENUM, "Scalar,Vector2,Vector3,Vector4"), "set_op_type", "get_op_type");
 
+	BIND_ENUM(OpType);
 	BIND_ENUM_CONSTANT(OP_TYPE_SCALAR);
 	BIND_ENUM_CONSTANT(OP_TYPE_VECTOR_2D);
 	BIND_ENUM_CONSTANT(OP_TYPE_VECTOR_3D);
@@ -1061,6 +1062,7 @@ void VisualShaderNodeParticleAccelerator::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "mode", PROPERTY_HINT_ENUM, "Linear,Radial,Tangential"), "set_mode", "get_mode");
 
+	BIND_ENUM(Mode);
 	BIND_ENUM_CONSTANT(MODE_LINEAR);
 	BIND_ENUM_CONSTANT(MODE_RADIAL)
 	BIND_ENUM_CONSTANT(MODE_TANGENTIAL);
@@ -1450,6 +1452,7 @@ void VisualShaderNodeParticleEmit::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "flags", PROPERTY_HINT_FLAGS, "Position,RotScale,Velocity,Color,Custom"), "set_flags", "get_flags");
 
+	BIND_ENUM(EmitFlags);
 	BIND_ENUM_CONSTANT(EMIT_FLAG_POSITION);
 	BIND_ENUM_CONSTANT(EMIT_FLAG_ROT_SCALE);
 	BIND_ENUM_CONSTANT(EMIT_FLAG_VELOCITY);

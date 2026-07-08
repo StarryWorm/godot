@@ -268,12 +268,14 @@ void CanvasItemMaterial::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "particles_anim_v_frames", PROPERTY_HINT_RANGE, "1,128,1"), "set_particles_anim_v_frames", "get_particles_anim_v_frames");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "particles_anim_loop"), "set_particles_anim_loop", "get_particles_anim_loop");
 
+	BIND_ENUM(BlendMode);
 	BIND_ENUM_CONSTANT(BLEND_MODE_MIX);
 	BIND_ENUM_CONSTANT(BLEND_MODE_ADD);
 	BIND_ENUM_CONSTANT(BLEND_MODE_SUB);
 	BIND_ENUM_CONSTANT(BLEND_MODE_MUL);
 	BIND_ENUM_CONSTANT(BLEND_MODE_PREMULT_ALPHA);
 
+	BIND_ENUM(LightMode);
 	BIND_ENUM_CONSTANT(LIGHT_MODE_NORMAL);
 	BIND_ENUM_CONSTANT(LIGHT_MODE_UNSHADED);
 	BIND_ENUM_CONSTANT(LIGHT_MODE_LIGHT_ONLY);

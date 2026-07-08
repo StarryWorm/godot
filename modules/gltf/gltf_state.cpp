@@ -138,6 +138,7 @@ void GLTFState::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "handle_binary_image_mode", PROPERTY_HINT_ENUM, "Discard All Textures,Extract Textures,Embed as Basis Universal,Embed as Uncompressed"), "set_handle_binary_image_mode", "get_handle_binary_image_mode"); // enum
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "bake_fps", PROPERTY_HINT_RANGE, "0.001,120,0.0001,or_greater"), "set_bake_fps", "get_bake_fps");
 
+	BIND_ENUM(HandleBinaryImageMode);
 	BIND_ENUM_CONSTANT(HANDLE_BINARY_IMAGE_MODE_DISCARD_TEXTURES);
 	BIND_ENUM_CONSTANT(HANDLE_BINARY_IMAGE_MODE_EXTRACT_TEXTURES);
 	BIND_ENUM_CONSTANT(HANDLE_BINARY_IMAGE_MODE_EMBED_AS_BASISU);

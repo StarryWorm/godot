@@ -32,6 +32,7 @@
 
 #include "core/object/class_db.h"
 #include "servers/display/accessibility_server_dummy.h"
+#include "servers/display/accessibility_server_enums.h"
 
 AccessibilityServer::AccessibilityServerCreate AccessibilityServer::server_create_functions[AccessibilityServer::MAX_SERVERS] = {
 	{ "dummy", &AccessibilityServerDummy::create_func }
@@ -121,6 +122,7 @@ void AccessibilityServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("update_set_background_color", "id", "color"), &AccessibilityServer::update_set_background_color);
 	ClassDB::bind_method(D_METHOD("update_set_foreground_color", "id", "color"), &AccessibilityServer::update_set_foreground_color);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityRole);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ROLE_UNKNOWN);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ROLE_DEFAULT_BUTTON);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ROLE_AUDIO);
@@ -170,11 +172,13 @@ void AccessibilityServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ROLE_REGION);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ROLE_TEXT_RUN);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityPopupType);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::POPUP_MENU);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::POPUP_LIST);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::POPUP_TREE);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::POPUP_DIALOG);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityFlags);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::FLAG_HIDDEN);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::FLAG_MULTISELECTABLE);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::FLAG_REQUIRED);
@@ -186,6 +190,7 @@ void AccessibilityServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::FLAG_DISABLED);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::FLAG_CLIPS_CHILDREN);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityAction);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ACTION_CLICK);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ACTION_FOCUS);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ACTION_BLUR);
@@ -210,13 +215,16 @@ void AccessibilityServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ACTION_SHOW_CONTEXT_MENU);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::ACTION_CUSTOM);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityLiveMode);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::LIVE_OFF);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::LIVE_POLITE);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::LIVE_ASSERTIVE);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityScrollUnit);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::SCROLL_UNIT_ITEM);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::SCROLL_UNIT_PAGE);
 
+	BIND_ENUM(AccessibilityServerEnums::AccessibilityScrollHint);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::SCROLL_HINT_TOP_LEFT);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::SCROLL_HINT_BOTTOM_RIGHT);
 	BIND_ENUM_CONSTANT(AccessibilityServerEnums::SCROLL_HINT_TOP_EDGE);

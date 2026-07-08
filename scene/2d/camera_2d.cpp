@@ -999,8 +999,11 @@ void Camera2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editor_draw_limits"), "set_limit_drawing_enabled", "is_limit_drawing_enabled");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "editor_draw_drag_margin"), "set_margin_drawing_enabled", "is_margin_drawing_enabled");
 
+	BIND_ENUM(AnchorMode);
 	BIND_ENUM_CONSTANT(ANCHOR_MODE_FIXED_TOP_LEFT);
 	BIND_ENUM_CONSTANT(ANCHOR_MODE_DRAG_CENTER);
+
+	BIND_ENUM(Camera2DProcessCallback);
 	BIND_ENUM_CONSTANT(CAMERA2D_PROCESS_PHYSICS);
 	BIND_ENUM_CONSTANT(CAMERA2D_PROCESS_IDLE);
 }

@@ -188,6 +188,7 @@ void TextureRect::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_h"), "set_flip_h", "is_flipped_h");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_v"), "set_flip_v", "is_flipped_v");
 
+	BIND_ENUM(ExpandMode);
 	BIND_ENUM_CONSTANT(EXPAND_KEEP_SIZE);
 	BIND_ENUM_CONSTANT(EXPAND_IGNORE_SIZE);
 	BIND_ENUM_CONSTANT(EXPAND_FIT_WIDTH);
@@ -195,6 +196,7 @@ void TextureRect::_bind_methods() {
 	BIND_ENUM_CONSTANT(EXPAND_FIT_HEIGHT);
 	BIND_ENUM_CONSTANT(EXPAND_FIT_HEIGHT_PROPORTIONAL);
 
+	BIND_ENUM(StretchMode);
 	BIND_ENUM_CONSTANT(STRETCH_SCALE);
 	BIND_ENUM_CONSTANT(STRETCH_TILE);
 	BIND_ENUM_CONSTANT(STRETCH_KEEP);

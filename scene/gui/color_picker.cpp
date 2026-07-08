@@ -2030,6 +2030,7 @@ void ColorPicker::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("preset_added", PropertyInfo(Variant::COLOR, "color")));
 	ADD_SIGNAL(MethodInfo("preset_removed", PropertyInfo(Variant::COLOR, "color")));
 
+	BIND_ENUM(ColorModeType);
 	BIND_ENUM_CONSTANT(MODE_RGB);
 	BIND_ENUM_CONSTANT(MODE_HSV);
 #ifndef DISABLE_DEPRECATED
@@ -2038,6 +2039,7 @@ void ColorPicker::_bind_methods() {
 	BIND_ENUM_CONSTANT(MODE_LINEAR);
 	BIND_ENUM_CONSTANT(MODE_OKHSL);
 
+	BIND_ENUM(PickerShapeType);
 	BIND_ENUM_CONSTANT(SHAPE_HSV_RECTANGLE);
 	BIND_ENUM_CONSTANT(SHAPE_HSV_WHEEL);
 	BIND_ENUM_CONSTANT(SHAPE_VHS_CIRCLE);

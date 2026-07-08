@@ -454,11 +454,13 @@ void GradientTexture2D::_bind_methods() {
 	ADD_GROUP("Repeat", "repeat_");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "repeat", PROPERTY_HINT_ENUM, "No Repeat,Repeat,Mirror Repeat"), "set_repeat", "get_repeat");
 
+	BIND_ENUM(Fill);
 	BIND_ENUM_CONSTANT(FILL_LINEAR);
 	BIND_ENUM_CONSTANT(FILL_RADIAL);
 	BIND_ENUM_CONSTANT(FILL_SQUARE);
 	BIND_ENUM_CONSTANT(FILL_CONIC);
 
+	BIND_ENUM(Repeat);
 	BIND_ENUM_CONSTANT(REPEAT_NONE);
 	BIND_ENUM_CONSTANT(REPEAT);
 	BIND_ENUM_CONSTANT(REPEAT_MIRROR);

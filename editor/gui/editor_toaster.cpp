@@ -562,6 +562,7 @@ void EditorToaster::copy(Control *p_control) {
 void EditorToaster::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("push_toast", "message", "severity", "tooltip"), &EditorToaster::_popup_str, DEFVAL(EditorToaster::SEVERITY_INFO), DEFVAL(String()));
 
+	BIND_ENUM(Severity);
 	BIND_ENUM_CONSTANT(SEVERITY_INFO);
 	BIND_ENUM_CONSTANT(SEVERITY_WARNING);
 	BIND_ENUM_CONSTANT(SEVERITY_ERROR);

@@ -32,6 +32,7 @@
 
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
+#include "core/object/object.h"
 #include "scene/3d/skeleton_3d.h"
 #include "servers/xr/xr_server.h"
 
@@ -49,10 +50,12 @@ void XRBodyModifier3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "body_update", PROPERTY_HINT_FLAGS, "Upper Body,Lower Body,Hands"), "set_body_update", "get_body_update");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "bone_update", PROPERTY_HINT_ENUM, "Full,Rotation Only"), "set_bone_update", "get_bone_update");
 
+	BIND_BITFIELD(BodyUpdate);
 	BIND_BITFIELD_FLAG(BODY_UPDATE_UPPER_BODY);
 	BIND_BITFIELD_FLAG(BODY_UPDATE_LOWER_BODY);
 	BIND_BITFIELD_FLAG(BODY_UPDATE_HANDS);
 
+	BIND_ENUM(BoneUpdate);
 	BIND_ENUM_CONSTANT(BONE_UPDATE_FULL);
 	BIND_ENUM_CONSTANT(BONE_UPDATE_ROTATION_ONLY);
 	BIND_ENUM_CONSTANT(BONE_UPDATE_MAX);

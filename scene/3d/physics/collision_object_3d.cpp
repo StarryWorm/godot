@@ -516,6 +516,7 @@ void CollisionObject3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "input_ray_pickable"), "set_ray_pickable", "is_ray_pickable");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "input_capture_on_drag"), "set_capture_input_on_drag", "get_capture_input_on_drag");
 
+	BIND_ENUM(DisableMode);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_REMOVE);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_MAKE_STATIC);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_KEEP_ACTIVE);

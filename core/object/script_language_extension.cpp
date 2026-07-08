@@ -30,7 +30,7 @@
 
 #include "script_language_extension.h"
 
-#include "core/object/class_db.h"
+#include "core/object/class_db.h" // IWYU pragma: keep.
 
 ScriptLanguageExtension::ScriptLanguageExtension() {
 #ifdef TOOLS_ENABLED
@@ -179,6 +179,7 @@ void ScriptLanguageExtension::_bind_methods() {
 	GDVIRTUAL_BIND(_handles_global_class_type, "type");
 	GDVIRTUAL_BIND(_get_global_class_name, "path");
 
+	BIND_ENUM(LookupResultType);
 	BIND_ENUM_CONSTANT(LOOKUP_RESULT_SCRIPT_LOCATION);
 	BIND_ENUM_CONSTANT(LOOKUP_RESULT_CLASS);
 	BIND_ENUM_CONSTANT(LOOKUP_RESULT_CLASS_CONSTANT);
@@ -192,11 +193,13 @@ void ScriptLanguageExtension::_bind_methods() {
 	BIND_ENUM_CONSTANT(LOOKUP_RESULT_LOCAL_VARIABLE);
 	BIND_ENUM_CONSTANT(LOOKUP_RESULT_MAX);
 
+	BIND_ENUM(CodeCompletionLocation);
 	BIND_ENUM_CONSTANT(LOCATION_LOCAL);
 	BIND_ENUM_CONSTANT(LOCATION_PARENT_MASK);
 	BIND_ENUM_CONSTANT(LOCATION_OTHER_USER_CODE);
 	BIND_ENUM_CONSTANT(LOCATION_OTHER);
 
+	BIND_ENUM(CodeCompletionKind);
 	BIND_ENUM_CONSTANT(CODE_COMPLETION_KIND_CLASS);
 	BIND_ENUM_CONSTANT(CODE_COMPLETION_KIND_FUNCTION);
 	BIND_ENUM_CONSTANT(CODE_COMPLETION_KIND_SIGNAL);

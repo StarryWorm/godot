@@ -280,6 +280,7 @@ void TextureButton::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_h"), "set_flip_h", "is_flipped_h");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_v"), "set_flip_v", "is_flipped_v");
 
+	BIND_ENUM(StretchMode);
 	BIND_ENUM_CONSTANT(STRETCH_SCALE);
 	BIND_ENUM_CONSTANT(STRETCH_TILE);
 	BIND_ENUM_CONSTANT(STRETCH_KEEP);

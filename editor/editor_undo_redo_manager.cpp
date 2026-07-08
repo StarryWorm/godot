@@ -573,6 +573,7 @@ void EditorUndoRedoManager::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("history_changed"));
 	ADD_SIGNAL(MethodInfo("version_changed"));
 
+	BIND_ENUM(SpecialHistory);
 	BIND_ENUM_CONSTANT(GLOBAL_HISTORY);
 	BIND_ENUM_CONSTANT(REMOTE_HISTORY);
 	BIND_ENUM_CONSTANT(INVALID_HISTORY);

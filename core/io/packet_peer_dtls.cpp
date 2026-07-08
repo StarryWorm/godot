@@ -49,6 +49,7 @@ void PacketPeerDTLS::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_status"), &PacketPeerDTLS::get_status);
 	ClassDB::bind_method(D_METHOD("disconnect_from_peer"), &PacketPeerDTLS::disconnect_from_peer);
 
+	BIND_ENUM(Status);
 	BIND_ENUM_CONSTANT(STATUS_DISCONNECTED);
 	BIND_ENUM_CONSTANT(STATUS_HANDSHAKING);
 	BIND_ENUM_CONSTANT(STATUS_CONNECTED);

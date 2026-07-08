@@ -143,6 +143,7 @@ PackedInt64Array OpenXRSpatialCapabilityConfigurationPlaneTracking::_get_enabled
 void OpenXRSpatialComponentPlaneAlignmentList::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_plane_alignment", "index"), &OpenXRSpatialComponentPlaneAlignmentList::_get_plane_alignment);
 
+	BIND_ENUM(PlaneAlignment);
 	BIND_ENUM_CONSTANT(PLANE_ALIGNMENT_HORIZONTAL_UPWARD);
 	BIND_ENUM_CONSTANT(PLANE_ALIGNMENT_HORIZONTAL_DOWNWARD);
 	BIND_ENUM_CONSTANT(PLANE_ALIGNMENT_VERTICAL);
@@ -231,6 +232,7 @@ PackedVector2Array OpenXRSpatialComponentPolygon2DList::get_vertices(RID p_snaps
 void OpenXRSpatialComponentPlaneSemanticLabelList::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_plane_semantic_label", "index"), &OpenXRSpatialComponentPlaneSemanticLabelList::_get_plane_semantic_label);
 
+	BIND_ENUM(PlaneSemanticLabel);
 	BIND_ENUM_CONSTANT(PLANE_SEMANTIC_LABEL_UNCATEGORIZED);
 	BIND_ENUM_CONSTANT(PLANE_SEMANTIC_LABEL_FLOOR);
 	BIND_ENUM_CONSTANT(PLANE_SEMANTIC_LABEL_WALL);

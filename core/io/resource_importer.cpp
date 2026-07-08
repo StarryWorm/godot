@@ -591,6 +591,7 @@ void ResourceImporter::get_build_dependencies(const String &p_path, HashSet<Stri
 }
 
 void ResourceImporter::_bind_methods() {
+	BIND_ENUM(ImportOrder);
 	BIND_ENUM_CONSTANT(IMPORT_ORDER_DEFAULT);
 	BIND_ENUM_CONSTANT(IMPORT_ORDER_SCENE);
 

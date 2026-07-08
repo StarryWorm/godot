@@ -410,6 +410,7 @@ void AnimationNodeAnimation::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "start_offset", PROPERTY_HINT_RANGE, "-60,60,0.001,or_greater,or_less,hide_control,suffix:s"), "set_start_offset", "get_start_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "loop_mode", PROPERTY_HINT_ENUM, "None,Linear,Ping-Pong"), "set_loop_mode", "get_loop_mode");
 
+	BIND_ENUM(PlayMode);
 	BIND_ENUM_CONSTANT(PLAY_MODE_FORWARD);
 	BIND_ENUM_CONSTANT(PLAY_MODE_BACKWARD);
 }
@@ -796,11 +797,13 @@ void AnimationNodeOneShot::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "autorestart_delay", PROPERTY_HINT_RANGE, "0,60,0.01,or_greater,suffix:s"), "set_autorestart_delay", "get_autorestart_delay");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "autorestart_random_delay", PROPERTY_HINT_RANGE, "0,60,0.01,or_greater,suffix:s"), "set_autorestart_random_delay", "get_autorestart_random_delay");
 
+	BIND_ENUM(OneShotRequest);
 	BIND_ENUM_CONSTANT(ONE_SHOT_REQUEST_NONE);
 	BIND_ENUM_CONSTANT(ONE_SHOT_REQUEST_FIRE);
 	BIND_ENUM_CONSTANT(ONE_SHOT_REQUEST_ABORT);
 	BIND_ENUM_CONSTANT(ONE_SHOT_REQUEST_FADE_OUT);
 
+	BIND_ENUM(MixMode);
 	BIND_ENUM_CONSTANT(MIX_MODE_BLEND);
 	BIND_ENUM_CONSTANT(MIX_MODE_ADD);
 }

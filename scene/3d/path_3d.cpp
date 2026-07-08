@@ -444,6 +444,7 @@ void PathFollow3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "loop"), "set_loop", "has_loop");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "tilt_enabled"), "set_tilt_enabled", "is_tilt_enabled");
 
+	BIND_ENUM(RotationMode);
 	BIND_ENUM_CONSTANT(ROTATION_NONE);
 	BIND_ENUM_CONSTANT(ROTATION_Y);
 	BIND_ENUM_CONSTANT(ROTATION_XY);

@@ -150,6 +150,7 @@ void OpenXRSpatialCapabilityConfigurationAruco::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_aruco_dict"), &OpenXRSpatialCapabilityConfigurationAruco::_get_aruco_dict);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "aruco_dict"), "set_aruco_dict", "get_aruco_dict");
 
+	BIND_ENUM(ArucoDict);
 	BIND_ENUM_CONSTANT(ARUCO_DICT_4X4_50);
 	BIND_ENUM_CONSTANT(ARUCO_DICT_4X4_100);
 	BIND_ENUM_CONSTANT(ARUCO_DICT_4X4_250);
@@ -242,6 +243,7 @@ void OpenXRSpatialCapabilityConfigurationAprilTag::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_april_dict"), &OpenXRSpatialCapabilityConfigurationAprilTag::_get_april_dict);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "april_dict"), "set_april_dict", "get_april_dict");
 
+	BIND_ENUM(AprilTagDict);
 	BIND_ENUM_CONSTANT(APRIL_TAG_DICT_16H5);
 	BIND_ENUM_CONSTANT(APRIL_TAG_DICT_25H9);
 	BIND_ENUM_CONSTANT(APRIL_TAG_DICT_36H10);
@@ -312,6 +314,7 @@ void OpenXRSpatialComponentMarkerList::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_marker_id", "index"), &OpenXRSpatialComponentMarkerList::get_marker_id);
 	ClassDB::bind_method(D_METHOD("get_marker_data", "snapshot", "index"), &OpenXRSpatialComponentMarkerList::get_marker_data);
 
+	BIND_ENUM(MarkerType);
 	BIND_ENUM_CONSTANT(MARKER_TYPE_UNKNOWN);
 	BIND_ENUM_CONSTANT(MARKER_TYPE_QRCODE);
 	BIND_ENUM_CONSTANT(MARKER_TYPE_MICRO_QRCODE);

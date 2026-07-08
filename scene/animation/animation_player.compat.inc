@@ -111,9 +111,11 @@ void AnimationPlayer::_bind_compatibility_methods() {
 	ClassDB::bind_compatibility_method(D_METHOD("set_autoplay", "name"), &AnimationPlayer::_set_autoplay_compat_110767);
 
 	ClassDB::bind_compatibility_method(D_METHOD("seek", "seconds", "update"), &AnimationPlayer::_seek_bind_compat_80813, DEFVAL(false));
+	BIND_ENUM(AnimationProcessCallback);
 	BIND_ENUM_CONSTANT(ANIMATION_PROCESS_PHYSICS);
 	BIND_ENUM_CONSTANT(ANIMATION_PROCESS_IDLE);
 	BIND_ENUM_CONSTANT(ANIMATION_PROCESS_MANUAL);
+	BIND_ENUM(AnimationMethodCallMode);
 	BIND_ENUM_CONSTANT(ANIMATION_METHOD_CALL_DEFERRED);
 	BIND_ENUM_CONSTANT(ANIMATION_METHOD_CALL_IMMEDIATE);
 }

@@ -77,6 +77,7 @@ void WebXRInterface::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("reference_space_reset"));
 	ADD_SIGNAL(MethodInfo("display_refresh_rate_changed"));
 
+	BIND_ENUM(TargetRayMode);
 	BIND_ENUM_CONSTANT(TARGET_RAY_MODE_UNKNOWN);
 	BIND_ENUM_CONSTANT(TARGET_RAY_MODE_GAZE);
 	BIND_ENUM_CONSTANT(TARGET_RAY_MODE_TRACKED_POINTER);

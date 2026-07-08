@@ -299,9 +299,11 @@ void SpriteFrames::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("_get_animations"), &SpriteFrames::_get_animations);
 
 	ADD_PROPERTY(PropertyInfo(Variant::ARRAY, "animations", PROPERTY_HINT_NONE, "", PROPERTY_USAGE_NO_EDITOR | PROPERTY_USAGE_INTERNAL), "_set_animations", "_get_animations");
-	BIND_ENUM_CONSTANT(LoopMode::LOOP_NONE);
-	BIND_ENUM_CONSTANT(LoopMode::LOOP_LINEAR);
-	BIND_ENUM_CONSTANT(LoopMode::LOOP_PINGPONG);
+
+	BIND_ENUM(LoopMode);
+	BIND_ENUM_CONSTANT(LOOP_NONE);
+	BIND_ENUM_CONSTANT(LOOP_LINEAR);
+	BIND_ENUM_CONSTANT(LOOP_PINGPONG);
 }
 
 SpriteFrames::SpriteFrames() {

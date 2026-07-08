@@ -700,6 +700,7 @@ void SpriteBase3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_filter", PROPERTY_HINT_ENUM, "Nearest,Linear,Nearest Mipmap,Linear Mipmap,Nearest Mipmap Anisotropic,Linear Mipmap Anisotropic"), "set_texture_filter", "get_texture_filter");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "render_priority", PROPERTY_HINT_RANGE, itos(RSE::MATERIAL_RENDER_PRIORITY_MIN) + "," + itos(RSE::MATERIAL_RENDER_PRIORITY_MAX) + ",1"), "set_render_priority", "get_render_priority");
 
+	BIND_ENUM(DrawFlags);
 	BIND_ENUM_CONSTANT(FLAG_TRANSPARENT);
 	BIND_ENUM_CONSTANT(FLAG_SHADED);
 	BIND_ENUM_CONSTANT(FLAG_DOUBLE_SIDED);
@@ -707,6 +708,7 @@ void SpriteBase3D::_bind_methods() {
 	BIND_ENUM_CONSTANT(FLAG_FIXED_SIZE);
 	BIND_ENUM_CONSTANT(FLAG_MAX);
 
+	BIND_ENUM(AlphaCutMode);
 	BIND_ENUM_CONSTANT(ALPHA_CUT_DISABLED);
 	BIND_ENUM_CONSTANT(ALPHA_CUT_DISCARD);
 	BIND_ENUM_CONSTANT(ALPHA_CUT_OPAQUE_PREPASS);

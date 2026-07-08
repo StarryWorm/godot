@@ -588,6 +588,7 @@ void AnimationNode::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("animation_node_renamed", PropertyInfo(Variant::INT, "object_id"), PropertyInfo(Variant::STRING, "old_name"), PropertyInfo(Variant::STRING, "new_name")));
 	ADD_SIGNAL(MethodInfo("animation_node_removed", PropertyInfo(Variant::INT, "object_id"), PropertyInfo(Variant::STRING, "node_name")));
 
+	BIND_ENUM(FilterAction);
 	BIND_ENUM_CONSTANT(FILTER_IGNORE);
 	BIND_ENUM_CONSTANT(FILTER_PASS);
 	BIND_ENUM_CONSTANT(FILTER_STOP);

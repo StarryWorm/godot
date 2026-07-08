@@ -348,6 +348,7 @@ void OpenXRSpatialAnchorCapability::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("start_entity_discovery", "spatial_context", "component_data", "next_snapshot_create", "next_snapshot_query", "user_callback"), &OpenXRSpatialAnchorCapability::start_entity_discovery, DEFVAL(Variant()), DEFVAL(Variant()), DEFVAL(Callable()));
 	ClassDB::bind_method(D_METHOD("do_entity_update", "spatial_context", "component_data", "next_snapshot_create", "next_snapshot_query"), &OpenXRSpatialAnchorCapability::do_entity_update, DEFVAL(Variant()), DEFVAL(Variant()));
 
+	BIND_ENUM(PersistenceScope);
 	BIND_ENUM_CONSTANT(PERSISTENCE_SCOPE_SYSTEM_MANAGED);
 	BIND_ENUM_CONSTANT(PERSISTENCE_SCOPE_LOCAL_ANCHORS);
 }

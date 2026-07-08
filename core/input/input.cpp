@@ -215,6 +215,7 @@ void Input::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "emulate_touch_from_mouse"), "set_emulate_touch_from_mouse", "is_emulating_touch_from_mouse");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "ignore_joypad_on_unfocused_application"), "set_ignore_joypad_on_unfocused_application", "is_ignoring_joypad_on_unfocused_application");
 
+	BIND_ENUM(MouseMode);
 	BIND_ENUM_CONSTANT(MOUSE_MODE_VISIBLE);
 	BIND_ENUM_CONSTANT(MOUSE_MODE_HIDDEN);
 	BIND_ENUM_CONSTANT(MOUSE_MODE_CAPTURED);
@@ -222,6 +223,7 @@ void Input::_bind_methods() {
 	BIND_ENUM_CONSTANT(MOUSE_MODE_CONFINED_HIDDEN);
 	BIND_ENUM_CONSTANT(MOUSE_MODE_MAX);
 
+	BIND_ENUM(CursorShape);
 	BIND_ENUM_CONSTANT(CURSOR_ARROW);
 	BIND_ENUM_CONSTANT(CURSOR_IBEAM);
 	BIND_ENUM_CONSTANT(CURSOR_POINTING_HAND);

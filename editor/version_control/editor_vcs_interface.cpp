@@ -361,6 +361,7 @@ void EditorVCSInterface::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("add_line_diffs_into_diff_hunk", "diff_hunk", "line_diffs"), &EditorVCSInterface::add_line_diffs_into_diff_hunk);
 	ClassDB::bind_method(D_METHOD("popup_error", "msg"), &EditorVCSInterface::popup_error);
 
+	BIND_ENUM(ChangeType);
 	BIND_ENUM_CONSTANT(CHANGE_TYPE_NEW);
 	BIND_ENUM_CONSTANT(CHANGE_TYPE_MODIFIED);
 	BIND_ENUM_CONSTANT(CHANGE_TYPE_RENAMED);
@@ -368,6 +369,7 @@ void EditorVCSInterface::_bind_methods() {
 	BIND_ENUM_CONSTANT(CHANGE_TYPE_TYPECHANGE);
 	BIND_ENUM_CONSTANT(CHANGE_TYPE_UNMERGED);
 
+	BIND_ENUM(TreeArea);
 	BIND_ENUM_CONSTANT(TREE_AREA_COMMIT);
 	BIND_ENUM_CONSTANT(TREE_AREA_STAGED);
 	BIND_ENUM_CONSTANT(TREE_AREA_UNSTAGED);

@@ -402,6 +402,7 @@ void SoftBody3D::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "disable_mode", PROPERTY_HINT_ENUM, "Remove,KeepActive"), "set_disable_mode", "get_disable_mode");
 
+	BIND_ENUM(DisableMode);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_REMOVE);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_KEEP_ACTIVE);
 }

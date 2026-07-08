@@ -495,6 +495,15 @@
 		<constant name="PARAM_ANIM_OFFSET" value="11" enum="Parameter">
 			Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set animation offset properties.
 		</constant>
+		<constant name="PARAM_TURB_INFLUENCE_OVER_LIFE" value="12" enum="Parameter">
+			Use with [method set_param_texture] to set the turbulence influence over the particles life time.
+		</constant>
+		<constant name="PARAM_TURB_VEL_INFLUENCE" value="13" enum="Parameter">
+			Use with [method set_param_min] and [method set_param_max] to set the turbulence minimum und maximum influence on each particles velocity.
+		</constant>
+		<constant name="PARAM_TURB_INIT_DISPLACEMENT" value="14" enum="Parameter">
+			Use with [method set_param_min] and [method set_param_max] to set the turbulence minimum and maximum displacement of the particles spawn position.
+		</constant>
 		<constant name="PARAM_RADIAL_VELOCITY" value="15" enum="Parameter">
 			Use with [method set_param_min], [method set_param_max], and [method set_param_texture] to set radial velocity properties.
 		</constant>
@@ -546,15 +555,6 @@
 		</constant>
 		<constant name="EMISSION_SHAPE_MAX" value="7" enum="EmissionShape">
 			Represents the size of the [enum EmissionShape] enum.
-		</constant>
-		<constant name="PARAM_TURB_VEL_INFLUENCE" value="13" enum="Parameter">
-			Use with [method set_param_min] and [method set_param_max] to set the turbulence minimum und maximum influence on each particles velocity.
-		</constant>
-		<constant name="PARAM_TURB_INIT_DISPLACEMENT" value="14" enum="Parameter">
-			Use with [method set_param_min] and [method set_param_max] to set the turbulence minimum and maximum displacement of the particles spawn position.
-		</constant>
-		<constant name="PARAM_TURB_INFLUENCE_OVER_LIFE" value="12" enum="Parameter">
-			Use with [method set_param_texture] to set the turbulence influence over the particles life time.
 		</constant>
 		<constant name="SUB_EMITTER_DISABLED" value="0" enum="SubEmitterMode">
 			The subemitter is disabled.

@@ -432,6 +432,7 @@ void Light3D::_bind_methods() {
 
 	ADD_GROUP("", "");
 
+	BIND_ENUM(Param);
 	BIND_ENUM_CONSTANT(PARAM_ENERGY);
 	BIND_ENUM_CONSTANT(PARAM_INDIRECT_ENERGY);
 	BIND_ENUM_CONSTANT(PARAM_VOLUMETRIC_FOG_ENERGY);
@@ -455,6 +456,7 @@ void Light3D::_bind_methods() {
 	BIND_ENUM_CONSTANT(PARAM_INTENSITY);
 	BIND_ENUM_CONSTANT(PARAM_MAX);
 
+	BIND_ENUM(BakeMode);
 	BIND_ENUM_CONSTANT(BAKE_DISABLED);
 	BIND_ENUM_CONSTANT(BAKE_STATIC);
 	BIND_ENUM_CONSTANT(BAKE_DYNAMIC);
@@ -600,10 +602,12 @@ void DirectionalLight3D::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "sky_mode", PROPERTY_HINT_ENUM, "Light and Sky,Light Only,Sky Only"), "set_sky_mode", "get_sky_mode");
 
+	BIND_ENUM(ShadowMode);
 	BIND_ENUM_CONSTANT(SHADOW_ORTHOGONAL);
 	BIND_ENUM_CONSTANT(SHADOW_PARALLEL_2_SPLITS);
 	BIND_ENUM_CONSTANT(SHADOW_PARALLEL_4_SPLITS);
 
+	BIND_ENUM(SkyMode);
 	BIND_ENUM_CONSTANT(SKY_MODE_LIGHT_AND_SKY);
 	BIND_ENUM_CONSTANT(SKY_MODE_LIGHT_ONLY);
 	BIND_ENUM_CONSTANT(SKY_MODE_SKY_ONLY);
@@ -654,6 +658,7 @@ void OmniLight3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "omni_attenuation", PROPERTY_HINT_RANGE, "-10,10,0.001,or_greater,or_less"), "set_param", "get_param", PARAM_ATTENUATION);
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "omni_shadow_mode", PROPERTY_HINT_ENUM, "Dual Paraboloid,Cube"), "set_shadow_mode", "get_shadow_mode");
 
+	BIND_ENUM(ShadowMode);
 	BIND_ENUM_CONSTANT(SHADOW_DUAL_PARABOLOID);
 	BIND_ENUM_CONSTANT(SHADOW_CUBE);
 }

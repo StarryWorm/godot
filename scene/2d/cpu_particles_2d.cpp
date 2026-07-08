@@ -1547,6 +1547,7 @@ void CPUParticles2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "local_coords"), "set_use_local_coordinates", "get_use_local_coordinates");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "draw_order", PROPERTY_HINT_ENUM, "Index,Lifetime"), "set_draw_order", "get_draw_order");
 
+	BIND_ENUM(DrawOrder);
 	BIND_ENUM_CONSTANT(DRAW_ORDER_INDEX);
 	BIND_ENUM_CONSTANT(DRAW_ORDER_LIFETIME);
 
@@ -1693,6 +1694,7 @@ void CPUParticles2D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "anim_offset_max", PROPERTY_HINT_RANGE, "0,1,0.0001"), "set_param_max", "get_param_max", PARAM_ANIM_OFFSET);
 	ADD_PROPERTYI(PropertyInfo(Variant::OBJECT, "anim_offset_curve", PROPERTY_HINT_RESOURCE_TYPE, Curve::get_class_static()), "set_param_curve", "get_param_curve", PARAM_ANIM_OFFSET);
 
+	BIND_ENUM(Parameter);
 	BIND_ENUM_CONSTANT(PARAM_INITIAL_LINEAR_VELOCITY);
 	BIND_ENUM_CONSTANT(PARAM_ANGULAR_VELOCITY);
 	BIND_ENUM_CONSTANT(PARAM_ORBIT_VELOCITY);
@@ -1707,11 +1709,13 @@ void CPUParticles2D::_bind_methods() {
 	BIND_ENUM_CONSTANT(PARAM_ANIM_OFFSET);
 	BIND_ENUM_CONSTANT(PARAM_MAX);
 
+	BIND_ENUM(ParticleFlags);
 	BIND_ENUM_CONSTANT(PARTICLE_FLAG_ALIGN_Y_TO_VELOCITY);
 	BIND_ENUM_CONSTANT(PARTICLE_FLAG_ROTATE_Y); // Unused, but exposed for consistency with 3D.
 	BIND_ENUM_CONSTANT(PARTICLE_FLAG_DISABLE_Z); // Unused, but exposed for consistency with 3D.
 	BIND_ENUM_CONSTANT(PARTICLE_FLAG_MAX);
 
+	BIND_ENUM(EmissionShape);
 	BIND_ENUM_CONSTANT(EMISSION_SHAPE_POINT);
 	BIND_ENUM_CONSTANT(EMISSION_SHAPE_SPHERE);
 	BIND_ENUM_CONSTANT(EMISSION_SHAPE_SPHERE_SURFACE);

@@ -280,6 +280,7 @@ void TextureLayered::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("has_mipmaps"), &TextureLayered::has_mipmaps);
 	ClassDB::bind_method(D_METHOD("get_layer_data", "layer"), &TextureLayered::get_layer_data);
 
+	BIND_ENUM(LayeredType);
 	BIND_ENUM_CONSTANT(LAYERED_TYPE_2D_ARRAY);
 	BIND_ENUM_CONSTANT(LAYERED_TYPE_CUBEMAP);
 	BIND_ENUM_CONSTANT(LAYERED_TYPE_CUBEMAP_ARRAY);

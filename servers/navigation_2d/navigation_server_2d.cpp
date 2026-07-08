@@ -204,6 +204,7 @@ void NavigationServer2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("get_process_info", "process_info"), &NavigationServer2D::get_process_info);
 
+	BIND_ENUM(ProcessInfo);
 	BIND_ENUM_CONSTANT(INFO_ACTIVE_MAPS);
 	BIND_ENUM_CONSTANT(INFO_REGION_COUNT);
 	BIND_ENUM_CONSTANT(INFO_AGENT_COUNT);

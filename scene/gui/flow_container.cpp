@@ -508,9 +508,12 @@ void FlowContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_reverse_fill", "reverse_fill"), &FlowContainer::set_reverse_fill);
 	ClassDB::bind_method(D_METHOD("is_reverse_fill"), &FlowContainer::is_reverse_fill);
 
+	BIND_ENUM(AlignmentMode);
 	BIND_ENUM_CONSTANT(ALIGNMENT_BEGIN);
 	BIND_ENUM_CONSTANT(ALIGNMENT_CENTER);
 	BIND_ENUM_CONSTANT(ALIGNMENT_END);
+
+	BIND_ENUM(LastWrapAlignmentMode);
 	BIND_ENUM_CONSTANT(LAST_WRAP_ALIGNMENT_INHERIT);
 	BIND_ENUM_CONSTANT(LAST_WRAP_ALIGNMENT_BEGIN);
 	BIND_ENUM_CONSTANT(LAST_WRAP_ALIGNMENT_CENTER);

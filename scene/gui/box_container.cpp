@@ -471,6 +471,7 @@ void BoxContainer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_reverse_sort", "reverse_sort"), &BoxContainer::set_reverse_sort);
 	ClassDB::bind_method(D_METHOD("is_reverse_sort"), &BoxContainer::is_reverse_sort);
 
+	BIND_ENUM(AlignmentMode);
 	BIND_ENUM_CONSTANT(ALIGNMENT_BEGIN);
 	BIND_ENUM_CONSTANT(ALIGNMENT_CENTER);
 	BIND_ENUM_CONSTANT(ALIGNMENT_END);

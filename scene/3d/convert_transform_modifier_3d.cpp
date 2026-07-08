@@ -330,6 +330,7 @@ void ConvertTransformModifier3D::_bind_methods() {
 
 	ADD_ARRAY_COUNT("Settings", "setting_count", "set_setting_count", "get_setting_count", "settings/");
 
+	BIND_ENUM(TransformMode);
 	BIND_ENUM_CONSTANT(TRANSFORM_MODE_POSITION);
 	BIND_ENUM_CONSTANT(TRANSFORM_MODE_ROTATION);
 	BIND_ENUM_CONSTANT(TRANSFORM_MODE_SCALE);

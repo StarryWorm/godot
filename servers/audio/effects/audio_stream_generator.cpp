@@ -100,6 +100,7 @@ void AudioStreamGenerator::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "mix_rate", PROPERTY_HINT_RANGE, "20,192000,1,suffix:Hz"), "set_mix_rate", "get_mix_rate");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "buffer_length", PROPERTY_HINT_RANGE, "0.01,10,0.01,suffix:s"), "set_buffer_length", "get_buffer_length");
 
+	BIND_ENUM(AudioStreamGeneratorMixRate);
 	BIND_ENUM_CONSTANT(MIX_RATE_OUTPUT);
 	BIND_ENUM_CONSTANT(MIX_RATE_INPUT);
 	BIND_ENUM_CONSTANT(MIX_RATE_CUSTOM);

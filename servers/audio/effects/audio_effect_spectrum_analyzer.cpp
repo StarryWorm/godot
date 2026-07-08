@@ -149,6 +149,8 @@ void AudioEffectSpectrumAnalyzerInstance::process(const AudioFrame *p_src_frames
 
 void AudioEffectSpectrumAnalyzerInstance::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_magnitude_for_frequency_range", "from_hz", "to_hz", "mode"), &AudioEffectSpectrumAnalyzerInstance::get_magnitude_for_frequency_range, DEFVAL(MAGNITUDE_MAX));
+
+	BIND_ENUM(MagnitudeMode);
 	BIND_ENUM_CONSTANT(MAGNITUDE_AVERAGE);
 	BIND_ENUM_CONSTANT(MAGNITUDE_MAX);
 }
@@ -237,6 +239,7 @@ void AudioEffectSpectrumAnalyzer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "buffer_length", PROPERTY_HINT_RANGE, "0.1,4,0.1,suffix:s"), "set_buffer_length", "get_buffer_length");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "fft_size", PROPERTY_HINT_ENUM, "256,512,1024,2048,4096"), "set_fft_size", "get_fft_size");
 
+	BIND_ENUM(FFTSize);
 	BIND_ENUM_CONSTANT(FFT_SIZE_256);
 	BIND_ENUM_CONSTANT(FFT_SIZE_512);
 	BIND_ENUM_CONSTANT(FFT_SIZE_1024);

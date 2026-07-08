@@ -58,6 +58,7 @@ OpenXRAndroidThreadSettingsExtension::~OpenXRAndroidThreadSettingsExtension() {
 void OpenXRAndroidThreadSettingsExtension::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_application_thread_type", "thread_type", "thread_id"), &OpenXRAndroidThreadSettingsExtension::set_application_thread_type, DEFVAL(0));
 
+	BIND_ENUM(ThreadType);
 	BIND_ENUM_CONSTANT(THREAD_TYPE_APPLICATION_MAIN);
 	BIND_ENUM_CONSTANT(THREAD_TYPE_APPLICATION_WORKER);
 	BIND_ENUM_CONSTANT(THREAD_TYPE_RENDERER_MAIN);

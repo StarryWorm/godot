@@ -7683,6 +7683,7 @@ void TextEdit::_bind_methods() {
 	GDVIRTUAL_BIND(_paste_primary_clipboard, "caret_index")
 
 	// Context Menu
+	BIND_ENUM(MenuItems);
 	BIND_ENUM_CONSTANT(MENU_CUT);
 	BIND_ENUM_CONSTANT(MENU_COPY);
 	BIND_ENUM_CONSTANT(MENU_PASTE);
@@ -7717,6 +7718,7 @@ void TextEdit::_bind_methods() {
 	BIND_ENUM_CONSTANT(MENU_MAX);
 
 	/* Versioning */
+	BIND_ENUM(EditAction);
 	BIND_ENUM_CONSTANT(ACTION_NONE);
 	BIND_ENUM_CONSTANT(ACTION_TYPING);
 	BIND_ENUM_CONSTANT(ACTION_BACKSPACE);
@@ -7740,6 +7742,7 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_saved_version"), &TextEdit::get_saved_version);
 
 	/* Search */
+	BIND_ENUM(SearchFlags);
 	BIND_ENUM_CONSTANT(SEARCH_MATCH_CASE);
 	BIND_ENUM_CONSTANT(SEARCH_WHOLE_WORDS);
 	BIND_ENUM_CONSTANT(SEARCH_BACKWARDS);
@@ -7767,6 +7770,7 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_mouse_over_selection", "edges", "caret_index"), &TextEdit::is_mouse_over_selection, DEFVAL(-1));
 
 	/* Caret. */
+	BIND_ENUM(CaretType);
 	BIND_ENUM_CONSTANT(CARET_TYPE_LINE);
 	BIND_ENUM_CONSTANT(CARET_TYPE_BLOCK);
 
@@ -7830,6 +7834,7 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_custom_word_separators"), &TextEdit::get_custom_word_separators);
 
 	/* Selection. */
+	BIND_ENUM(SelectionMode);
 	BIND_ENUM_CONSTANT(SELECTION_MODE_NONE);
 	BIND_ENUM_CONSTANT(SELECTION_MODE_SHIFT);
 	BIND_ENUM_CONSTANT(SELECTION_MODE_POINTER);
@@ -7879,6 +7884,7 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("is_selection_handle_enabled"), &TextEdit::is_selection_handle_enabled);
 
 	/* Line wrapping. */
+	BIND_ENUM(LineWrappingMode);
 	BIND_ENUM_CONSTANT(LINE_WRAPPING_NONE);
 	BIND_ENUM_CONSTANT(LINE_WRAPPING_BOUNDARY);
 
@@ -7951,6 +7957,7 @@ void TextEdit::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("get_minimap_visible_lines"), &TextEdit::get_minimap_visible_lines);
 
 	/* Gutters. */
+	BIND_ENUM(GutterType);
 	BIND_ENUM_CONSTANT(GUTTER_TYPE_STRING);
 	BIND_ENUM_CONSTANT(GUTTER_TYPE_ICON);
 	BIND_ENUM_CONSTANT(GUTTER_TYPE_CUSTOM);

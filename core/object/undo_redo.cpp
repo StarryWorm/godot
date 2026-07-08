@@ -558,6 +558,7 @@ void UndoRedo::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("version_changed"));
 
+	BIND_ENUM(MergeMode);
 	BIND_ENUM_CONSTANT(MERGE_DISABLE);
 	BIND_ENUM_CONSTANT(MERGE_ENDS);
 	BIND_ENUM_CONSTANT(MERGE_ALL);

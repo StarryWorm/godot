@@ -126,6 +126,7 @@ void BlitMaterial::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "blend_mode", PROPERTY_HINT_ENUM, "Mix,Add,Subtract,Multiply,Disabled"), "set_blend_mode", "get_blend_mode");
 
+	BIND_ENUM(BlendMode);
 	BIND_ENUM_CONSTANT(BLEND_MODE_MIX);
 	BIND_ENUM_CONSTANT(BLEND_MODE_ADD);
 	BIND_ENUM_CONSTANT(BLEND_MODE_SUB);

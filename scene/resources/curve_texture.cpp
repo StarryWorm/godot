@@ -47,6 +47,7 @@ void CurveTexture::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "texture_mode", PROPERTY_HINT_ENUM, "RGB,Red"), "set_texture_mode", "get_texture_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "curve", PROPERTY_HINT_RESOURCE_TYPE, Curve::get_class_static()), "set_curve", "get_curve");
 
+	BIND_ENUM(TextureMode);
 	BIND_ENUM_CONSTANT(TEXTURE_MODE_RGB);
 	BIND_ENUM_CONSTANT(TEXTURE_MODE_RED);
 }

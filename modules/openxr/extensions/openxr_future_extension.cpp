@@ -47,6 +47,7 @@ void OpenXRFutureResult::_bind_methods() {
 
 	ADD_SIGNAL(MethodInfo("completed", PropertyInfo(Variant::OBJECT, "result", PROPERTY_HINT_RESOURCE_TYPE, OpenXRFutureResult::get_class_static())));
 
+	BIND_ENUM(ResultStatus);
 	BIND_ENUM_CONSTANT(RESULT_RUNNING);
 	BIND_ENUM_CONSTANT(RESULT_FINISHED);
 	BIND_ENUM_CONSTANT(RESULT_CANCELLED);

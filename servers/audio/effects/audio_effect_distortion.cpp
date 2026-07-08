@@ -167,6 +167,7 @@ void AudioEffectDistortion::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "drive", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_drive", "get_drive");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "post_gain", PROPERTY_HINT_RANGE, "-80,24,0.01,suffix:dB"), "set_post_gain", "get_post_gain");
 
+	BIND_ENUM(Mode);
 	BIND_ENUM_CONSTANT(MODE_CLIP);
 	BIND_ENUM_CONSTANT(MODE_ATAN);
 	BIND_ENUM_CONSTANT(MODE_LOFI);

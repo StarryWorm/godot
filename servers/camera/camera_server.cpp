@@ -56,6 +56,7 @@ void CameraServer::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("camera_feed_removed", PropertyInfo(Variant::INT, "id")));
 	ADD_SIGNAL(MethodInfo(feeds_updated_signal_name));
 
+	BIND_ENUM(FeedImage);
 	BIND_ENUM_CONSTANT(FEED_RGBA_IMAGE);
 	BIND_ENUM_CONSTANT(FEED_YCBCR_IMAGE);
 	BIND_ENUM_CONSTANT(FEED_Y_IMAGE);

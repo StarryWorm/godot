@@ -31,6 +31,8 @@
 #include "display_server.h"
 #include "display_server.compat.inc"
 
+#include "servers/display/display_server_enums.h"
+
 STATIC_ASSERT_INCOMPLETE_TYPE(class, Input);
 STATIC_ASSERT_INCOMPLETE_TYPE(class, NativeMenu);
 STATIC_ASSERT_INCOMPLETE_TYPE(class, Texture2D);
@@ -1729,6 +1731,7 @@ void DisplayServer::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("pip_mode_set_aspect_ratio", "numerator", "denominator", "window_id"), &DisplayServer::pip_mode_set_aspect_ratio, DEFVAL(DisplayServerEnums::MAIN_WINDOW_ID));
 	ClassDB::bind_method(D_METHOD("pip_mode_set_auto_enter_on_background", "auto_enter_on_background", "window_id"), &DisplayServer::pip_mode_set_auto_enter_on_background, DEFVAL(DisplayServerEnums::MAIN_WINDOW_ID));
 
+	BIND_ENUM(DisplayServerEnums::Feature);
 #ifndef DISABLE_DEPRECATED
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FEATURE_GLOBAL_MENU);
 #endif // DISABLE_DEPRECATED
@@ -1769,6 +1772,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FEATURE_PIP_MODE);
 
 #ifndef DISABLE_DEPRECATED
+	BIND_ENUM(DisplayServerEnums::AccessibilityRole);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ROLE_UNKNOWN);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ROLE_DEFAULT_BUTTON);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ROLE_AUDIO);
@@ -1818,11 +1822,13 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ROLE_REGION);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ROLE_TEXT_RUN);
 
+	BIND_ENUM(DisplayServerEnums::AccessibilityPopupType);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::POPUP_MENU);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::POPUP_LIST);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::POPUP_TREE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::POPUP_DIALOG);
 
+	BIND_ENUM(DisplayServerEnums::AccessibilityFlags);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FLAG_HIDDEN);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FLAG_MULTISELECTABLE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FLAG_REQUIRED);
@@ -1834,6 +1840,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FLAG_DISABLED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FLAG_CLIPS_CHILDREN);
 
+	BIND_ENUM(DisplayServerEnums::AccessibilityAction);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ACTION_CLICK);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ACTION_FOCUS);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ACTION_BLUR);
@@ -1858,13 +1865,16 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ACTION_SHOW_CONTEXT_MENU);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::ACTION_CUSTOM);
 
+	BIND_ENUM(DisplayServerEnums::AccessibilityLiveMode);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::LIVE_OFF);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::LIVE_POLITE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::LIVE_ASSERTIVE);
 
+	BIND_ENUM(DisplayServerEnums::AccessibilityScrollUnit);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCROLL_UNIT_ITEM);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCROLL_UNIT_PAGE);
 
+	BIND_ENUM(DisplayServerEnums::AccessibilityScrollHint);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCROLL_HINT_TOP_LEFT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCROLL_HINT_BOTTOM_RIGHT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCROLL_HINT_TOP_EDGE);
@@ -1873,6 +1883,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCROLL_HINT_RIGHT_EDGE);
 #endif // DISABLE_DEPRECATED
 
+	BIND_ENUM(DisplayServerEnums::MouseMode);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::MOUSE_MODE_VISIBLE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::MOUSE_MODE_HIDDEN);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::MOUSE_MODE_CAPTURED);
@@ -1890,6 +1901,7 @@ void DisplayServer::_bind_methods() {
 	BIND_CONSTANT(DisplayServerEnums::INVALID_WINDOW_ID);
 	BIND_CONSTANT(DisplayServerEnums::INVALID_INDICATOR_ID);
 
+	BIND_ENUM(DisplayServerEnums::ScreenOrientation);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCREEN_LANDSCAPE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCREEN_PORTRAIT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCREEN_REVERSE_LANDSCAPE);
@@ -1898,6 +1910,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCREEN_SENSOR_PORTRAIT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::SCREEN_SENSOR);
 
+	BIND_ENUM(DisplayServerEnums::VirtualKeyboardType);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_DEFAULT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_MULTILINE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_NUMBER);
@@ -1907,6 +1920,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_PASSWORD);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::KEYBOARD_TYPE_URL);
 
+	BIND_ENUM(DisplayServerEnums::CursorShape);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::CURSOR_ARROW);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::CURSOR_IBEAM);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::CURSOR_POINTING_HAND);
@@ -1926,24 +1940,28 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::CURSOR_HELP);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::CURSOR_MAX);
 
+	BIND_ENUM(DisplayServerEnums::FileDialogMode);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FILE_DIALOG_MODE_OPEN_FILE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FILE_DIALOG_MODE_OPEN_FILES);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FILE_DIALOG_MODE_OPEN_DIR);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FILE_DIALOG_MODE_OPEN_ANY);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::FILE_DIALOG_MODE_SAVE_FILE);
 
+	BIND_ENUM(DisplayServerEnums::WindowMode);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_MODE_WINDOWED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_MODE_MINIMIZED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_MODE_MAXIMIZED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_MODE_FULLSCREEN);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_MODE_EXCLUSIVE_FULLSCREEN);
 
+	BIND_ENUM(DisplayServerEnums::ProgressState);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::PROGRESS_STATE_NOPROGRESS);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::PROGRESS_STATE_INDETERMINATE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::PROGRESS_STATE_NORMAL);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::PROGRESS_STATE_ERROR);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::PROGRESS_STATE_PAUSED);
 
+	BIND_ENUM(DisplayServerEnums::WindowFlags);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_FLAG_RESIZE_DISABLED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_FLAG_BORDERLESS);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_FLAG_ALWAYS_ON_TOP);
@@ -1959,6 +1977,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_FLAG_MAXIMIZE_DISABLED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_FLAG_MAX);
 
+	BIND_ENUM(DisplayServerEnums::WindowEvent);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EVENT_MOUSE_ENTER);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EVENT_MOUSE_EXIT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EVENT_FOCUS_IN);
@@ -1970,6 +1989,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EVENT_FORCE_CLOSE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EVENT_OUTPUT_MAX_LINEAR_VALUE_CHANGED);
 
+	BIND_ENUM(DisplayServerEnums::WindowResizeEdge);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EDGE_TOP_LEFT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EDGE_TOP);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EDGE_TOP_RIGHT);
@@ -1980,11 +2000,13 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EDGE_BOTTOM_RIGHT);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_EDGE_MAX);
 
+	BIND_ENUM(DisplayServerEnums::VSyncMode);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::VSYNC_DISABLED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::VSYNC_ENABLED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::VSYNC_ADAPTIVE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::VSYNC_MAILBOX);
 
+	BIND_ENUM(DisplayServerEnums::HandleType);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::DISPLAY_HANDLE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_HANDLE);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::WINDOW_VIEW);
@@ -1994,6 +2016,7 @@ void DisplayServer::_bind_methods() {
 	BIND_ENUM_CONSTANT(DisplayServerEnums::GLX_VISUALID);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::GLX_FBCONFIG);
 
+	BIND_ENUM(DisplayServerEnums::TTSUtteranceEvent);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::TTS_UTTERANCE_STARTED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::TTS_UTTERANCE_ENDED);
 	BIND_ENUM_CONSTANT(DisplayServerEnums::TTS_UTTERANCE_CANCELED);

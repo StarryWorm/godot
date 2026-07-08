@@ -1357,6 +1357,7 @@ void SurfaceTool::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("commit", "existing", "flags"), &SurfaceTool::commit, DEFVAL(Variant()), DEFVAL(0));
 	ClassDB::bind_method(D_METHOD("commit_to_arrays"), &SurfaceTool::commit_to_arrays);
 
+	BIND_ENUM(CustomFormat);
 	BIND_ENUM_CONSTANT(CUSTOM_RGBA8_UNORM);
 	BIND_ENUM_CONSTANT(CUSTOM_RGBA8_SNORM);
 	BIND_ENUM_CONSTANT(CUSTOM_RG_HALF);
@@ -1366,6 +1367,8 @@ void SurfaceTool::_bind_methods() {
 	BIND_ENUM_CONSTANT(CUSTOM_RGB_FLOAT);
 	BIND_ENUM_CONSTANT(CUSTOM_RGBA_FLOAT);
 	BIND_ENUM_CONSTANT(CUSTOM_MAX);
+
+	BIND_ENUM(SkinWeightCount);
 	BIND_ENUM_CONSTANT(SKIN_4_WEIGHTS);
 	BIND_ENUM_CONSTANT(SKIN_8_WEIGHTS);
 }

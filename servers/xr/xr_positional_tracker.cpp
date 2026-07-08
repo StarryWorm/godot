@@ -34,6 +34,7 @@
 #include "servers/xr/xr_controller_tracker.h"
 
 void XRPositionalTracker::_bind_methods() {
+	BIND_ENUM(TrackerHand);
 	BIND_ENUM_CONSTANT(TRACKER_HAND_UNKNOWN);
 	BIND_ENUM_CONSTANT(TRACKER_HAND_LEFT);
 	BIND_ENUM_CONSTANT(TRACKER_HAND_RIGHT);

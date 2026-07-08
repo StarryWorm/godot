@@ -1511,6 +1511,7 @@ void GridMap::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("cell_size_changed", PropertyInfo(Variant::VECTOR3, "cell_size")));
 	ADD_SIGNAL(MethodInfo(CoreStringName(changed)));
 
+	BIND_ENUM(DebugVisibilityMode);
 	BIND_ENUM_CONSTANT(DEBUG_VISIBILITY_MODE_DEFAULT);
 	BIND_ENUM_CONSTANT(DEBUG_VISIBILITY_MODE_FORCE_SHOW);
 	BIND_ENUM_CONSTANT(DEBUG_VISIBILITY_MODE_FORCE_HIDE);

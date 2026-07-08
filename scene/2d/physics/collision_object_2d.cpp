@@ -672,6 +672,7 @@ void CollisionObject2D::_bind_methods() {
 	ADD_GROUP("Input", "input_");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "input_pickable"), "set_pickable", "is_pickable");
 
+	BIND_ENUM(DisableMode);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_REMOVE);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_MAKE_STATIC);
 	BIND_ENUM_CONSTANT(DISABLE_MODE_KEEP_ACTIVE);

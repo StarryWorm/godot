@@ -40,6 +40,7 @@ void PinJoint3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "params/damping", PROPERTY_HINT_RANGE, "0.01,8.0,0.01"), "set_param", "get_param", PARAM_DAMPING);
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "params/impulse_clamp", PROPERTY_HINT_RANGE, "0.0,64.0,0.01"), "set_param", "get_param", PARAM_IMPULSE_CLAMP);
 
+	BIND_ENUM(Param);
 	BIND_ENUM_CONSTANT(PARAM_BIAS);
 	BIND_ENUM_CONSTANT(PARAM_DAMPING);
 	BIND_ENUM_CONSTANT(PARAM_IMPULSE_CLAMP);

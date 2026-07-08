@@ -717,6 +717,7 @@ void TextureProgressBar::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "tint_over"), "set_tint_over", "get_tint_over");
 	ADD_PROPERTY(PropertyInfo(Variant::COLOR, "tint_progress"), "set_tint_progress", "get_tint_progress");
 
+	BIND_ENUM(FillMode);
 	BIND_ENUM_CONSTANT(FILL_LEFT_TO_RIGHT);
 	BIND_ENUM_CONSTANT(FILL_RIGHT_TO_LEFT);
 	BIND_ENUM_CONSTANT(FILL_TOP_TO_BOTTOM);

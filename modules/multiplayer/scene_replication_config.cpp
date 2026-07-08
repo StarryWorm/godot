@@ -281,6 +281,7 @@ void SceneReplicationConfig::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("property_get_replication_mode", "path"), &SceneReplicationConfig::property_get_replication_mode);
 	ClassDB::bind_method(D_METHOD("property_set_replication_mode", "path", "mode"), &SceneReplicationConfig::property_set_replication_mode);
 
+	BIND_ENUM(ReplicationMode);
 	BIND_ENUM_CONSTANT(REPLICATION_MODE_NEVER);
 	BIND_ENUM_CONSTANT(REPLICATION_MODE_ALWAYS);
 	BIND_ENUM_CONSTANT(REPLICATION_MODE_ON_CHANGE);

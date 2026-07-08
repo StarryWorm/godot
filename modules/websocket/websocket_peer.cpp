@@ -85,9 +85,11 @@ void WebSocketPeer::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "heartbeat_interval"), "set_heartbeat_interval", "get_heartbeat_interval");
 
+	BIND_ENUM(WriteMode);
 	BIND_ENUM_CONSTANT(WRITE_MODE_TEXT);
 	BIND_ENUM_CONSTANT(WRITE_MODE_BINARY);
 
+	BIND_ENUM(State);
 	BIND_ENUM_CONSTANT(STATE_CONNECTING);
 	BIND_ENUM_CONSTANT(STATE_OPEN);
 	BIND_ENUM_CONSTANT(STATE_CLOSING);

@@ -563,6 +563,7 @@ void BoneTwistDisperser3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "mutable_bone_axes"), "set_mutable_bone_axes", "are_bone_axes_mutable");
 	ADD_ARRAY_COUNT("Settings", "setting_count", "set_setting_count", "get_setting_count", "settings/");
 
+	BIND_ENUM(DisperseMode);
 	BIND_ENUM_CONSTANT(DISPERSE_MODE_EVEN);
 	BIND_ENUM_CONSTANT(DISPERSE_MODE_WEIGHTED);
 	BIND_ENUM_CONSTANT(DISPERSE_MODE_CUSTOM);

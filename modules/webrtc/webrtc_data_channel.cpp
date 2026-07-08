@@ -52,9 +52,11 @@ void WebRTCDataChannel::_bind_methods() {
 
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "write_mode", PROPERTY_HINT_ENUM), "set_write_mode", "get_write_mode");
 
+	BIND_ENUM(WriteMode);
 	BIND_ENUM_CONSTANT(WRITE_MODE_TEXT);
 	BIND_ENUM_CONSTANT(WRITE_MODE_BINARY);
 
+	BIND_ENUM(ChannelState);
 	BIND_ENUM_CONSTANT(STATE_CONNECTING);
 	BIND_ENUM_CONSTANT(STATE_OPEN);
 	BIND_ENUM_CONSTANT(STATE_CLOSING);

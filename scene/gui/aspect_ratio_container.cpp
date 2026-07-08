@@ -193,11 +193,13 @@ void AspectRatioContainer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "alignment_horizontal", PROPERTY_HINT_ENUM, "Begin,Center,End"), "set_alignment_horizontal", "get_alignment_horizontal");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "alignment_vertical", PROPERTY_HINT_ENUM, "Begin,Center,End"), "set_alignment_vertical", "get_alignment_vertical");
 
+	BIND_ENUM(StretchMode);
 	BIND_ENUM_CONSTANT(STRETCH_WIDTH_CONTROLS_HEIGHT);
 	BIND_ENUM_CONSTANT(STRETCH_HEIGHT_CONTROLS_WIDTH);
 	BIND_ENUM_CONSTANT(STRETCH_FIT);
 	BIND_ENUM_CONSTANT(STRETCH_COVER);
 
+	BIND_ENUM(AlignmentMode);
 	BIND_ENUM_CONSTANT(ALIGNMENT_BEGIN);
 	BIND_ENUM_CONSTANT(ALIGNMENT_CENTER);
 	BIND_ENUM_CONSTANT(ALIGNMENT_END);

@@ -515,6 +515,7 @@ void LookAtModifier3D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "secondary_negative_limit_angle", PROPERTY_HINT_RANGE, "0,180,0.01,radians_as_degrees"), "set_secondary_negative_limit_angle", "get_secondary_negative_limit_angle");
 	ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "secondary_negative_damp_threshold", PROPERTY_HINT_RANGE, "0,1,0.01"), "set_secondary_negative_damp_threshold", "get_secondary_negative_damp_threshold");
 
+	BIND_ENUM(OriginFrom);
 	BIND_ENUM_CONSTANT(ORIGIN_FROM_SELF);
 	BIND_ENUM_CONSTANT(ORIGIN_FROM_SPECIFIC_BONE);
 	BIND_ENUM_CONSTANT(ORIGIN_FROM_EXTERNAL_NODE);

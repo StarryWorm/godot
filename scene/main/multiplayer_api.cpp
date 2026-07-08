@@ -311,6 +311,7 @@ void MultiplayerAPI::_bind_methods() {
 	ADD_SIGNAL(MethodInfo("connection_failed"));
 	ADD_SIGNAL(MethodInfo("server_disconnected"));
 
+	BIND_ENUM(RPCMode);
 	BIND_ENUM_CONSTANT(RPC_MODE_DISABLED);
 	BIND_ENUM_CONSTANT(RPC_MODE_ANY_PEER);
 	BIND_ENUM_CONSTANT(RPC_MODE_AUTHORITY);

@@ -275,6 +275,7 @@ void MultiplayerSynchronizer::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "visibility_update_mode", PROPERTY_HINT_ENUM, "Idle,Physics,None"), "set_visibility_update_mode", "get_visibility_update_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "public_visibility"), "set_visibility_public", "is_visibility_public");
 
+	BIND_ENUM(VisibilityUpdateMode);
 	BIND_ENUM_CONSTANT(VISIBILITY_PROCESS_IDLE);
 	BIND_ENUM_CONSTANT(VISIBILITY_PROCESS_PHYSICS);
 	BIND_ENUM_CONSTANT(VISIBILITY_PROCESS_NONE);

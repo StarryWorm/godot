@@ -85,6 +85,7 @@ void NinePatchRect::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "axis_stretch_horizontal", PROPERTY_HINT_ENUM, "Stretch,Tile,Tile Fit"), "set_h_axis_stretch_mode", "get_h_axis_stretch_mode");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "axis_stretch_vertical", PROPERTY_HINT_ENUM, "Stretch,Tile,Tile Fit"), "set_v_axis_stretch_mode", "get_v_axis_stretch_mode");
 
+	BIND_ENUM(AxisStretchMode);
 	BIND_ENUM_CONSTANT(AXIS_STRETCH_MODE_STRETCH);
 	BIND_ENUM_CONSTANT(AXIS_STRETCH_MODE_TILE);
 	BIND_ENUM_CONSTANT(AXIS_STRETCH_MODE_TILE_FIT);

@@ -52,6 +52,7 @@ void HingeJoint3D::_bind_methods() {
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "motor/target_velocity", PROPERTY_HINT_RANGE, U"-200,200,0.01,or_greater,or_less,radians_as_degrees,suffix:\u00B0/s"), "set_param", "get_param", PARAM_MOTOR_TARGET_VELOCITY);
 	ADD_PROPERTYI(PropertyInfo(Variant::FLOAT, "motor/max_impulse", PROPERTY_HINT_RANGE, "0.01,1024,0.01"), "set_param", "get_param", PARAM_MOTOR_MAX_IMPULSE);
 
+	BIND_ENUM(Param);
 	BIND_ENUM_CONSTANT(PARAM_BIAS);
 	BIND_ENUM_CONSTANT(PARAM_LIMIT_UPPER);
 	BIND_ENUM_CONSTANT(PARAM_LIMIT_LOWER);
@@ -62,6 +63,7 @@ void HingeJoint3D::_bind_methods() {
 	BIND_ENUM_CONSTANT(PARAM_MOTOR_MAX_IMPULSE);
 	BIND_ENUM_CONSTANT(PARAM_MAX);
 
+	BIND_ENUM(Flag);
 	BIND_ENUM_CONSTANT(FLAG_USE_LIMIT);
 	BIND_ENUM_CONSTANT(FLAG_ENABLE_MOTOR);
 	BIND_ENUM_CONSTANT(FLAG_MAX);
