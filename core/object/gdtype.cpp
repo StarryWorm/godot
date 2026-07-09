@@ -32,7 +32,6 @@
 
 #include "core/os/memory.h"
 #include "core/os/thread.h"
-#include "core/variant/variant_internal.h"
 
 GDType::GDType(const GDType *p_super_type, StringName p_name) :
 		super_type(p_super_type), name(std::move(p_name)) {
@@ -64,7 +63,6 @@ void GDType::initialize() {
 		// parts in _bind_methods, which is called on registration.
 		super_type->init_state = InitState::FINALIZED;
 
-		int_constant_map = super_type->int_constant_map;
 		constant_map = super_type->constant_map;
 		enum_map = super_type->enum_map;
 		enum_cases_map = super_type->enum_cases_map;
@@ -119,10 +117,6 @@ void GDType::bind_enum_case(const StringName &p_enum, const StringName &p_case, 
 
 	enum_cases_map.insert(p_case, p_constant);
 	self_enum_cases_map.insert(p_case, p_constant);
-
-	// FIXME: Temporary solution until all internal APIs fetch enums properly instead of relying on the int constant map
-	int_constant_map[p_case] = p_constant;
-	self_int_constant_map[p_case] = p_constant;
 }
 
 void GDType::bind_constant(const StringName &p_name, const Variant &p_constant) {
@@ -138,15 +132,6 @@ void GDType::bind_constant(const StringName &p_name, const Variant &p_constant) 
 
 	constant_map[p_name] = p_constant;
 	self_constant_map[p_name] = p_constant;
-
-	// FIXME: Temporary solution until we deprecate integer-specific constants.
-	// Requires compat-break for GDExtension and ClassDB.
-	// Remove `variant_internal.h` include when this is removed.
-	if (type == Variant::INT) {
-		int64_t value = *VariantInternal::get_int(&p_constant);
-		int_constant_map[p_name] = value;
-		self_int_constant_map[p_name] = value;
-	}
 }
 
 const GDType::EnumInfo *GDType::get_integer_constant_enum(const StringName &p_name, bool p_no_inheritance) const {

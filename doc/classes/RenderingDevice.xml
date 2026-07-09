@@ -1367,6 +1367,12 @@
 		</method>
 	</methods>
 	<constants>
+		<constant name="INVALID_ID" value="-1">
+			Returned by functions that return an ID if a value is invalid.
+		</constant>
+		<constant name="INVALID_FORMAT_ID" value="-1">
+			Returned by functions that return a format ID if a value is invalid.
+		</constant>
 		<constant name="DEVICE_TYPE_OTHER" value="0" enum="DeviceType">
 			Rendering device type does not match any of the other enum values or is unknown.
 		</constant>
@@ -2974,12 +2980,6 @@
 		</constant>
 		<constant name="MEMORY_TOTAL" value="2" enum="MemoryType">
 			Total memory taken. This is greater than the sum of [constant MEMORY_TEXTURES] and [constant MEMORY_BUFFERS], as it also includes miscellaneous memory usage.
-		</constant>
-		<constant name="INVALID_ID" value="-1">
-			Returned by functions that return an ID if a value is invalid.
-		</constant>
-		<constant name="INVALID_FORMAT_ID" value="-1">
-			Returned by functions that return a format ID if a value is invalid.
 		</constant>
 		<constant name="NONE" value="0" enum="BreadcrumbMarker">
 			No breadcrumb marker will be added.

@@ -42,6 +42,7 @@
 #include "core/io/dir_access.h"
 #include "core/io/file_access.h"
 #include "core/os/os.h"
+#include "core/variant/variant_internal.h"
 #include "main/main.h"
 
 StringBuilder &operator<<(StringBuilder &r_sb, const String &p_string) {
@@ -4416,7 +4417,13 @@ bool BindingsGenerator::_populate_object_type_interfaces() {
 		}
 
 		for (const String &constant_name : constants) {
-			const int64_t *value = class_info->gdtype->get_integer_constant_map(true).getptr(StringName(constant_name));
+			const Variant *_value = class_info->gdtype->get_constant_map(true).getptr(StringName(constant_name));
+			// FIXME: This check and conversion should be removed once the ConstantInterface class is updated to support Variant constants.
+			// Technically unnecessary as Objects do not support non-int constants.
+			if (_value->get_type() == Variant::NIL) {
+				continue;
+			}
+			const int64_t *value = VariantInternal::get_int(_value);
 			ERR_FAIL_NULL_V(value, false);
 
 			String constant_proxy_name = snake_to_pascal_case(constant_name, true);

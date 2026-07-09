@@ -192,6 +192,12 @@
 		</member>
 	</members>
 	<constants>
+		<constant name="NODE_ID_INVALID" value="-1">
+			Indicates an invalid [VisualShader] node.
+		</constant>
+		<constant name="NODE_ID_OUTPUT" value="0">
+			Indicates an output node of [VisualShader].
+		</constant>
 		<constant name="TYPE_VERTEX" value="0" enum="Type">
 			A vertex shader, operating on vertices.
 		</constant>
@@ -263,12 +269,6 @@
 		</constant>
 		<constant name="VARYING_TYPE_MAX" value="8" enum="VaryingType">
 			Represents the size of the [enum VaryingType] enum.
-		</constant>
-		<constant name="NODE_ID_INVALID" value="-1">
-			Indicates an invalid [VisualShader] node.
-		</constant>
-		<constant name="NODE_ID_OUTPUT" value="0">
-			Indicates an output node of [VisualShader].
 		</constant>
 	</constants>
 </class>

@@ -448,7 +448,7 @@ uint32_t ClassDB::get_api_hash(APIType p_api) {
 
 			List<StringName> snames;
 
-			for (const KeyValue<StringName, int64_t> &F : t->gdtype->get_integer_constant_map(true)) {
+			for (const KeyValue<StringName, Variant> &F : t->gdtype->get_constant_map(true)) {
 				snames.push_back(F.key);
 			}
 
@@ -456,7 +456,23 @@ uint32_t ClassDB::get_api_hash(APIType p_api) {
 
 			for (const StringName &F : snames) {
 				hash = hash_murmur3_one_64(F.hash(), hash);
-				hash = hash_murmur3_one_64(uint64_t(t->gdtype->get_integer_constant_map(true)[F]), hash);
+				hash = hash_murmur3_one_64(t->gdtype->get_constant_map(true)[F].hash(), hash);
+			}
+		}
+
+		{ //enum cases
+
+			List<StringName> snames;
+
+			for (const KeyValue<StringName, int64_t> &F : t->gdtype->get_enum_cases_map(true)) {
+				snames.push_back(F.key);
+			}
+
+			snames.sort_custom<StringName::AlphCompare>();
+
+			for (const StringName &F : snames) {
+				hash = hash_murmur3_one_64(F.hash(), hash);
+				hash = hash_murmur3_one_64(uint64_t(t->gdtype->get_enum_cases_map(true)[F]), hash);
 			}
 		}
 
@@ -1218,7 +1234,12 @@ void ClassDB::get_integer_constant_list(const StringName &p_class, List<String> 
 	ClassInfo *type = classes.getptr(p_class);
 	ERR_FAIL_NO_CLASS(type, p_class);
 
-	for (const KeyValue<StringName, int64_t> &E : type->gdtype->get_integer_constant_map(p_no_inheritance)) {
+	for (const KeyValue<StringName, Variant> &E : type->gdtype->get_constant_map(p_no_inheritance)) {
+		if (E.value.get_type() == Variant::INT) {
+			p_constants->push_back(E.key);
+		}
+	}
+	for (const KeyValue<StringName, int64_t> &E : type->gdtype->get_enum_cases_map(p_no_inheritance)) {
 		p_constants->push_back(E.key);
 	}
 }
@@ -1228,12 +1249,19 @@ int64_t ClassDB::get_integer_constant(const StringName &p_class, const StringNam
 
 	ClassInfo *type = classes.getptr(p_class);
 	if (type) {
-		const int64_t *constant = type->gdtype->get_integer_constant_map(false).getptr(p_name);
-		if (constant) {
+		const Variant *constant = type->gdtype->get_constant_map(false).getptr(p_name);
+		if (constant && constant->get_type() == Variant::INT) {
 			if (p_success) {
 				*p_success = true;
 			}
 			return *constant;
+		}
+		const int64_t *enum_case = type->gdtype->get_enum_cases_map(false).getptr(p_name);
+		if (enum_case) {
+			if (p_success) {
+				*p_success = true;
+			}
+			return *enum_case;
 		}
 	}
 
@@ -1249,7 +1277,10 @@ bool ClassDB::has_integer_constant(const StringName &p_class, const StringName &
 	ClassInfo *type = classes.getptr(p_class);
 	ERR_FAIL_NULL_V(type, false);
 
-	return type->gdtype->get_integer_constant_map(p_no_inheritance).has(p_name);
+	bool has_integer_constant = type->gdtype->get_constant_map(p_no_inheritance).has(p_name) && type->gdtype->get_constant_map(p_no_inheritance)[p_name].get_type() == Variant::INT;
+	bool has_enum_case = type->gdtype->get_enum_cases_map(p_no_inheritance).has(p_name);
+
+	return has_integer_constant || has_enum_case;
 }
 
 StringName ClassDB::get_integer_constant_enum(const StringName &p_class, const StringName &p_name, bool p_no_inheritance) {
@@ -1651,8 +1682,9 @@ bool ClassDB::get_property(Object *p_object, const StringName &p_property, Varia
 			return true;
 		}
 
-		const int64_t *c = check->gdtype->get_integer_constant_map(true).getptr(p_property); //constants count
-		if (c) {
+		// FIXME: Once Object supports Variant constants, the type check should be removed.
+		const Variant *c = check->gdtype->get_constant_map(true).getptr(p_property); //constants count
+		if (c && c->get_type() == Variant::INT) {
 			r_value = *c;
 			return true;
 		}

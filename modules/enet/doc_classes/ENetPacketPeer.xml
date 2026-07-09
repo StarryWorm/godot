@@ -129,6 +129,21 @@
 		</method>
 	</methods>
 	<constants>
+		<constant name="PACKET_LOSS_SCALE" value="65536">
+			The reference scale for packet loss. See [method get_statistic] and [constant PEER_PACKET_LOSS].
+		</constant>
+		<constant name="PACKET_THROTTLE_SCALE" value="32">
+			The reference value for throttle configuration. The default value is [code]32[/code]. See [method throttle_configure].
+		</constant>
+		<constant name="FLAG_RELIABLE" value="1">
+			Mark the packet to be sent as reliable.
+		</constant>
+		<constant name="FLAG_UNSEQUENCED" value="2">
+			Mark the packet to be sent unsequenced (unreliable).
+		</constant>
+		<constant name="FLAG_UNRELIABLE_FRAGMENT" value="8">
+			Mark the packet to be sent unreliable even if the packet is too big and needs fragmentation (increasing the chance of it being dropped).
+		</constant>
 		<constant name="STATE_DISCONNECTED" value="0" enum="PeerState">
 			The peer is disconnected.
 		</constant>
@@ -200,21 +215,6 @@
 		</constant>
 		<constant name="PEER_PACKET_THROTTLE_INTERVAL" value="13" enum="PeerStatistic">
 			The interval over which the lowest mean round trip time should be measured for use by the throttle mechanism (in milliseconds). The default value is [code]5000[/code].
-		</constant>
-		<constant name="PACKET_LOSS_SCALE" value="65536">
-			The reference scale for packet loss. See [method get_statistic] and [constant PEER_PACKET_LOSS].
-		</constant>
-		<constant name="PACKET_THROTTLE_SCALE" value="32">
-			The reference value for throttle configuration. The default value is [code]32[/code]. See [method throttle_configure].
-		</constant>
-		<constant name="FLAG_RELIABLE" value="1">
-			Mark the packet to be sent as reliable.
-		</constant>
-		<constant name="FLAG_UNSEQUENCED" value="2">
-			Mark the packet to be sent unsequenced (unreliable).
-		</constant>
-		<constant name="FLAG_UNRELIABLE_FRAGMENT" value="8">
-			Mark the packet to be sent unreliable even if the packet is too big and needs fragmentation (increasing the chance of it being dropped).
 		</constant>
 	</constants>
 </class>

@@ -91,6 +91,12 @@
 		</method>
 	</methods>
 	<constants>
+		<constant name="RESOLVER_MAX_QUERIES" value="256">
+			Maximum number of concurrent DNS resolver queries allowed, [constant RESOLVER_INVALID_ID] is returned if exceeded.
+		</constant>
+		<constant name="RESOLVER_INVALID_ID" value="-1">
+			Invalid ID constant. Returned if [constant RESOLVER_MAX_QUERIES] is exceeded.
+		</constant>
 		<constant name="RESOLVER_STATUS_NONE" value="0" enum="ResolverStatus">
 			DNS hostname resolver status: No status.
 		</constant>
@@ -102,12 +108,6 @@
 		</constant>
 		<constant name="RESOLVER_STATUS_ERROR" value="3" enum="ResolverStatus">
 			DNS hostname resolver status: Error.
-		</constant>
-		<constant name="RESOLVER_MAX_QUERIES" value="256">
-			Maximum number of concurrent DNS resolver queries allowed, [constant RESOLVER_INVALID_ID] is returned if exceeded.
-		</constant>
-		<constant name="RESOLVER_INVALID_ID" value="-1">
-			Invalid ID constant. Returned if [constant RESOLVER_MAX_QUERIES] is exceeded.
 		</constant>
 		<constant name="TYPE_NONE" value="0" enum="Type">
 			Address type: None.

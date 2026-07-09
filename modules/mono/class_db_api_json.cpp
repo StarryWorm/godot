@@ -30,6 +30,9 @@
 
 #include "class_db_api_json.h"
 
+#include "core/string/string_name.h"
+#include "core/variant/variant.h"
+
 #ifdef DEBUG_ENABLED
 
 #include "core/config/project_settings.h"
@@ -121,7 +124,7 @@ void class_db_api_to_json(const String &p_output_file, ClassDB::APIType p_api) {
 
 			List<StringName> snames;
 
-			for (const KeyValue<StringName, int64_t> &F : t->gdtype->get_integer_constant_map(true)) {
+			for (const KeyValue<StringName, Variant> &F : t->gdtype->get_constant_map(true)) {
 				snames.push_back(F.key);
 			}
 
@@ -134,8 +137,37 @@ void class_db_api_to_json(const String &p_output_file, ClassDB::APIType p_api) {
 				constants.push_back(constant_dict);
 
 				constant_dict["name"] = F;
-				constant_dict["value"] = t->gdtype->get_integer_constant_map(true)[F];
+				constant_dict["value"] = t->gdtype->get_constant_map(true)[F];
 			}
+
+			if (!constants.is_empty()) {
+				class_dict["constants"] = constants;
+			}
+		}
+
+		{ //enum cases
+
+			List<StringName> snames;
+
+			for (const KeyValue<StringName, int64_t> &F : t->gdtype->get_enum_cases_map(true)) {
+				snames.push_back(F.key);
+			}
+
+			snames.sort_custom<StringName::AlphCompare>();
+
+			Array cases;
+
+			for (const StringName &F : snames) {
+				Dictionary case_dict;
+				cases.push_back(case_dict);
+
+				case_dict["name"] = F;
+				case_dict["value"] = t->gdtype->get_enum_cases_map(true)[F];
+			}
+
+			// FIXME: Enum cases shouldn't be reflected as constants. Requires compat break.
+			Array constants = class_dict.get("constants", Array());
+			constants.append_array(cases);
 
 			if (!constants.is_empty()) {
 				class_dict["constants"] = constants;

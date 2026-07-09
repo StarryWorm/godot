@@ -193,6 +193,9 @@
 		</signal>
 	</signals>
 	<constants>
+		<constant name="MAX_DRAW_PASSES" value="4">
+			Maximum number of draw passes supported.
+		</constant>
 		<constant name="DRAW_ORDER_INDEX" value="0" enum="DrawOrder">
 			Particles are drawn in the order emitted.
 		</constant>
@@ -219,9 +222,6 @@
 		</constant>
 		<constant name="EMIT_FLAG_CUSTOM" value="16" enum="EmitFlags">
 			Particle starts with specified [code]CUSTOM[/code] data.
-		</constant>
-		<constant name="MAX_DRAW_PASSES" value="4">
-			Maximum number of draw passes supported.
 		</constant>
 		<constant name="TRANSFORM_ALIGN_DISABLED" value="0" enum="TransformAlign">
 			Do not align particle transforms relative to the camera or velocity.

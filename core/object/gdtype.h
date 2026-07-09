@@ -60,9 +60,6 @@ protected:
 	/// `name` is the first element and `Object` is the last (for `Object` types).
 	Vector<StringName> name_hierarchy;
 
-	AHashMap<StringName, int64_t> int_constant_map;
-	AHashMap<StringName, int64_t> self_int_constant_map;
-
 	AHashMap<StringName, Variant> constant_map;
 	AHashMap<StringName, Variant> self_constant_map;
 
@@ -93,7 +90,6 @@ public:
 	void bind_constant(const StringName &p_name, const Variant &p_constant);
 	void bind_enum(const StringName &p_name, bool p_is_bitfield = false);
 	void bind_enum_case(const StringName &p_enum, const StringName &p_name, int64_t p_constant);
-	const AHashMap<StringName, int64_t> &get_integer_constant_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_int_constant_map : int_constant_map; }
 	const AHashMap<StringName, Variant> &get_constant_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_constant_map : constant_map; }
 	const AHashMap<StringName, const EnumInfo *> &get_enum_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_enum_map : enum_map; }
 	const AHashMap<StringName, int64_t> &get_enum_cases_map(bool p_no_inheritance = false) const { return p_no_inheritance ? self_enum_cases_map : enum_cases_map; }

@@ -2699,6 +2699,34 @@
 		</signal>
 	</signals>
 	<constants>
+		<constant name="INVALID_SCREEN" value="-1">
+			The ID that refers to a screen that does not exist. This is returned by some [DisplayServer] methods if no screen matches the requested result.
+		</constant>
+		<constant name="SCREEN_WITH_MOUSE_FOCUS" value="-4">
+			Represents the screen containing the mouse pointer.
+			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
+		</constant>
+		<constant name="SCREEN_WITH_KEYBOARD_FOCUS" value="-3">
+			Represents the screen containing the window with the keyboard focus.
+			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
+		</constant>
+		<constant name="SCREEN_PRIMARY" value="-2">
+			Represents the primary screen.
+			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
+		</constant>
+		<constant name="SCREEN_OF_MAIN_WINDOW" value="-1">
+			Represents the screen where the main window is located. This is usually the default value in functions that allow specifying one of several screens.
+			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
+		</constant>
+		<constant name="MAIN_WINDOW_ID" value="0">
+			The ID of the main window spawned by the engine, which can be passed to methods expecting a [code]window_id[/code].
+		</constant>
+		<constant name="INVALID_WINDOW_ID" value="-1">
+			The ID that refers to a nonexistent window. This is returned by some [DisplayServer] methods if no window matches the requested result.
+		</constant>
+		<constant name="INVALID_INDICATOR_ID" value="-1">
+			The ID that refers to a nonexistent application status indicator.
+		</constant>
 		<constant name="FEATURE_GLOBAL_MENU" value="0" enum="Feature" deprecated="Use [NativeMenu] or [PopupMenu] instead.">
 			Display server supports global menu. This allows the application to display its menu items in the operating system's top bar. [b]macOS[/b]
 		</constant>
@@ -3119,34 +3147,6 @@
 		</constant>
 		<constant name="MOUSE_MODE_MAX" value="5" enum="MouseMode">
 			Max value of the [enum MouseMode].
-		</constant>
-		<constant name="INVALID_SCREEN" value="-1">
-			The ID that refers to a screen that does not exist. This is returned by some [DisplayServer] methods if no screen matches the requested result.
-		</constant>
-		<constant name="SCREEN_WITH_MOUSE_FOCUS" value="-4">
-			Represents the screen containing the mouse pointer.
-			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
-		</constant>
-		<constant name="SCREEN_WITH_KEYBOARD_FOCUS" value="-3">
-			Represents the screen containing the window with the keyboard focus.
-			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
-		</constant>
-		<constant name="SCREEN_PRIMARY" value="-2">
-			Represents the primary screen.
-			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
-		</constant>
-		<constant name="SCREEN_OF_MAIN_WINDOW" value="-1">
-			Represents the screen where the main window is located. This is usually the default value in functions that allow specifying one of several screens.
-			[b]Note:[/b] On Android, iOS, Web, and Linux (Wayland), this constant always represents the screen at index [code]0[/code].
-		</constant>
-		<constant name="MAIN_WINDOW_ID" value="0">
-			The ID of the main window spawned by the engine, which can be passed to methods expecting a [code]window_id[/code].
-		</constant>
-		<constant name="INVALID_WINDOW_ID" value="-1">
-			The ID that refers to a nonexistent window. This is returned by some [DisplayServer] methods if no window matches the requested result.
-		</constant>
-		<constant name="INVALID_INDICATOR_ID" value="-1">
-			The ID that refers to a nonexistent application status indicator.
 		</constant>
 		<constant name="SCREEN_LANDSCAPE" value="0" enum="ScreenOrientation">
 			Default landscape orientation.

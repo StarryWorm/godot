@@ -1339,36 +1339,6 @@
 		</signal>
 	</signals>
 	<constants>
-		<constant name="FOCUS_NONE" value="0" enum="FocusMode">
-			The node cannot grab focus. Use with [member focus_mode].
-		</constant>
-		<constant name="FOCUS_CLICK" value="1" enum="FocusMode">
-			The node can only grab focus on mouse clicks. Use with [member focus_mode].
-		</constant>
-		<constant name="FOCUS_ALL" value="2" enum="FocusMode">
-			The node can grab focus on mouse click, using the arrows and the Tab keys on the keyboard, or using the D-pad buttons on a gamepad. Use with [member focus_mode].
-		</constant>
-		<constant name="FOCUS_ACCESSIBILITY" value="3" enum="FocusMode">
-			The node can grab focus only when screen reader is active. Use with [member focus_mode].
-		</constant>
-		<constant name="FOCUS_BEHAVIOR_INHERITED" value="0" enum="FocusBehaviorRecursive">
-			Inherits the [member focus_behavior_recursive] from the parent control. If there is no parent control, this is the same as [constant FOCUS_BEHAVIOR_ENABLED].
-		</constant>
-		<constant name="FOCUS_BEHAVIOR_DISABLED" value="1" enum="FocusBehaviorRecursive">
-			Prevents the control from getting focused. [method get_focus_mode_with_override] will return [constant FOCUS_NONE].
-		</constant>
-		<constant name="FOCUS_BEHAVIOR_ENABLED" value="2" enum="FocusBehaviorRecursive">
-			Allows the control to be focused, depending on the [member focus_mode]. This can be used to ignore the parent's [member focus_behavior_recursive]. [method get_focus_mode_with_override] will return the [member focus_mode].
-		</constant>
-		<constant name="MOUSE_BEHAVIOR_INHERITED" value="0" enum="MouseBehaviorRecursive">
-			Inherits the [member mouse_behavior_recursive] from the parent control. If there is no parent control, this is the same as [constant MOUSE_BEHAVIOR_ENABLED].
-		</constant>
-		<constant name="MOUSE_BEHAVIOR_DISABLED" value="1" enum="MouseBehaviorRecursive">
-			Prevents the control from receiving mouse input. [method get_mouse_filter_with_override] will return [constant MOUSE_FILTER_IGNORE].
-		</constant>
-		<constant name="MOUSE_BEHAVIOR_ENABLED" value="2" enum="MouseBehaviorRecursive">
-			Allows the control to receive mouse input, depending on the [member mouse_filter]. This can be used to ignore the parent's [member mouse_behavior_recursive]. [method get_mouse_filter_with_override] will return the [member mouse_filter].
-		</constant>
 		<constant name="NOTIFICATION_RESIZED" value="40">
 			Sent when the node changes size. Use [member size] to get the new size.
 		</constant>
@@ -1425,6 +1395,36 @@
 		</constant>
 		<constant name="NOTIFICATION_LAYOUT_DIRECTION_CHANGED" value="49">
 			Sent when the control layout direction is changed from LTR or RTL or vice versa. This notification is propagated to child Control nodes as result of a change to [member layout_direction].
+		</constant>
+		<constant name="FOCUS_NONE" value="0" enum="FocusMode">
+			The node cannot grab focus. Use with [member focus_mode].
+		</constant>
+		<constant name="FOCUS_CLICK" value="1" enum="FocusMode">
+			The node can only grab focus on mouse clicks. Use with [member focus_mode].
+		</constant>
+		<constant name="FOCUS_ALL" value="2" enum="FocusMode">
+			The node can grab focus on mouse click, using the arrows and the Tab keys on the keyboard, or using the D-pad buttons on a gamepad. Use with [member focus_mode].
+		</constant>
+		<constant name="FOCUS_ACCESSIBILITY" value="3" enum="FocusMode">
+			The node can grab focus only when screen reader is active. Use with [member focus_mode].
+		</constant>
+		<constant name="FOCUS_BEHAVIOR_INHERITED" value="0" enum="FocusBehaviorRecursive">
+			Inherits the [member focus_behavior_recursive] from the parent control. If there is no parent control, this is the same as [constant FOCUS_BEHAVIOR_ENABLED].
+		</constant>
+		<constant name="FOCUS_BEHAVIOR_DISABLED" value="1" enum="FocusBehaviorRecursive">
+			Prevents the control from getting focused. [method get_focus_mode_with_override] will return [constant FOCUS_NONE].
+		</constant>
+		<constant name="FOCUS_BEHAVIOR_ENABLED" value="2" enum="FocusBehaviorRecursive">
+			Allows the control to be focused, depending on the [member focus_mode]. This can be used to ignore the parent's [member focus_behavior_recursive]. [method get_focus_mode_with_override] will return the [member focus_mode].
+		</constant>
+		<constant name="MOUSE_BEHAVIOR_INHERITED" value="0" enum="MouseBehaviorRecursive">
+			Inherits the [member mouse_behavior_recursive] from the parent control. If there is no parent control, this is the same as [constant MOUSE_BEHAVIOR_ENABLED].
+		</constant>
+		<constant name="MOUSE_BEHAVIOR_DISABLED" value="1" enum="MouseBehaviorRecursive">
+			Prevents the control from receiving mouse input. [method get_mouse_filter_with_override] will return [constant MOUSE_FILTER_IGNORE].
+		</constant>
+		<constant name="MOUSE_BEHAVIOR_ENABLED" value="2" enum="MouseBehaviorRecursive">
+			Allows the control to receive mouse input, depending on the [member mouse_filter]. This can be used to ignore the parent's [member mouse_behavior_recursive]. [method get_mouse_filter_with_override] will return the [member mouse_filter].
 		</constant>
 		<constant name="CURSOR_ARROW" value="0" enum="CursorShape">
 			Show the system's arrow mouse cursor when the user hovers the node. Use with [member mouse_default_cursor_shape].
