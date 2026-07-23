@@ -97,6 +97,10 @@ void Container::_sort_children() {
 		return;
 	}
 
+	// Make sure minimum size and desired size are up-to-date before sorting children
+	update_minimum_size();
+	update_desired_size();
+
 	notification(NOTIFICATION_PRE_SORT_CHILDREN);
 	emit_signal(SceneStringName(pre_sort_children));
 
@@ -146,6 +150,10 @@ void Container::fit_child_in_rect(RequiredParam<Control> rp_child, const Rect2 &
 		} else if (v_size_flags.has_flag(SIZE_SHRINK_CENTER)) {
 			r.position.y += Math::floor((p_rect.size.y - final_height) / 2);
 		}
+	}
+
+	if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(p_child->get_path()).contains("SpecialBadName")) {
+		print_line("Control ", p_child->get_path(), " is fitting to ", r, " has minsize ", minsize, " desired_size ", desired_size, " maxsize ", maxsize);
 	}
 
 	p_child->set_rect(r);

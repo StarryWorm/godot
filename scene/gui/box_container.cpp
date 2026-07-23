@@ -46,6 +46,9 @@ struct _MinSizeCache {
 
 void BoxContainer::_resort() {
 	Size2i new_size = get_size();
+	if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+		print_line("BoxContainer ", get_path(), " is sorting, has size ", new_size);
+	}
 	Size2i combined_max_size = get_combined_maximum_size();
 	bool propagating_max_size = vertical ? is_propagating_maximum_size() && combined_max_size.height >= 0 : is_propagating_maximum_size() && combined_max_size.width >= 0;
 
@@ -347,6 +350,16 @@ Size2 BoxContainer::_get_minimum_size(bool p_use_desired_sizes) const {
 		first = false;
 	}
 
+	if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+		print_line("BoxContainer ", get_path(), " has computed minimum size ", minimum);
+		for (int i = 0; i < get_child_count(); i++) {
+			Control *c = as_sortable_control(get_child(i), SortableVisibilityMode::VISIBLE);
+			if (c) {
+				print_line("  child ", i, " has size ", c->get_size(), " minimum size ", c->get_combined_minimum_size());
+			}
+		}
+	}
+
 	return minimum;
 }
 
@@ -371,6 +384,12 @@ void BoxContainer::_notification(int p_what) {
 		case NOTIFICATION_TRANSLATION_CHANGED:
 		case NOTIFICATION_LAYOUT_DIRECTION_CHANGED: {
 			queue_sort();
+		} break;
+
+		case NOTIFICATION_RESIZED: {
+			if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+				print_line("BoxContainer ", get_path(), " size changed to ", get_size());
+			}
 		} break;
 	}
 }

@@ -1938,6 +1938,9 @@ void Control::update_minimum_size() {
 	// Invalidate cache upwards.
 	Control *invalidate = this;
 	while (invalidate && invalidate->data.minimum_size_valid) {
+		if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+			print_line("Child Control " + String(get_path()), " is invalidating parent " + String(invalidate->get_path()), " minimum size cache");
+		}
 		invalidate->data.minimum_size_valid = false;
 		if (invalidate->is_set_as_top_level()) {
 			break; // Do not go further up.
@@ -2183,6 +2186,9 @@ void Control::_update_minimum_size_cache() const {
 
 	data.minimum_size_cache = minsize;
 	data.minimum_size_valid = true;
+	if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+		print_line("Control " + String(get_path()), " is validating minimum size cache to " + String(minsize));
+	}
 
 	// Keep the desired size cache in sync so it will update if needed when the minimum size changes. This is needed for get_bound_desired_size to work correctly.
 	data.desired_size_valid = false;
@@ -2292,6 +2298,9 @@ void Control::_size_changed() {
 
 			item_rect_changed(approx_size_changed);
 			if (approx_size_changed) {
+				if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+					print_line("Control ", get_path(), " is resizing to ", new_size_cache, " has minsize ", get_combined_minimum_size(), " bound desired_size ", get_bound_desired_size(), " maxsize ", get_combined_maximum_size());
+				}
 				notification(NOTIFICATION_RESIZED);
 			}
 		}

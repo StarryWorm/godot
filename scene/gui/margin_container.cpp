@@ -118,6 +118,9 @@ void MarginContainer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
 			Size2 s = get_size();
+			if (is_inside_tree() && String(get_path()).contains("SpecialDebugName") && !String(get_path()).contains("SpecialBadName")) {
+				print_line("MarginContainer ", get_path(), " is sorting, size ", s);
+			}
 
 			for (int i = 0; i < get_child_count(); i++) {
 				Control *c = as_sortable_control(get_child(i));
@@ -127,6 +130,9 @@ void MarginContainer::_notification(int p_what) {
 
 				int w = s.width - theme_cache.margin_left - theme_cache.margin_right;
 				int h = s.height - theme_cache.margin_top - theme_cache.margin_bottom;
+				if (is_inside_tree() && String(c->get_path()).contains("SpecialDebugName") && !String(c->get_path()).contains("SpecialBadName")) {
+					print_line("Margin Container is fitting child ", c->get_path(), " to ", Rect2(theme_cache.margin_left, theme_cache.margin_top, w, h));
+				}
 				fit_child_in_rect(c, Rect2(theme_cache.margin_left, theme_cache.margin_top, w, h));
 			}
 		} break;
