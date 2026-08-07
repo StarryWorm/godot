@@ -19,7 +19,11 @@ if env["scu_build"]:
     # HACK: SCU setup doesn't support recursive/dynamic setup, so we must manually pass the files.
     env.add_source_files(tests_obj, glob.glob(".scu/*.cpp"))
 else:
-    env.add_source_files(tests_obj, glob.glob("*.cpp") + force_link_sources)
+    test_sources = glob.glob("*.cpp")
+    if env["use_msan"] and env["use_llvm"]:
+        test_sources.remove("test_main.cpp")
+        tests_obj.append(env.Object("test_main.cpp", CCFLAGS=["-fno-sanitize=memory"]))
+    env.add_source_files(tests_obj, test_sources + force_link_sources)
 
 lib = env.add_library("tests", tests_obj)
 env.Prepend(LIBS=[lib])

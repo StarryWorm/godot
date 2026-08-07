@@ -381,3 +381,5 @@ private:
 };
 
 REGISTER_LISTENER("GodotTestCaseListener", 1, GodotTestCaseListener);
+
+// Recompilation Count : 8
