@@ -361,14 +361,15 @@ bool Object::set_native(const StringName &p_name, const Variant &p_value, bool *
 
 				Callable::CallError ce;
 
+				MethodBind::MethodBindCaller caller = MethodBind::MethodBindCaller(const_cast<Object *>(this));
 				if (psg.index >= 0) {
 					Variant index = psg.index;
 					const Variant *arg[2] = { &index, &p_value };
 					//p_object->call(psg->setter,arg,2,ce);
-					psg.setter->call(this, arg, 2, ce);
+					psg.setter->call(caller, arg, 2, ce);
 				} else {
 					const Variant *arg[1] = { &p_value };
-					psg.setter->call(this, arg, 1, ce);
+					psg.setter->call(caller, arg, 1, ce);
 				}
 
 				if (r_valid) {
@@ -407,9 +408,9 @@ bool Object::get_native(const StringName &p_name, Variant &r_value, bool *r_vali
 				if (psg.index >= 0) {
 					Variant index = psg.index;
 					const Variant *arg[1] = { &index };
-					r_value = psg.getter->call(const_cast<Object *>(this), arg, 1, ce);
+					r_value = psg.getter->call(this, arg, 1, ce);
 				} else {
-					r_value = psg.getter->call(const_cast<Object *>(this), nullptr, 0, ce);
+					r_value = psg.getter->call(this, nullptr, 0, ce);
 				}
 
 				if (ce.error != Callable::CallError::CALL_OK) {

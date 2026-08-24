@@ -49,6 +49,35 @@ class MethodBind {
 	bool _returns = false;
 	bool _returns_raw_obj_ptr = false;
 
+public:
+	struct MethodBindCaller {
+		enum Kind {
+			NONE,
+			OBJECT,
+			VARIANT,
+		};
+
+		Kind kind = NONE;
+		void *ptr = nullptr;
+
+		MethodBindCaller(Object *p_object) {
+			kind = OBJECT;
+			ptr = p_object;
+		}
+		MethodBindCaller(const Object *p_object) {
+			kind = OBJECT;
+			ptr = const_cast<Object *>(p_object);
+		}
+		MethodBindCaller(const Variant *p_variant) {
+			kind = VARIANT;
+			ptr = const_cast<Variant *>(p_variant);
+		}
+		MethodBindCaller(std::nullptr_t) {
+			kind = NONE;
+			ptr = nullptr;
+		}
+	};
+
 protected:
 	Variant::Type *argument_types = nullptr;
 #ifdef DEBUG_ENABLED
@@ -113,10 +142,10 @@ public:
 	virtual bool is_valid() const { return true; }
 #endif
 
-	virtual Variant call(Object *p_object, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) const = 0;
-	virtual void validated_call(Object *p_object, const Variant **p_args, Variant *r_ret) const = 0;
+	virtual Variant call(MethodBindCaller p_caller, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) const = 0;
+	virtual void validated_call(MethodBindCaller p_caller, const Variant **p_args, Variant *r_ret) const = 0;
 
-	virtual void ptrcall(Object *p_object, const void **p_args, void *r_ret) const = 0;
+	virtual void ptrcall(MethodBindCaller p_caller, const void **p_args, void *r_ret) const = 0;
 
 	StringName get_name() const;
 	void set_name(const StringName &p_name);
@@ -165,11 +194,11 @@ public:
 	}
 #endif // DEBUG_ENABLED
 
-	virtual void validated_call(Object *p_object, const Variant **p_args, Variant *r_ret) const override {
+	virtual void validated_call(MethodBindCaller p_caller, const Variant **p_args, Variant *r_ret) const override {
 		ERR_FAIL_MSG("Validated call can't be used with vararg methods. This is a bug.");
 	}
 
-	virtual void ptrcall(Object *p_object, const void **p_args, void *r_ret) const override {
+	virtual void ptrcall(MethodBindCaller p_caller, const void **p_args, void *r_ret) const override {
 		ERR_FAIL_MSG("ptrcall can't be used with vararg methods. This is a bug.");
 	}
 
@@ -221,11 +250,12 @@ class MethodBindVarArgT : public MethodBindVarArgBase<MethodBindVarArgT<T>, T, v
 	friend class MethodBindVarArgBase<MethodBindVarArgT<T>, T, void, false>;
 
 public:
-	virtual Variant call(Object *p_object, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) const override {
+	virtual Variant call(MethodBind::MethodBindCaller p_caller, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) const override {
 #ifdef TOOLS_ENABLED
+		Object *p_object = p_caller.kind == MethodBind::MethodBindCaller::OBJECT ? static_cast<Object *>(p_caller.ptr) : nullptr;
 		ERR_FAIL_COND_V_MSG(p_object && p_object->is_extension_placeholder() && p_object->get_class_name() == MethodBind::get_instance_class(), Variant(), vformat("Cannot call method bind '%s' on placeholder instance.", MethodBind::get_name()));
 #endif
-		(static_cast<T *>(p_object)->*MethodBindVarArgBase<MethodBindVarArgT<T>, T, void, false>::method)(p_args, p_arg_count, r_error);
+		(static_cast<T *>(p_caller.ptr)->*MethodBindVarArgBase<MethodBindVarArgT<T>, T, void, false>::method)(p_args, p_arg_count, r_error);
 		return {};
 	}
 
@@ -257,11 +287,12 @@ class MethodBindVarArgTR : public MethodBindVarArgBase<MethodBindVarArgTR<T, R>,
 public:
 	GODOT_GCC_WARNING_PUSH_AND_IGNORE("-Wmaybe-uninitialized") // Workaround GH-66343 raised only with UBSAN, seems to be a false positive.
 
-	virtual Variant call(Object *p_object, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) const override {
+	virtual Variant call(MethodBind::MethodBindCaller p_caller, const Variant **p_args, int p_arg_count, Callable::CallError &r_error) const override {
 #ifdef TOOLS_ENABLED
+		Object *p_object = p_caller.kind == MethodBind::MethodBindCaller::OBJECT ? static_cast<Object *>(p_caller.ptr) : nullptr;
 		ERR_FAIL_COND_V_MSG(p_object && p_object->is_extension_placeholder() && p_object->get_class_name() == MethodBind::get_instance_class(), Variant(), vformat("Cannot call method bind '%s' on placeholder instance.", MethodBind::get_name()));
 #endif
-		return (static_cast<T *>(p_object)->*MethodBindVarArgBase<MethodBindVarArgTR<T, R>, T, R, true>::method)(p_args, p_arg_count, r_error);
+		return (static_cast<T *>(p_caller.ptr)->*MethodBindVarArgBase<MethodBindVarArgTR<T, R>, T, R, true>::method)(p_args, p_arg_count, r_error);
 	}
 
 	GODOT_GCC_WARNING_POP
