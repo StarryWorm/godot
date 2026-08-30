@@ -31,8 +31,10 @@
 #pragma once
 
 #include "core/object/gdvirtual.gen.h"
+#include "core/templates/rid.h"
 #include "scene/main/canvas_item.h"
 #include "scene/resources/theme.h"
+#include "servers/control/control_server.h"
 #include "servers/display/accessibility_server_enums.h"
 
 class Label;
@@ -55,12 +57,6 @@ public:
 	enum Anchor {
 		ANCHOR_BEGIN = 0,
 		ANCHOR_END = 1
-	};
-
-	enum GrowDirection {
-		GROW_DIRECTION_BEGIN,
-		GROW_DIRECTION_END,
-		GROW_DIRECTION_BOTH
 	};
 
 	enum FocusMode {
@@ -147,13 +143,6 @@ public:
 		PRESET_MODE_KEEP_SIZE
 	};
 
-	enum LayoutMode {
-		LAYOUT_MODE_POSITION,
-		LAYOUT_MODE_ANCHORS,
-		LAYOUT_MODE_CONTAINER,
-		LAYOUT_MODE_UNCONTROLLED,
-	};
-
 	enum LayoutDirection {
 		LAYOUT_DIRECTION_INHERITED,
 		LAYOUT_DIRECTION_APPLICATION_LOCALE,
@@ -174,6 +163,8 @@ public:
 	};
 
 private:
+	const RID control_rid;
+
 	struct CComparator {
 		bool operator()(const Control *p_a, const Control *p_b) const {
 			if (p_a->get_canvas_layer() == p_b->get_canvas_layer()) {
@@ -219,17 +210,11 @@ private:
 		Callable forward_drop;
 
 		// Positioning and sizing.
-
-		LayoutMode stored_layout_mode = LayoutMode::LAYOUT_MODE_POSITION;
 		bool stored_use_custom_anchors = false;
 
-		real_t offset[4] = { 0.0, 0.0, 0.0, 0.0 };
-		real_t anchor[4] = { ANCHOR_BEGIN, ANCHOR_BEGIN, ANCHOR_BEGIN, ANCHOR_BEGIN };
 		FocusMode focus_mode = FOCUS_NONE;
 		FocusBehaviorRecursive focus_behavior_recursive = FOCUS_BEHAVIOR_INHERITED;
 		bool parent_focus_behavior_recursive_enabled = false;
-		GrowDirection h_grow = GROW_DIRECTION_END;
-		GrowDirection v_grow = GROW_DIRECTION_END;
 
 		real_t rotation = 0.0;
 		Vector2 scale = Vector2(1, 1);
@@ -238,46 +223,11 @@ private:
 
 		OffsetTransform *offset_transform = nullptr;
 
-		Point2 pos_cache;
-		Size2 size_cache;
-
-		mutable Size2 maximum_size_cache;
-		mutable bool maximum_size_valid = false;
-
-		mutable Size2 parent_maximum_size_cache = Size2(-1, -1);
-
-		Size2 last_maximum_size;
-		bool updating_last_maximum_size = false;
-		bool block_maximum_size_adjust = false;
-
-		mutable Size2 minimum_size_cache;
-		mutable bool minimum_size_valid = false;
-
-		Size2 last_minimum_size;
-		bool updating_last_minimum_size = false;
-		bool block_minimum_size_adjust = false;
-
-		mutable Size2 desired_size_cache;
-		mutable bool desired_size_valid = false;
-
-		Size2 last_desired_size;
-		bool updating_last_desired_size = false;
-
-		bool expanded_by_desired_size = false;
-
-		bool layout_pending = false;
-
-		bool size_warning = true;
-
 		// Container sizing.
 
 		BitField<SizeFlags> h_size_flags = SIZE_FILL;
 		BitField<SizeFlags> v_size_flags = SIZE_FILL;
 		real_t expand = 1.0;
-		Size2 custom_maximum_size = Size2(-1, -1);
-		Size2 custom_minimum_size;
-
-		bool propagate_maximum_size = false;
 
 		// Input events and rendering.
 
@@ -354,6 +304,7 @@ private:
 
 	// Global relations.
 
+	friend class ControlServer;
 	friend class Viewport;
 
 	// Positioning and sizing.
@@ -366,28 +317,13 @@ private:
 	void _set_global_position(const Point2 &p_point);
 	void _set_size(const Size2 &p_size);
 
-	void _compute_layout_rect(Rect2 p_rect, bool p_keep_offsets = false);
-
-	void _set_layout_mode(LayoutMode p_mode);
-	void _update_layout_mode();
-	LayoutMode _get_layout_mode() const;
-	LayoutMode _get_default_layout_mode() const;
 	void _set_anchors_layout_preset(int p_preset);
 	int _get_anchors_layout_preset() const;
 
-	void _update_maximum_size_cache() const;
-	void _update_maximum_size();
-	void _update_minimum_size_cache() const;
-	void _update_minimum_size();
-	void _update_desired_size_cache() const;
-	void _update_desired_size();
-	void _grow_to_desired_size();
-	void _size_changed();
-
-	void _top_level_changed() override {} // Controls don't need to do anything, only other CanvasItems.
+	void _top_level_changed() override;
 	void _top_level_changed_on_parent() override;
 
-	void _clear_size_warning();
+	void _fit_contained_children(CS::Axis p_axis);
 
 	// Input events.
 
@@ -462,6 +398,12 @@ protected:
 	// Focus.
 	bool _is_focusable() const;
 
+	// Layout.
+	void _set_layout_mode(CS::LayoutMode p_mode);
+	CS::LayoutMode _get_layout_mode() const;
+	void _set_children_default_layout_mode(CS::LayoutMode p_mode);
+	CS::LayoutMode _get_children_default_layout_mode() const;
+
 	// Node overrides.
 
 	virtual void add_child_notify(Node *p_child) override;
@@ -473,6 +415,8 @@ protected:
 	GDVIRTUAL2RC(TypedArray<Vector3i>, _structured_text_parser, Array, String)
 	GDVIRTUAL0RC(Vector2, _get_maximum_size)
 	GDVIRTUAL0RC(Vector2, _get_minimum_size)
+	GDVIRTUAL0RC(real_t, _get_preferred_width)
+	GDVIRTUAL0RC(real_t, _get_desired_height)
 	GDVIRTUAL1RC(String, _get_tooltip, Vector2)
 	GDVIRTUAL1RC(AutoTranslateMode, _get_tooltip_auto_translate_mode_at, Vector2)
 
@@ -501,6 +445,10 @@ public:
 		NOTIFICATION_LAYOUT_DIRECTION_CHANGED = 49,
 		NOTIFICATION_MOUSE_ENTER_SELF = 60,
 		NOTIFICATION_MOUSE_EXIT_SELF = 61,
+		NOTIFICATION_PRE_FIT_CHILDREN_WIDTHS = 62,
+		NOTIFICATION_FIT_CHILDREN_WIDTHS = 63,
+		NOTIFICATION_PRE_FIT_CHILDREN_HEIGHTS = 64,
+		NOTIFICATION_FIT_CHILDREN_HEIGHTS = 65,
 	};
 
 	// Editor plugin interoperability.
@@ -550,6 +498,8 @@ public:
 
 	// Global relations.
 
+	RID get_control_rid() const;
+
 	Control *get_parent_control() const;
 	Window *get_parent_window() const;
 	Control *get_root_parent_control() const;
@@ -573,10 +523,10 @@ public:
 	void set_end(const Point2 &p_point);
 	Point2 get_end() const;
 
-	void set_h_grow_direction(GrowDirection p_direction);
-	GrowDirection get_h_grow_direction() const;
-	void set_v_grow_direction(GrowDirection p_direction);
-	GrowDirection get_v_grow_direction() const;
+	void set_h_grow_direction(CS::GrowDirection p_direction);
+	CS::GrowDirection get_h_grow_direction() const;
+	void set_v_grow_direction(CS::GrowDirection p_direction);
+	CS::GrowDirection get_v_grow_direction() const;
 
 	void set_anchors_preset(LayoutPreset p_preset, bool p_keep_offsets = true);
 	void set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resize_mode = PRESET_MODE_MINSIZE, int p_margin = 0);
@@ -617,12 +567,7 @@ public:
 	void update_maximum_size();
 	void update_minimum_size();
 	void update_desired_size();
-
-	void grow_to_desired_size();
-	bool is_expanded_by_desired_size() const;
-
-	void set_block_maximum_size_adjust(bool p_block);
-	void set_block_minimum_size_adjust(bool p_block);
+	void update_layout();
 
 	virtual Size2 get_maximum_size() const;
 	virtual Size2 get_combined_maximum_size() const;
@@ -643,13 +588,16 @@ public:
 
 	Size2 get_bound_desired_size() const;
 	virtual Size2 get_desired_size() const;
+	virtual real_t get_preferred_width() const;
+	virtual real_t get_desired_height() const;
 
 	bool is_layout_pending() const;
 	bool is_layout_pending_in_tree() const;
-	void layout_pending_start();
-	void layout_pending_finish();
-	Control *get_layout_pending_control_in_tree() const;
 	void call_on_all_layout_pending_finished(const Callable &p_callable);
+
+	// This override is necessary to ensure that all Controls have access to their updated size when they redraw.
+	// Defers _redraw_callback() to after layout is processed instead of in the message queue (_call_deferred behavior).
+	void queue_redraw() override;
 
 	// Container sizing.
 
@@ -882,9 +830,9 @@ VARIANT_ENUM_CAST(Control::CursorShape);
 VARIANT_ENUM_CAST(Control::LayoutPreset);
 VARIANT_ENUM_CAST(Control::LayoutPresetMode);
 VARIANT_ENUM_CAST(Control::MouseFilter);
-VARIANT_ENUM_CAST(Control::GrowDirection);
+VARIANT_ENUM_CAST(CS::GrowDirection);
 VARIANT_ENUM_CAST(Control::Anchor);
-VARIANT_ENUM_CAST(Control::LayoutMode);
+VARIANT_ENUM_CAST(CS::LayoutMode);
 VARIANT_ENUM_CAST(Control::LayoutDirection);
 VARIANT_ENUM_CAST(Control::TextDirection);
 

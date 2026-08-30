@@ -356,8 +356,12 @@ Size2 GraphFrame::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 GraphFrame::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t GraphFrame::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t GraphFrame::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }
 
 GraphFrame::GraphFrame() {

@@ -46,7 +46,7 @@ Size2 FoldableContainer::get_minimum_size() const {
 	return Size2(MAX(ms.width, title_minimum_size.width), ms.height + title_minimum_size.height);
 }
 
-Size2 FoldableContainer::get_desired_size() const {
+Size2 FoldableContainer::_get_desired_size() const {
 	_update_title_min_size();
 
 	if (folded) {
@@ -64,6 +64,14 @@ Size2 FoldableContainer::get_desired_size() const {
 	ds += theme_cache.panel_style->get_minimum_size();
 
 	return Size2(MAX(ds.width, title_minimum_size.width), ds.height + title_minimum_size.height);
+}
+
+real_t FoldableContainer::get_preferred_width() const {
+	return _get_desired_size().width;
+}
+
+real_t FoldableContainer::get_desired_height() const {
+	return _get_desired_size().height;
 }
 
 Size2 FoldableContainer::get_inner_combined_maximum_size() const {
@@ -87,21 +95,31 @@ void FoldableContainer::expand() {
 }
 
 void FoldableContainer::set_folded(bool p_folded) {
-	if (folded != p_folded) {
-		if (!changing_group && foldable_group.is_valid()) {
-			if (!p_folded) {
-				_update_group();
-				foldable_group->emit_signal(SNAME("expanded"), this);
-			} else if (!foldable_group->updating_group && foldable_group->get_expanded_container() == this && !foldable_group->is_allow_folding_all()) {
-				return;
-			}
-		}
-		folded = p_folded;
-
-		update_minimum_size();
-		queue_sort();
-		queue_redraw();
+	if (folded == p_folded) {
+		return;
 	}
+
+	if (!changing_group && foldable_group.is_valid()) {
+		if (!p_folded) {
+			_update_group();
+			foldable_group->emit_signal(SNAME("expanded"), this);
+		} else if (!foldable_group->updating_group && foldable_group->get_expanded_container() == this && !foldable_group->is_allow_folding_all()) {
+			return;
+		}
+	}
+	folded = p_folded;
+
+	for (int i = 0; i < get_child_count(false); i++) {
+		Control *c = as_sortable_control(get_child(i, false), SortableVisibilityMode::IGNORE);
+		if (!c) {
+			continue;
+		}
+		c->set_visible(!folded);
+	}
+
+	update_minimum_size();
+	queue_sort();
+	queue_redraw();
 }
 
 bool FoldableContainer::is_folded() const {
@@ -386,6 +404,10 @@ void FoldableContainer::_notification(int p_what) {
 				}
 			}
 
+			if (folded) {
+				break;
+			}
+
 			Rect2 inner_rect;
 			inner_rect.position.x = rtl ? theme_cache.panel_style->get_margin(SIDE_RIGHT) : theme_cache.panel_style->get_margin(SIDE_LEFT);
 			inner_rect.size.x = size.x - theme_cache.panel_style->get_margin(SIDE_LEFT) - theme_cache.panel_style->get_margin(SIDE_RIGHT);
@@ -401,11 +423,7 @@ void FoldableContainer::_notification(int p_what) {
 				if (!c) {
 					continue;
 				}
-				c->set_visible(!folded);
-
-				if (!folded) {
-					fit_child_in_rect(c, inner_rect);
-				}
+				fit_child_in_rect(c, inner_rect);
 			}
 		} break;
 

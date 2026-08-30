@@ -46,7 +46,7 @@ TEST_CASE("[SceneTree][TabBar] tab operations") {
 	TabBar *tab_bar = memnew(TabBar);
 	SceneTree::get_singleton()->get_root()->add_child(tab_bar);
 	tab_bar->set_clip_tabs(false);
-	MessageQueue::get_singleton()->flush();
+	SceneTree::get_singleton()->process(0);
 
 	SIGNAL_WATCH(tab_bar, "tab_selected");
 	SIGNAL_WATCH(tab_bar, "tab_changed");
@@ -404,7 +404,7 @@ TEST_CASE("[SceneTree][TabBar] tab operations") {
 		SIGNAL_DISCARD("tab_selected");
 		SIGNAL_DISCARD("tab_changed");
 
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		Vector<Rect2> tab_rects = {
 			tab_bar->get_tab_rect(0),
 			tab_bar->get_tab_rect(1),
@@ -420,7 +420,7 @@ TEST_CASE("[SceneTree][TabBar] tab operations") {
 		SIGNAL_CHECK_FALSE("tab_changed");
 
 		// The tabs after are moved over.
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_rect(0) == tab_rects[0]);
 		CHECK(tab_bar->get_tab_rect(2) == tab_rects[1]);
 
@@ -433,7 +433,7 @@ TEST_CASE("[SceneTree][TabBar] tab operations") {
 		SIGNAL_CHECK_FALSE("tab_changed");
 
 		// The tabs are back where they were.
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_rect(0) == tab_rects[0]);
 		CHECK(tab_bar->get_tab_rect(1) == tab_rects[1]);
 		CHECK(tab_bar->get_tab_rect(2) == tab_rects[2]);
@@ -703,7 +703,7 @@ TEST_CASE("[SceneTree][TabBar] initialization") {
 		SIGNAL_CHECK_FALSE("tab_changed");
 
 		SceneTree::get_singleton()->get_root()->add_child(tab_bar);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_count() == 0);
 		CHECK(tab_bar->get_current_tab() == -1);
 		CHECK(tab_bar->get_previous_tab() == -1);
@@ -733,7 +733,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 	tab_bar->add_tab("tab0");
 	tab_bar->add_tab("tab1 ");
 	tab_bar->add_tab("tab2    ");
-	MessageQueue::get_singleton()->flush();
+	SceneTree::get_singleton()->process(0);
 	Size2 all_tabs_size = tab_bar->get_size();
 
 	Vector<Rect2> tab_rects = {
@@ -772,7 +772,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Left alignment.
 		tab_bar->set_tab_alignment(TabBar::ALIGNMENT_LEFT);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		tab_rects = {
 			tab_bar->get_tab_rect(0),
 			tab_bar->get_tab_rect(1),
@@ -785,7 +785,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Right alignment.
 		tab_bar->set_tab_alignment(TabBar::ALIGNMENT_RIGHT);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		tab_rects = {
 			tab_bar->get_tab_rect(0),
 			tab_bar->get_tab_rect(1),
@@ -798,7 +798,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Center alignment.
 		tab_bar->set_tab_alignment(TabBar::ALIGNMENT_CENTER);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		tab_rects = {
 			tab_bar->get_tab_rect(0),
 			tab_bar->get_tab_rect(1),
@@ -815,7 +815,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 		// Clip tabs disabled means all tabs are visible and the minimum size holds all of them.
 		tab_bar->set_clip_tabs(false);
 		CHECK_FALSE(tab_bar->get_clip_tabs());
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_offset() == 0);
 		CHECK(tab_bar->get_minimum_size() == tab_bar->get_size());
 		CHECK(tab_bar->get_size().x == tab_rects[0].size.x + tab_rects[1].size.x + tab_rects[2].size.x);
@@ -823,7 +823,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		tab_bar->set_clip_tabs(true);
 		CHECK(tab_bar->get_clip_tabs());
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_offset() == 0);
 
 		// Horizontal size and minimum size get set to the widest tab plus arrow icons.
@@ -837,11 +837,12 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 	SUBCASE("[TabBar] ensure tab visible") {
 		tab_bar->set_scroll_to_selected(false);
 		tab_bar->set_clip_tabs(true);
+		SceneTree::get_singleton()->process(0);
 
 		// Resize tab bar to only be able to fit 2 tabs.
 		const float offset_button_size = tab_bar->get_theme_icon("decrement_icon")->get_width() + tab_bar->get_theme_icon("increment_icon")->get_width();
 		tab_bar->set_size(Size2(tab_rects[2].size.x + tab_rects[1].size.x + offset_button_size, all_tabs_size.y));
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_offset() == 0);
 		CHECK(tab_bar->get_offset_buttons_visible());
 
@@ -874,7 +875,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Set separation to 0 first.
 		tab_bar->add_theme_constant_override("tab_separation", 0);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		tab_rects = {
 			tab_bar->get_tab_rect(0),
@@ -889,7 +890,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 		// Apply separation.
 		int separation = 20;
 		tab_bar->add_theme_constant_override("tab_separation", separation);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		Vector<Rect2> rects_sep = {
 			tab_bar->get_tab_rect(0),
@@ -925,7 +926,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 		tab_bar->add_tab("A");
 		tab_bar->add_tab("B");
 		tab_bar->add_tab("C");
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		// All tabs visible. Layout: [A] - 20px - [B] - 20px - [C].
 		tab_rects = {
@@ -940,7 +941,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 		// Hide middle tab. Layout: [A] - 20px - [C].
 		// The separation belonging to B should not be present.
 		tab_bar->set_tab_hidden(1, true);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		tab_rects = {
 			tab_bar->get_tab_rect(0),
@@ -964,7 +965,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 		tab_bar->add_tab("S"); // Small
 		tab_bar->add_tab("Medium"); // Medium
 		tab_bar->add_tab("Large Text"); // Large
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		// Get baseline sizes (Fit Content).
 		float width_s = tab_bar->get_tab_rect(0).size.x;
@@ -978,7 +979,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Uniform Sizing: All tabs should become the size of the largest tab ("Large Text").
 		tab_bar->set_tab_sizing(TabBar::TAB_SIZING_UNIFORM);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		CHECK(tab_bar->get_tab_rect(0).size.x == width_l);
 		CHECK(tab_bar->get_tab_rect(1).size.x == width_l);
@@ -986,7 +987,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Justify Sizing: Tabs fill the space, but keep relative size differences based on content.
 		tab_bar->set_tab_sizing(TabBar::TAB_SIZING_JUSTIFY);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		float justify_width_0 = tab_bar->get_tab_rect(0).size.x;
 		float justify_width_1 = tab_bar->get_tab_rect(1).size.x;
@@ -1001,7 +1002,7 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Expand Sizing: Tabs should be equal width, dividing the 1000px available space (minus margins/separations).
 		tab_bar->set_tab_sizing(TabBar::TAB_SIZING_EXPAND);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		float expand_width_0 = tab_bar->get_tab_rect(0).size.x;
 		float expand_width_1 = tab_bar->get_tab_rect(1).size.x;
@@ -1027,18 +1028,18 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 		// Add 2 tabs.
 		tab_bar->add_tab("1");
 		tab_bar->add_tab("2");
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		// Available space = 200. Each tab = 100.
 		tab_bar->add_theme_constant_override("tab_separation", 0);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		float width_sep_0 = tab_bar->get_tab_rect(0).size.x;
 		CHECK(Math::is_equal_approx(width_sep_0, 100.0f));
 
 		// Separation = 50. Available space = 200 - 50 = 150. Each tab = 75.
 		int separation = 50;
 		tab_bar->add_theme_constant_override("tab_separation", separation);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		float width_sep_50 = tab_bar->get_tab_rect(0).size.x;
 		CHECK(Math::is_equal_approx(width_sep_50, 75.0f));
@@ -1055,14 +1056,14 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Create a tab with very long text that naturally exceeds the max width.
 		tab_bar->add_tab("This is a very long tab title that should exceed 200px");
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		float standard_tab_width = tab_bar->get_tab_rect(0).size.x;
 
 		// Set constraint.
 		int max_w = 200;
 		tab_bar->set_max_tab_width(max_w);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		// Verify the unconstrained width is greater than max width, then verify the current width is constrained.
 		CHECK(standard_tab_width > max_w);
@@ -1072,17 +1073,17 @@ TEST_CASE("[SceneTree][TabBar] layout and offset") {
 
 		// Uniform: Width should be constrained to 200px.
 		tab_bar->set_tab_sizing(TabBar::TAB_SIZING_UNIFORM);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_rect(0).size.x == max_w);
 
 		// Justify: Width should be constrained to 200px.
 		tab_bar->set_tab_sizing(TabBar::TAB_SIZING_JUSTIFY);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_rect(0).size.x == max_w);
 
 		// Expand: Width should be constrained to 200px.
 		tab_bar->set_tab_sizing(TabBar::TAB_SIZING_EXPAND);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		CHECK(tab_bar->get_tab_rect(0).size.x == max_w);
 	}
 
@@ -1097,7 +1098,7 @@ TEST_CASE("[SceneTree][TabBar] Mouse interaction") {
 	tab_bar->add_tab("tab0");
 	tab_bar->add_tab("tab1 ");
 	tab_bar->add_tab("tab2    ");
-	MessageQueue::get_singleton()->flush();
+	SceneTree::get_singleton()->process(0);
 
 	Vector<Rect2> tab_rects = {
 		tab_bar->get_tab_rect(0),
@@ -1167,7 +1168,7 @@ TEST_CASE("[SceneTree][TabBar] Mouse interaction") {
 		float margin = tab_bar->get_theme_stylebox("tab_hovered_style")->get_margin(SIDE_RIGHT);
 
 		tab_bar->set_tab_close_display_policy(TabBar::CLOSE_BUTTON_SHOW_ALWAYS);
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		tab_rects = { tab_bar->get_tab_rect(0), tab_bar->get_tab_rect(1), tab_bar->get_tab_rect(2) };
 
 		Point2 cb_pos = Size2(tab_rects[0].get_end().x - close_button_size.x - h_separation - margin + 1, tab_rects[0].position.y + (tab_rects[0].size.y - close_button_size.y) / 2 + 1);
@@ -1260,9 +1261,9 @@ TEST_CASE("[SceneTree][TabBar] Mouse interaction") {
 
 		target_tab_bar->set_clip_tabs(false);
 		target_tab_bar->add_tab("other_tab0");
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 		target_tab_bar->set_position(tab_bar->get_size());
-		MessageQueue::get_singleton()->flush();
+		SceneTree::get_singleton()->process(0);
 
 		Vector<Rect2> target_tab_rects = { target_tab_bar->get_tab_rect(0) };
 		tab_bar->set_drag_to_rearrange_enabled(true);

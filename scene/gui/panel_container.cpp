@@ -41,22 +41,29 @@ Size2 PanelContainer::get_minimum_size() const {
 	return ms;
 }
 
-Size2 PanelContainer::get_desired_size() const {
+Size2 PanelContainer::_get_desired_size() const {
 	Size2 ds;
-
 	for (int i = 0; i < get_child_count(); i++) {
 		Control *c = as_sortable_control(get_child(i), SortableVisibilityMode::VISIBLE);
 		if (!c) {
 			continue;
 		}
 
-		Size2 minsize = c->get_desired_size();
+		Size2 minsize = c->get_bound_desired_size();
 		ds = ds.max(minsize);
 	}
 	if (theme_cache.panel_style.is_valid()) {
 		ds += theme_cache.panel_style->get_minimum_size();
 	}
 	return ds;
+}
+
+real_t PanelContainer::get_preferred_width() const {
+	return _get_desired_size().width;
+}
+
+real_t PanelContainer::get_desired_height() const {
+	return _get_desired_size().height;
 }
 
 Size2 PanelContainer::get_inner_combined_maximum_size() const {

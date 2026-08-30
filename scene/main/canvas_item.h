@@ -36,6 +36,7 @@
 #include "servers/text/text_server.h"
 
 class CanvasLayer;
+class ControlServer;
 class Font;
 class Material;
 class Mesh;
@@ -162,6 +163,7 @@ private:
 	virtual void _top_level_changed();
 	virtual void _top_level_changed_on_parent();
 
+	friend class ControlServer;
 	void _redraw_callback();
 
 	void _enter_canvas();
@@ -294,7 +296,7 @@ public:
 	void show();
 	void hide();
 
-	void queue_redraw();
+	virtual void queue_redraw();
 	void move_to_front();
 
 	void set_clip_children_mode(ClipChildrenMode p_clip_mode);

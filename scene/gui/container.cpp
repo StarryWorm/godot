@@ -30,66 +30,8 @@
 
 #include "container.h"
 
-#include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "servers/display/accessibility_server.h"
-
-void Container::_child_minsize_changed() {
-	update_minimum_size();
-	queue_sort();
-}
-
-void Container::_child_desired_size_changed() {
-	update_desired_size();
-	queue_sort();
-}
-
-void Container::add_child_notify(Node *p_child) {
-	Control::add_child_notify(p_child);
-
-	Control *control = Object::cast_to<Control>(p_child);
-	if (!control) {
-		return;
-	}
-
-	control->connect(SceneStringName(size_flags_changed), callable_mp(this, &Container::_child_minsize_changed));
-	control->connect(SceneStringName(minimum_size_changed), callable_mp(this, &Container::_child_minsize_changed));
-	control->connect(SceneStringName(maximum_size_changed), callable_mp(this, &Container::_child_minsize_changed));
-	control->connect("_desired_size_changed", callable_mp(this, &Container::_child_desired_size_changed));
-	control->connect(SceneStringName(visibility_changed), callable_mp(this, &Container::_child_minsize_changed));
-
-	update_minimum_size();
-	queue_sort();
-}
-
-void Container::move_child_notify(Node *p_child) {
-	Control::move_child_notify(p_child);
-
-	if (!Object::cast_to<Control>(p_child)) {
-		return;
-	}
-
-	update_minimum_size();
-	queue_sort();
-}
-
-void Container::remove_child_notify(Node *p_child) {
-	Control::remove_child_notify(p_child);
-
-	Control *control = Object::cast_to<Control>(p_child);
-	if (!control) {
-		return;
-	}
-
-	control->disconnect(SceneStringName(size_flags_changed), callable_mp(this, &Container::_child_minsize_changed));
-	control->disconnect(SceneStringName(minimum_size_changed), callable_mp(this, &Container::_child_minsize_changed));
-	control->disconnect(SceneStringName(maximum_size_changed), callable_mp(this, &Container::_child_minsize_changed));
-	control->disconnect("_desired_size_changed", callable_mp(this, &Container::_child_desired_size_changed));
-	control->disconnect(SceneStringName(visibility_changed), callable_mp(this, &Container::_child_minsize_changed));
-
-	update_minimum_size();
-	queue_sort();
-}
 
 Size2 Container::get_minimum_size() const {
 	Size2 min_size;
@@ -115,19 +57,14 @@ Size2 Container::get_minimum_size() const {
 
 void Container::_sort_children() {
 	if (!is_inside_tree()) {
-		pending_sort = false;
 		return;
 	}
-
-	update_minimum_size();
 
 	notification(NOTIFICATION_PRE_SORT_CHILDREN);
 	emit_signal(SceneStringName(pre_sort_children));
 
 	notification(NOTIFICATION_SORT_CHILDREN);
 	emit_signal(SceneStringName(sort_children));
-	pending_sort = false;
-	layout_pending_finish();
 }
 
 void Container::fit_child_in_rect(RequiredParam<Control> p_child, const Rect2 &p_rect) {
@@ -182,13 +119,7 @@ void Container::queue_sort() {
 		return;
 	}
 
-	if (pending_sort) {
-		return;
-	}
-
-	layout_pending_start();
-	callable_mp(this, &Container::_sort_children).call_deferred();
-	pending_sort = true;
+	CS::get_singleton()->update_layout(get_control_rid());
 }
 
 Control *Container::as_sortable_control(Node *p_node, SortableVisibilityMode p_visibility_mode) const {
@@ -247,17 +178,6 @@ void Container::_notification(int p_what) {
 				AccessibilityServer::get_singleton()->update_set_role(ae, AccessibilityServerEnums::AccessibilityRole::ROLE_CONTAINER);
 			}
 		} break;
-
-		case NOTIFICATION_RESIZED:
-		case NOTIFICATION_THEME_CHANGED: {
-			queue_sort();
-		} break;
-
-		case NOTIFICATION_VISIBILITY_CHANGED: {
-			if (is_visible_in_tree()) {
-				queue_sort();
-			}
-		} break;
 	}
 }
 
@@ -305,5 +225,6 @@ Container::Container() {
 	// All containers should let mouse events pass by default.
 	set_mouse_filter(MOUSE_FILTER_PASS);
 	// All containers should contain their children within their maximum size by default.
+	_set_children_default_layout_mode(CS::LayoutMode::LAYOUT_MODE_CONTAINER);
 	set_propagate_maximum_size(true);
 }

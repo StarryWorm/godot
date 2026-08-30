@@ -395,7 +395,6 @@ void GridContainer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
 			_resort();
-			update_minimum_size();
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {
@@ -497,6 +496,10 @@ Size2 GridContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 GridContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t GridContainer::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t GridContainer::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }

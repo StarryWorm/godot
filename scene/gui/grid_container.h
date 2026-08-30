@@ -54,7 +54,8 @@ public:
 	void set_columns(int p_columns);
 	int get_columns() const;
 	virtual Size2 get_minimum_size() const override;
-	virtual Size2 get_desired_size() const override;
+	virtual real_t get_preferred_width() const override;
+	virtual real_t get_desired_height() const override;
 
 	int get_h_separation() const;
 };

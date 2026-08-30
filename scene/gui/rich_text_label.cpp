@@ -4333,7 +4333,7 @@ void RichTextLabel::_process_line_caches() {
 	updating.store(false);
 
 	if (fit_content) {
-		update_minimum_size();
+		callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 	}
 	emit_signal(SceneStringName(finished));
 }
@@ -4462,7 +4462,7 @@ void RichTextLabel::_add_item(Item *p_item, bool p_enter, bool p_ensure_newline)
 	_invalidate_current_line(current_frame);
 
 	if (fit_content) {
-		update_minimum_size();
+		callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 	}
 	queue_accessibility_update();
 	queue_redraw();
@@ -7963,8 +7963,6 @@ void RichTextLabel::_maximum_size_changed() {
 	main->first_resized_line.store(0); // Invalidate all lines.
 	_invalidate_accessibility();
 	_validate_line_caches();
-	queue_redraw();
-	update_minimum_size();
 }
 
 void RichTextLabel::_bind_methods() {

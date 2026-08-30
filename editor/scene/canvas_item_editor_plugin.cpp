@@ -7115,8 +7115,8 @@ CanvasItemEditorViewport::CanvasItemEditorViewport(CanvasItemEditor *p_canvas_it
 	tooltip_panel = memnew(RichTextLabel);
 	canvas_item_editor->get_controls_container()->add_child(tooltip_panel);
 	tooltip_panel->hide();
-	tooltip_panel->set_h_grow_direction(GROW_DIRECTION_BEGIN);
-	tooltip_panel->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	tooltip_panel->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
+	tooltip_panel->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	tooltip_panel->set_mouse_filter(MOUSE_FILTER_IGNORE);
 	tooltip_panel->set_focus_mode(FOCUS_ACCESSIBILITY);
 	tooltip_panel->set_use_bbcode(true);
@@ -7133,8 +7133,8 @@ CanvasItemEditorViewport::CanvasItemEditorViewport(CanvasItemEditor *p_canvas_it
 	info_panel->set_anchor_and_offset(SIDE_TOP, ANCHOR_END, -90 * EDSCALE);
 	info_panel->set_anchor_and_offset(SIDE_RIGHT, ANCHOR_END, -10 * EDSCALE);
 	info_panel->set_anchor_and_offset(SIDE_BOTTOM, ANCHOR_END, -10 * EDSCALE);
-	info_panel->set_h_grow_direction(GROW_DIRECTION_BEGIN);
-	info_panel->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	info_panel->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
+	info_panel->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	info_panel->set_mouse_filter(MOUSE_FILTER_IGNORE);
 	canvas_item_editor->get_info_panel_container()->add_child(info_panel);
 	info_panel->hide();

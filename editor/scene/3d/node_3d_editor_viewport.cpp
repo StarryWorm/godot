@@ -6983,8 +6983,8 @@ Node3DEditorViewport::Node3DEditorViewport(Node3DEditor *p_spatial_editor, int p
 	bottom_center_vbox->set_anchors_preset(LayoutPreset::PRESET_CENTER);
 	bottom_center_vbox->set_anchor_and_offset(SIDE_TOP, ANCHOR_END, -20 * EDSCALE);
 	bottom_center_vbox->set_anchor_and_offset(SIDE_BOTTOM, ANCHOR_END, -10 * EDSCALE);
-	bottom_center_vbox->set_h_grow_direction(GROW_DIRECTION_BOTH);
-	bottom_center_vbox->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	bottom_center_vbox->set_h_grow_direction(CS::GROW_DIRECTION_BOTH);
+	bottom_center_vbox->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	surface->add_child(bottom_center_vbox);
 
 	info_panel = memnew(PanelContainer);
@@ -6992,8 +6992,8 @@ Node3DEditorViewport::Node3DEditorViewport(Node3DEditor *p_spatial_editor, int p
 	info_panel->set_anchor_and_offset(SIDE_TOP, ANCHOR_END, -90 * EDSCALE);
 	info_panel->set_anchor_and_offset(SIDE_RIGHT, ANCHOR_END, -10 * EDSCALE);
 	info_panel->set_anchor_and_offset(SIDE_BOTTOM, ANCHOR_END, -10 * EDSCALE);
-	info_panel->set_h_grow_direction(GROW_DIRECTION_BEGIN);
-	info_panel->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	info_panel->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
+	info_panel->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	info_panel->set_mouse_filter(MOUSE_FILTER_IGNORE);
 	surface->add_child(info_panel);
 	info_panel->hide();
@@ -7004,7 +7004,7 @@ Node3DEditorViewport::Node3DEditorViewport(Node3DEditor *p_spatial_editor, int p
 
 	cinema_label = memnew(Label);
 	cinema_label->set_anchor_and_offset(SIDE_TOP, ANCHOR_BEGIN, 10 * EDSCALE);
-	cinema_label->set_h_grow_direction(GROW_DIRECTION_END);
+	cinema_label->set_h_grow_direction(CS::GROW_DIRECTION_END);
 	cinema_label->set_horizontal_alignment(HORIZONTAL_ALIGNMENT_CENTER);
 	cinema_label->set_vertical_alignment(VERTICAL_ALIGNMENT_CENTER);
 	surface->add_child(cinema_label);
@@ -7030,8 +7030,8 @@ Node3DEditorViewport::Node3DEditorViewport(Node3DEditor *p_spatial_editor, int p
 	tooltip_panel = memnew(RichTextLabel);
 	vbox->add_child(tooltip_panel);
 	tooltip_panel->hide();
-	tooltip_panel->set_h_grow_direction(GROW_DIRECTION_BEGIN);
-	tooltip_panel->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	tooltip_panel->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
+	tooltip_panel->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	tooltip_panel->set_mouse_filter(MOUSE_FILTER_IGNORE);
 	tooltip_panel->set_focus_mode(FOCUS_ACCESSIBILITY);
 	tooltip_panel->set_use_bbcode(true);
@@ -7050,7 +7050,7 @@ Node3DEditorViewport::Node3DEditorViewport(Node3DEditor *p_spatial_editor, int p
 	top_right_vbox = memnew(VBoxContainer);
 	top_right_vbox->add_theme_constant_override("separation", 10.0 * EDSCALE);
 	top_right_vbox->set_anchors_and_offsets_preset(PRESET_TOP_RIGHT, PRESET_MODE_MINSIZE, 10.0 * EDSCALE);
-	top_right_vbox->set_h_grow_direction(GROW_DIRECTION_BEGIN);
+	top_right_vbox->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
 
 	const int navigation_control_size = 150;
 

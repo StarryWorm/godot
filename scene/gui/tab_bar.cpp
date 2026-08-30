@@ -31,6 +31,7 @@
 #include "tab_bar.h"
 
 #include "core/input/input.h"
+#include "core/math/math_defs.h"
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/gui/box_container.h"
@@ -1426,13 +1427,13 @@ void TabBar::_update_cache(bool p_update_hover) {
 	}
 }
 
-Size2 TabBar::get_desired_size() const {
+real_t TabBar::get_preferred_width() const {
 	if (!clip_tabs || tabs.is_empty()) {
-		return Size2();
+		return 0;
 	}
 	Size2 combined_max = get_combined_maximum_size();
 	if (combined_max.width < 0) {
-		return Size2();
+		return 0;
 	}
 
 	int buttons_size = tabs.size() > 1 ? theme_cache.decrement_icon->get_width() + theme_cache.increment_icon->get_width() : 0;
@@ -1485,7 +1486,7 @@ Size2 TabBar::get_desired_size() const {
 	int desired = (offset > 0 || overflowed) ? w + buttons_size : w;
 	desired = MIN(desired, limit);
 
-	return Size2(desired, 0);
+	return desired;
 }
 
 void TabBar::_hover_switch_timeout() {

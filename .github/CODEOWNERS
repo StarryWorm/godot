@@ -272,6 +272,7 @@
 /servers/server_wrap_*                        @godotengine/buildsystem
 /servers/audio/                               @godotengine/audio
 /servers/camera/                              @godotengine/xr
+/servers/control/                             @godotengine/gui-nodes
 /servers/debugger/                            @godotengine/debugger
 /servers/display/                             @godotengine/rendering
 /servers/movie_writer/                        @godotengine/rendering

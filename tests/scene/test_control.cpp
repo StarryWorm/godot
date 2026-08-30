@@ -37,6 +37,7 @@ TEST_FORCE_LINK(test_control)
 #include "scene/gui/control.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
+#include "servers/control/control_server.h"
 #include "tests/display_server_mock.h"
 #include "tests/signal_watcher.h"
 
@@ -49,16 +50,25 @@ TEST_CASE("[SceneTree][Control] Transforms") {
 		test_node->add_child(test_child);
 
 		test_node->set_global_position(Point2(1, 1));
+		SceneTree::get_singleton()->process(0);
 		CHECK_EQ(test_node->get_global_position(), Point2(1, 1));
 		CHECK_EQ(test_child->get_global_position(), Point2(1, 1));
+
 		test_node->set_global_position(Point2(2, 2));
+		SceneTree::get_singleton()->process(0);
 		CHECK_EQ(test_node->get_global_position(), Point2(2, 2));
+
 		test_node->set_scale(Vector2(4, 4));
+		SceneTree::get_singleton()->process(0);
 		CHECK_EQ(test_node->get_global_transform(), Transform2D(0, Size2(4, 4), 0, Vector2(2, 2)));
+
 		test_node->set_scale(Vector2(1, 1));
 		test_node->set_rotation_degrees(90);
+		SceneTree::get_singleton()->process(0);
 		CHECK_EQ(test_node->get_global_transform(), Transform2D(Math::PI / 2, Vector2(2, 2)));
+
 		test_node->set_pivot_offset(Vector2(1, 0));
+		SceneTree::get_singleton()->process(0);
 		CHECK_EQ(test_node->get_global_transform(), Transform2D(Math::PI / 2, Vector2(3, 1)));
 
 		memdelete(test_child);
@@ -1017,10 +1027,12 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 	test_control->set_size(Size2(2, 2));
 	Window *root = SceneTree::get_singleton()->get_root();
 	root->add_child(test_control);
+	SceneTree::get_singleton()->process(0);
 
 	SUBCASE("Anchoring without offsets") {
 		test_child->set_anchor(SIDE_RIGHT, 0.75);
 		test_child->set_anchor(SIDE_BOTTOM, 0.1);
+		SceneTree::get_singleton()->process(0);
 		CHECK_MESSAGE(
 				test_child->get_size().is_equal_approx(Vector2(1.5, 0.2)),
 				"With no LEFT or TOP anchors, positive RIGHT and BOTTOM anchors should be proportional to the size.");
@@ -1030,6 +1042,7 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 
 		test_child->set_anchor(SIDE_LEFT, 0.5);
 		test_child->set_anchor(SIDE_TOP, 0.01);
+		SceneTree::get_singleton()->process(0);
 		CHECK_MESSAGE(
 				test_child->get_size().is_equal_approx(Vector2(0.5, 0.18)),
 				"With all anchors set, the size should fit between all four anchors.");
@@ -1041,6 +1054,7 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 	SUBCASE("Anchoring with offsets") {
 		test_child->set_offset(SIDE_RIGHT, 0.33);
 		test_child->set_offset(SIDE_BOTTOM, 0.2);
+		SceneTree::get_singleton()->process(0);
 		CHECK_MESSAGE(
 				test_child->get_size().is_equal_approx(Vector2(0.33, 0.2)),
 				"With no anchors or LEFT or TOP offsets set, the RIGHT and BOTTOM offsets should be equal to size.");
@@ -1050,6 +1064,7 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 
 		test_child->set_offset(SIDE_LEFT, 0.1);
 		test_child->set_offset(SIDE_TOP, 0.05);
+		SceneTree::get_singleton()->process(0);
 		CHECK_MESSAGE(
 				test_child->get_size().is_equal_approx(Vector2(0.23, 0.15)),
 				"With no anchors set, the size should fit between all four offsets.");
@@ -1061,6 +1076,7 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 		test_child->set_anchor(SIDE_BOTTOM, 0.3);
 		test_child->set_anchor(SIDE_LEFT, 0.2);
 		test_child->set_anchor(SIDE_TOP, 0.1);
+		SceneTree::get_singleton()->process(0);
 		CHECK_MESSAGE(
 				test_child->get_size().is_equal_approx(Vector2(0.83, 0.55)),
 				"Anchors adjust size first then it is affected by offsets.");
@@ -1072,6 +1088,7 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 		test_child->set_offset(SIDE_BOTTOM, -0.01);
 		test_child->set_offset(SIDE_LEFT, -0.33);
 		test_child->set_offset(SIDE_TOP, -0.16);
+		SceneTree::get_singleton()->process(0);
 		CHECK_MESSAGE(
 				test_child->get_size().is_equal_approx(Vector2(0.83, 0.55)),
 				"Keeping offset distance equal when changing offsets, keeps size equal.");
@@ -1089,10 +1106,12 @@ TEST_CASE("[SceneTree][Control] Anchoring") {
 		test_child->set_anchor(SIDE_BOTTOM, 0.85);
 		test_child->set_anchor(SIDE_LEFT, 0.2);
 		test_child->set_anchor(SIDE_TOP, 0.55);
+		SceneTree::get_singleton()->process(0);
 		CHECK(test_child->get_rect().is_equal_approx(
 				Rect2(Vector2(0.45, 1.2), Size2(0.1, 0.6))));
 
 		test_control->set_size(Size2(4, 1));
+		SceneTree::get_singleton()->process(0);
 		CHECK(test_child->get_rect().is_equal_approx(
 				Rect2(Vector2(0.85, 0.65), Size2(0.3, 0.3))));
 	}
@@ -1107,26 +1126,31 @@ TEST_CASE("[SceneTree][Control] Custom maximum size") {
 	Window *root = SceneTree::get_singleton()->get_root();
 	root->add_child(test_control);
 	test_control->set_size(Size2(4, 2));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(4, 2)),
 			"Size is allowed to increase to match custom maximum size.");
 
 	test_control->set_size(Size2(3, 1));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(3, 1)),
 			"Size does not change if below custom maximum size.");
 
 	test_control->set_size(Size2(5, 4));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(4, 2)),
 			"Size is limited to custom maximum size.");
 
 	test_control->set_size(Size2(5, 1));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(4, 1)),
 			"Adjust only x axis if x is above custom maximum size.");
 
 	test_control->set_size(Size2(3, 3));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(3, 2)),
 			"Adjust only y axis if y is above custom maximum size.");
@@ -1139,28 +1163,33 @@ TEST_CASE("[SceneTree][Control] Custom maximum size") {
 
 	Control *test_child = memnew(Control);
 	test_control->add_child(test_child);
+	SceneTree::get_singleton()->process(0);
 
 	CHECK_MESSAGE(
 			test_child->get_combined_maximum_size().is_equal_approx(Vector2(-1, -1)),
 			"Child combined maximum size does not factor in parent's custom maximum size if not propagating.");
 
 	test_child->set_size(Size2(5, 3));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_child->get_size().is_equal_approx(Vector2(5, 3)),
 			"Child size is not constrained by parent's custom maximum size if not propagating.");
 
 	test_control->set_propagate_maximum_size(true);
+	SceneTree::get_singleton()->process(0);
 
 	CHECK_MESSAGE(
 			test_child->get_combined_maximum_size().is_equal_approx(Vector2(4, 2)),
 			"Child combined maximum size factors in parent's custom maximum size if propagating.");
 
 	test_child->set_size(Size2(5, 3));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_child->get_size().is_equal_approx(Vector2(4, 2)),
 			"Child size is constrained by parent's custom maximum size if propagating.");
 
 	test_child->set_size(Size2(3, 1));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_child->get_size().is_equal_approx(Vector2(3, 1)),
 			"Child size can be smaller than parent's custom maximum size.");
@@ -1174,26 +1203,31 @@ TEST_CASE("[SceneTree][Control] Custom minimum size") {
 	test_control->set_custom_minimum_size(Size2(4, 2));
 	Window *root = SceneTree::get_singleton()->get_root();
 	root->add_child(test_control);
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(4, 2)),
 			"Size increases to match custom minimum size.");
 
 	test_control->set_size(Size2(5, 4));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(5, 4)),
 			"Size does not change if above custom minimum size.");
 
 	test_control->set_size(Size2(1, 1));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(4, 2)),
 			"Size matches minimum size if set below custom minimum size.");
 
 	test_control->set_size(Size2(3, 3));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(4, 3)),
 			"Adjusts only x axis size if x is below custom minimum size.");
 
 	test_control->set_size(Size2(10, 0.1));
+	SceneTree::get_singleton()->process(0);
 	CHECK_MESSAGE(
 			test_control->get_size().is_equal_approx(Vector2(10, 2)),
 			"Adjusts only y axis size if y is below custom minimum size.");
@@ -1206,17 +1240,18 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 	test_control->set_size(Size2(1, 1));
 	Window *root = SceneTree::get_singleton()->get_root();
 	root->add_child(test_control);
+	SceneTree::get_singleton()->process(0);
 
 	SUBCASE("Defaults") {
-		CHECK(test_control->get_h_grow_direction() == Control::GROW_DIRECTION_END);
-		CHECK(test_control->get_v_grow_direction() == Control::GROW_DIRECTION_END);
+		CHECK(test_control->get_h_grow_direction() == CS::GROW_DIRECTION_END);
+		CHECK(test_control->get_v_grow_direction() == CS::GROW_DIRECTION_END);
 	}
 
 	SIGNAL_WATCH(test_control, SNAME("minimum_size_changed"))
 	Array signal_args = { {} };
 
 	SUBCASE("Horizontal grow direction begin") {
-		test_control->set_h_grow_direction(Control::GROW_DIRECTION_BEGIN);
+		test_control->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
 		test_control->set_custom_minimum_size(Size2(2, 2));
 		SceneTree::get_singleton()->process(0);
 		SIGNAL_CHECK("minimum_size_changed", signal_args)
@@ -1227,7 +1262,7 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 	}
 
 	SUBCASE("Vertical grow direction begin") {
-		test_control->set_v_grow_direction(Control::GROW_DIRECTION_BEGIN);
+		test_control->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 		test_control->set_custom_minimum_size(Size2(4, 3));
 		SceneTree::get_singleton()->process(0);
 		SIGNAL_CHECK("minimum_size_changed", signal_args);
@@ -1238,7 +1273,7 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 	}
 
 	SUBCASE("Horizontal grow direction end") {
-		test_control->set_h_grow_direction(Control::GROW_DIRECTION_END);
+		test_control->set_h_grow_direction(CS::GROW_DIRECTION_END);
 		test_control->set_custom_minimum_size(Size2(5, 3));
 		SceneTree::get_singleton()->process(0);
 		SIGNAL_CHECK("minimum_size_changed", signal_args);
@@ -1249,7 +1284,7 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 	}
 
 	SUBCASE("Vertical grow direction end") {
-		test_control->set_v_grow_direction(Control::GROW_DIRECTION_END);
+		test_control->set_v_grow_direction(CS::GROW_DIRECTION_END);
 		test_control->set_custom_minimum_size(Size2(4, 4));
 		SceneTree::get_singleton()->process(0);
 		SIGNAL_CHECK("minimum_size_changed", signal_args);
@@ -1261,7 +1296,7 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 	}
 
 	SUBCASE("Horizontal grow direction both") {
-		test_control->set_h_grow_direction(Control::GROW_DIRECTION_BOTH);
+		test_control->set_h_grow_direction(CS::GROW_DIRECTION_BOTH);
 		test_control->set_custom_minimum_size(Size2(2, 4));
 		SceneTree::get_singleton()->process(0);
 		SIGNAL_CHECK("minimum_size_changed", signal_args);
@@ -1272,7 +1307,7 @@ TEST_CASE("[SceneTree][Control] Grow direction") {
 	}
 
 	SUBCASE("Vertical grow direction both") {
-		test_control->set_v_grow_direction(Control::GROW_DIRECTION_BOTH);
+		test_control->set_v_grow_direction(CS::GROW_DIRECTION_BOTH);
 		test_control->set_custom_minimum_size(Size2(6, 3));
 		SceneTree::get_singleton()->process(0);
 		SIGNAL_CHECK("minimum_size_changed", signal_args);

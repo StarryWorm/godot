@@ -30,6 +30,7 @@
 
 #include "link_button.h"
 
+#include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "core/os/os.h"
 #include "scene/theme/theme_db.h"
@@ -250,7 +251,8 @@ void LinkButton::_notification(int p_what) {
 		case NOTIFICATION_RESIZED:
 		case NOTIFICATION_THEME_CHANGED: {
 			_shape();
-			update_minimum_size();
+			// FIXME: TEMP
+			callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 			queue_redraw();
 		} break;
 

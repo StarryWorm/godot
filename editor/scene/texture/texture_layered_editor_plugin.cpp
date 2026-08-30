@@ -430,7 +430,7 @@ TextureLayeredEditor::TextureLayeredEditor() {
 	layer->set_max(100);
 
 	layer->set_modulate(Color(1, 1, 1, 0.8));
-	layer->set_h_grow_direction(GROW_DIRECTION_BEGIN);
+	layer->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	layer->set_anchor(SIDE_RIGHT, 1);
 	layer->set_anchor(SIDE_LEFT, 1);
 	layer->connect(SceneStringName(value_changed), callable_mp(this, &TextureLayeredEditor::_layer_changed));
@@ -450,8 +450,8 @@ TextureLayeredEditor::TextureLayeredEditor() {
 	info->add_theme_color_override("font_outline_color", Color(0, 0, 0));
 	info->add_theme_constant_override("outline_size", 8 * EDSCALE);
 
-	info->set_h_grow_direction(GROW_DIRECTION_BEGIN);
-	info->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	info->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
+	info->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	info->set_h_size_flags(Control::SIZE_SHRINK_END);
 	info->set_v_size_flags(Control::SIZE_SHRINK_END);
 	info->set_anchor(SIDE_RIGHT, 1);
@@ -466,8 +466,8 @@ TextureLayeredEditor::TextureLayeredEditor() {
 	info_toggle->set_tooltip_text(TTRC("Toggle metadata overlay."));
 	info_toggle->set_theme_type_variation("PreviewLightButton");
 	info_toggle->set_modulate(Color(1, 1, 1, 0.8));
-	info_toggle->set_h_grow_direction(GROW_DIRECTION_END);
-	info_toggle->set_v_grow_direction(GROW_DIRECTION_BEGIN);
+	info_toggle->set_h_grow_direction(CS::GROW_DIRECTION_END);
+	info_toggle->set_v_grow_direction(CS::GROW_DIRECTION_BEGIN);
 	info_toggle->set_anchor(SIDE_LEFT, 0);
 	info_toggle->set_anchor(SIDE_RIGHT, 0);
 	info_toggle->set_anchor(SIDE_BOTTOM, 1);

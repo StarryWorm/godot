@@ -209,7 +209,8 @@ public:
 	bool is_dragging_enabled() const;
 
 	virtual Size2 get_minimum_size() const override;
-	virtual Size2 get_desired_size() const override;
+	virtual real_t get_preferred_width() const override;
+	virtual real_t get_desired_height() const override;
 
 	virtual Vector<int> get_allowed_size_flags_horizontal() const override;
 	virtual Vector<int> get_allowed_size_flags_vertical() const override;

@@ -84,13 +84,14 @@ TEST_CASE("[SceneTree][AspectRatioContainer] Aspect Ratio") {
 			child_control->get_size().is_equal_approx(Size2(100, 100)),
 			"Child control is resized to maintain aspect ratio when AspectRatioContainer is resized.");
 
-	aspect_ratio_container->set_size(Size2(100, 200));
+	aspect_ratio_container->set_size(Size2(150, 200));
 	SceneTree::get_singleton()->process(0);
 
 	CHECK_MESSAGE(
-			child_control->get_size().is_equal_approx(Size2(100, 100)),
+			child_control->get_size().is_equal_approx(Size2(150, 150)),
 			"Child control is resized to maintain aspect ratio when AspectRatioContainer is resized.");
 
+	aspect_ratio_container->set_size(Size2(100, 200));
 	aspect_ratio_container->set_ratio(2.0f);
 	SceneTree::get_singleton()->process(0);
 

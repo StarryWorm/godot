@@ -41,7 +41,7 @@ Size2 MarginContainer::get_minimum_size() const {
 	return max;
 }
 
-Size2 MarginContainer::get_desired_size() const {
+Size2 MarginContainer::_get_desired_size() const {
 	Size2 ds;
 
 	for (int i = 0; i < get_child_count(); i++) {
@@ -50,7 +50,7 @@ Size2 MarginContainer::get_desired_size() const {
 			continue;
 		}
 
-		Size2 s = c->get_desired_size();
+		Size2 s = c->get_bound_desired_size();
 		ds = ds.max(s);
 	}
 
@@ -58,6 +58,14 @@ Size2 MarginContainer::get_desired_size() const {
 	ds.height += (theme_cache.margin_top + theme_cache.margin_bottom);
 
 	return ds;
+}
+
+real_t MarginContainer::get_preferred_width() const {
+	return _get_desired_size().width;
+}
+
+real_t MarginContainer::get_desired_height() const {
+	return _get_desired_size().height;
 }
 
 Size2 MarginContainer::get_inner_combined_maximum_size() const {

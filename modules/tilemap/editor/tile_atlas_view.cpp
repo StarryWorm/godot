@@ -591,6 +591,9 @@ Rect2i TileAtlasView::get_alternative_tile_rect(const Vector2i p_coords, int p_a
 }
 
 void TileAtlasView::queue_redraw() {
+	if (!is_inside_tree()) {
+		return;
+	}
 	base_tiles_draw->queue_redraw();
 	base_tiles_texture_grid->queue_redraw();
 	base_tiles_shape_grid->queue_redraw();

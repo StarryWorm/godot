@@ -102,8 +102,12 @@ Size2 ScrollContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 ScrollContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t ScrollContainer::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t ScrollContainer::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }
 
 Size2 ScrollContainer::get_inner_combined_maximum_size() const {
@@ -472,7 +476,7 @@ void ScrollContainer::ensure_control_visible(Control *p_control) {
 
 void ScrollContainer::_reposition_children() {
 	_update_scrollbars();
-	_update_scroll_hints();
+	callable_mp(this, &ScrollContainer::_update_scroll_hints).call_deferred();
 
 	Rect2 margins = _get_margins();
 	Size2 size = get_size();
@@ -526,9 +530,6 @@ void ScrollContainer::_reposition_children() {
 		focus_panel->set_position(Vector2(0, 0));
 		focus_panel->set_size(get_size());
 	}
-
-	update_maximum_size();
-	queue_redraw();
 }
 
 void ScrollContainer::_accessibility_action_scroll_set(const Variant &p_data) {

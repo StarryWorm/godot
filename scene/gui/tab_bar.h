@@ -346,7 +346,8 @@ public:
 
 	Rect2 get_tab_rect(int p_tab) const;
 	Size2 get_minimum_size() const override;
-	Size2 get_desired_size() const override;
+	real_t get_preferred_width() const override;
+	real_t get_desired_height() const override { return 0; } // This exists here for PR-116485 or whichever PR scraps it
 
 	TabBar();
 };

@@ -1111,8 +1111,12 @@ Size2 SplitContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 SplitContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t SplitContainer::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t SplitContainer::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }
 
 void SplitContainer::_validate_property(PropertyInfo &p_property) const {

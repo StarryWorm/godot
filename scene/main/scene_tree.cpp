@@ -726,6 +726,8 @@ bool SceneTree::process(double p_time) {
 		_flush_scene_change();
 	}
 
+	CS::get_singleton()->layout(); //small little hack
+
 	process_timers(p_time, false); //go through timers
 	process_tweens(p_time, false);
 

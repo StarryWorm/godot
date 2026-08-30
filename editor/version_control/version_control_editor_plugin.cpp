@@ -1322,8 +1322,8 @@ VersionControlEditorPlugin::VersionControlEditorPlugin() {
 	commit_message = memnew(TextEdit);
 	commit_message->set_accessibility_name(TTRC("Commit Message"));
 	commit_message->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-	commit_message->set_h_grow_direction(Control::GrowDirection::GROW_DIRECTION_BEGIN);
-	commit_message->set_v_grow_direction(Control::GrowDirection::GROW_DIRECTION_END);
+	commit_message->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
+	commit_message->set_v_grow_direction(CS::GROW_DIRECTION_END);
 	commit_message->set_custom_minimum_size(Size2(200, 100));
 	commit_message->set_line_wrapping_mode(TextEdit::LINE_WRAPPING_BOUNDARY);
 	commit_message->connect(SceneStringName(text_changed), callable_mp(this, &VersionControlEditorPlugin::_update_commit_button));

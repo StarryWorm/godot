@@ -361,8 +361,12 @@ Size2 BoxContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 BoxContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t BoxContainer::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t BoxContainer::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }
 
 void BoxContainer::_notification(int p_what) {

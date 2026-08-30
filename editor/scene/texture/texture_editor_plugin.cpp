@@ -308,7 +308,7 @@ TexturePreview::TexturePreview(Ref<Texture2D> p_texture, bool p_show_metadata) {
 		mipmap_spinbox->set_tooltip_text(TTRC("Mipmap level index selector."));
 		mipmap_spinbox->set_max(mipmaps);
 		mipmap_spinbox->set_modulate(Color(1, 1, 1, 0.8));
-		mipmap_spinbox->set_h_grow_direction(GROW_DIRECTION_BEGIN);
+		mipmap_spinbox->set_h_grow_direction(CS::GROW_DIRECTION_BEGIN);
 		mipmap_spinbox->set_h_size_flags(Control::SIZE_SHRINK_END);
 		mipmap_spinbox->set_v_size_flags(Control::SIZE_SHRINK_BEGIN);
 		mipmap_spinbox->set_anchors_preset(Control::PRESET_TOP_RIGHT);

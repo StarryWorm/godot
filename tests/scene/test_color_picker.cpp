@@ -44,6 +44,7 @@ TEST_CASE("[SceneTree][ColorPicker]") {
 	ColorPicker *cp = memnew(ColorPicker);
 	Window *root = SceneTree::get_singleton()->get_root();
 	root->add_child(cp);
+	SceneTree::get_singleton()->process(0);
 
 	SUBCASE("[COLOR_PICKER] Mouse movement after Slider release") {
 		Point2i pos_left = Point2i(50, 340); // On the left side of the red slider.

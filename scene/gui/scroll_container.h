@@ -126,7 +126,8 @@ private:
 
 protected:
 	Size2 get_minimum_size() const override;
-	Size2 get_desired_size() const override;
+	real_t get_preferred_width() const override;
+	real_t get_desired_height() const override;
 	Size2 get_inner_combined_maximum_size() const override;
 
 	void _gui_focus_changed(Control *p_control);

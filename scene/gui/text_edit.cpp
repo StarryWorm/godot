@@ -9319,7 +9319,7 @@ void TextEdit::_update_scrollbars() {
 
 	content_size_cache = Vector2i(total_width + 10, MAX(total_rows, 1) * get_line_height());
 	if (fit_content_height || fit_content_width) {
-		update_minimum_size();
+		callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 	}
 
 	const Size2 combined_maximum_size = get_combined_maximum_size();

@@ -247,6 +247,8 @@ TEST_CASE("[SceneTree][Viewport] Controls and InputEvent handling") {
 	Point2i on_background = Point2i(500, 500);
 	Point2i on_outside = Point2i(-1, -1);
 
+	SceneTree::get_singleton()->process(0);
+
 	// Unit tests for Viewport::gui_find_control and Viewport::_gui_find_control_at_pos
 	SUBCASE("[VIEWPORT][GuiFindControl] Finding Controls at a Viewport-position") {
 		// FIXME: It is extremely difficult to create a situation where the Control has a zero determinant.
@@ -671,6 +673,7 @@ TEST_CASE("[SceneTree][Viewport] Controls and InputEvent handling") {
 			node_i->set_as_top_level(true);
 			node_c->set_position(node_b->get_global_position());
 			node_i->set_position(node_h->get_global_position());
+			SceneTree::get_singleton()->process(0);
 			node_d->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 			node_i->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 			node_j->set_mouse_filter(Control::MOUSE_FILTER_PASS);
@@ -1275,6 +1278,8 @@ TEST_CASE("[SceneTree][Viewport] Controls and InputEvent handling") {
 				Point2i on_aaa = on_a + Point2i(-2, 2);
 				Point2i on_ddd = on_d + Point2i(-2, 2);
 
+				SceneTree::get_singleton()->process(0);
+
 				SUBCASE("[Viewport][GuiInputEvent] Drag and Drop propagation to parent Controls.") {
 					node_aaa->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 					node_ddd->set_mouse_filter(Control::MOUSE_FILTER_PASS);
@@ -1317,6 +1322,7 @@ TEST_CASE("[SceneTree][Viewport] Controls and InputEvent handling") {
 					node_ddd->set_mouse_filter(Control::MOUSE_FILTER_PASS);
 					node_ddd->set_as_top_level(true);
 					node_ddd->set_position(Point2i(30, 100));
+					SceneTree::get_singleton()->process(0);
 
 					SEND_GUI_MOUSE_BUTTON_EVENT(on_aaa, MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
 					CHECK_FALSE(root->gui_is_dragging());
@@ -1439,6 +1445,8 @@ TEST_CASE("[SceneTree][Viewport] Controls and InputEvent handling") {
 			ew->add_child(ew_b);
 			Point2i on_ewb = Point2i(85, 235);
 
+			SceneTree::get_singleton()->process(0);
+
 			SUBCASE("[Viewport][GuiInputEvent][DnD] Drag to SubViewport") {
 				sv_b->valid_drop = false;
 				SEND_GUI_MOUSE_BUTTON_EVENT(on_a, MouseButton::LEFT, MouseButtonMask::LEFT, Key::NONE);
@@ -1545,6 +1553,8 @@ TEST_CASE("[SceneTree][Viewport] Control mouse cursor shape") {
 		root->add_child(node_a);
 		node_a->add_child(node_b);
 		node_b->add_child(node_c);
+
+		SceneTree::get_singleton()->process(0);
 
 		Point2i on_c = Point2i(5, 5);
 

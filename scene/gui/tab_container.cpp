@@ -266,12 +266,10 @@ void TabContainer::_on_theme_changed() {
 }
 
 void TabContainer::_repaint_call_deferred() {
-	layout_pending_start();
 	callable_mp(this, &TabContainer::_repaint_internal).call_deferred();
 }
 
 void TabContainer::_repaint() {
-	layout_pending_start();
 	_repaint_internal();
 }
 
@@ -321,7 +319,6 @@ void TabContainer::_repaint_internal() {
 	updating_visibility = false;
 
 	update_minimum_size();
-	layout_pending_finish();
 }
 
 void TabContainer::_update_margins() {
@@ -1067,8 +1064,12 @@ Size2 TabContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 TabContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t TabContainer::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t TabContainer::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }
 
 Size2 TabContainer::get_inner_combined_maximum_size() const {

@@ -73,6 +73,7 @@
 #include "servers/audio/audio_driver_dummy.h"
 #include "servers/audio/audio_server.h"
 #include "servers/camera/camera_server.h"
+#include "servers/control/control_server.h"
 #include "servers/display/accessibility_server.h"
 #include "servers/display/display_server.h"
 #include "servers/movie_writer/movie_writer.h"
@@ -185,6 +186,7 @@ static CameraServer *camera_server = nullptr;
 static AccessibilityServer *accessibility_server = nullptr;
 static DisplayServer *display_server = nullptr;
 static RenderingServer *rendering_server = nullptr;
+static ControlServer *control_server = nullptr;
 static TextServerManager *tsman = nullptr;
 static ThemeDB *theme_db = nullptr;
 #ifndef XR_DISABLED
@@ -757,6 +759,8 @@ Error Main::test_setup() {
 	rendering_server->init();
 	rendering_server->set_render_loop_enabled(false);
 
+	control_server = memnew(ControlServer());
+
 	// Initialize ThemeDB early so that scene types can register their theme items.
 	// Default theme will be initialized later, after modules and ScriptServer are ready.
 	initialize_theme_db();
@@ -855,6 +859,9 @@ void Main::test_cleanup() {
 
 	finalize_theme_db();
 
+	if (control_server) {
+		memdelete(control_server);
+	}
 	if (rendering_server) {
 		rendering_server->sync();
 		rendering_server->global_shader_parameters_clear();
@@ -3546,6 +3553,16 @@ Error Main::setup2(bool p_show_boot_logo) {
 		OS::get_singleton()->benchmark_end_measure("Servers", "Rendering");
 	}
 
+	/* Initialize Control Server */
+
+	{
+		OS::get_singleton()->benchmark_begin_measure("Servers", "Control");
+
+		control_server = memnew(ControlServer());
+
+		OS::get_singleton()->benchmark_end_measure("Servers", "Control");
+	}
+
 #ifdef UNIX_ENABLED
 	// Print warning after initializing the renderer but before initializing audio.
 	if (OS::get_singleton()->get_environment("USER") == "root" && !OS::get_singleton()->has_environment("GODOT_SILENCE_ROOT_WARNING")) {
@@ -5040,6 +5057,9 @@ bool Main::iteration() {
 	NavigationServer3D::get_singleton()->process(process_step * time_scale);
 #endif // NAVIGATION_3D_DISABLED
 
+	GodotProfileZoneGrouped(_profile_zone, "Layout Controls");
+	ControlServer::get_singleton()->layout();
+
 	GodotProfileZoneGrouped(_profile_zone, "RenderingServer::sync");
 	RenderingServer::get_singleton()->sync(); //sync if still drawing from previous frames.
 
@@ -5303,6 +5323,8 @@ void Main::cleanup(bool p_force) {
 	memdelete(camera_server);
 
 	OS::get_singleton()->finalize();
+
+	memdelete(control_server);
 
 	finalize_display();
 
