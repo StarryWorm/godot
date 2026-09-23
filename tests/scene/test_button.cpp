@@ -49,6 +49,7 @@ TEST_CASE("[SceneTree][Button] is_hovered()") {
 	// Set up button's size and position.
 	button->set_size(Size2i(50, 50));
 	button->set_position(Size2i(10, 10));
+	SceneTree::get_singleton()->process(0);
 
 	// Button should initially be not hovered.
 	CHECK(button->is_hovered() == false);

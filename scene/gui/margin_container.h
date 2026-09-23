@@ -42,13 +42,17 @@ class MarginContainer : public Container {
 		int margin_bottom = 0;
 	} theme_cache;
 
+private:
+	Size2 _get_desired_size() const;
+
 protected:
 	void _notification(int p_what);
 	static void _bind_methods();
 
 public:
 	virtual Size2 get_minimum_size() const override;
-	virtual Size2 get_desired_size() const override;
+	virtual real_t get_preferred_width() const override;
+	virtual real_t get_desired_height() const override;
 	virtual Size2 get_inner_combined_maximum_size() const override;
 
 	virtual Vector<int> get_allowed_size_flags_horizontal() const override;

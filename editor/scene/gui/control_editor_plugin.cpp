@@ -879,7 +879,7 @@ void ControlEditorToolbar::_anchors_preset_selected(int p_preset) {
 	for (Node *E : selection) {
 		Control *control = Object::cast_to<Control>(E);
 		if (control) {
-			undo_redo->add_do_property(control, "layout_mode", LayoutMode::LAYOUT_MODE_ANCHORS);
+			undo_redo->add_do_property(control, "layout_mode", LS::LayoutMode::LAYOUT_MODE_ANCHORS);
 			undo_redo->add_do_property(control, "anchors_preset", preset);
 			if (!reposition_button->is_pressed()) {
 				undo_redo->add_do_property(control, "position", control->get_position());
@@ -1096,9 +1096,9 @@ void ControlEditorToolbar::_update_anchor_selection_ui(bool p_pressed) {
 		nb_valid_controls++;
 
 		const Dictionary &state = control->_edit_get_state();
-		const int lm = state["layout_mode"];
+		const LS::LayoutMode lm = state["layout_mode"];
 
-		if (lm != LayoutMode::LAYOUT_MODE_ANCHORS && lm != LayoutMode::LAYOUT_MODE_UNCONTROLLED) {
+		if (lm != LS::LayoutMode::LAYOUT_MODE_ANCHORS && lm != LS::LayoutMode::LAYOUT_MODE_CONTAINER) {
 			all_preset_same = false;
 			break;
 		}

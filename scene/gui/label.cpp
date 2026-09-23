@@ -155,7 +155,7 @@ void Label::_shape() const {
 		if (maximum_width <= 0) {
 			maximum_width = 1;
 		}
-		if (width > 0 && !is_expanded_by_desired_size()) {
+		if (width > 0) {
 			width = MIN(width, maximum_width);
 		} else {
 			width = maximum_width;
@@ -231,7 +231,7 @@ void Label::_shape_internal() const {
 		if (maximum_width <= 0) {
 			maximum_width = 1;
 		}
-		if (width > 0 && !is_expanded_by_desired_size()) {
+		if (width > 0) {
 			width = MIN(width, maximum_width);
 		} else {
 			width = maximum_width;
@@ -412,7 +412,7 @@ void Label::_shape_internal() const {
 	_update_visible();
 
 	if (autowrap_mode == TextServer::AUTOWRAP_OFF || !clip || overrun_behavior == TextServer::OVERRUN_NO_TRIMMING) {
-		const_cast<Label *>(this)->update_minimum_size();
+		callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 	}
 }
 
@@ -1085,18 +1085,18 @@ Size2 Label::get_minimum_size() const {
 	}
 }
 
-Size2 Label::get_desired_size() const {
-	Size2 combined_max = get_combined_maximum_size();
-	if (combined_max.width < 0) {
-		return Size2();
-	}
-
+real_t Label::get_preferred_width() const {
 	_ensure_shaped();
 	Size2 min_style = theme_cache.normal_style->get_minimum_size();
 	Size2 content_size = minsize + min_style;
-	content_size.width = MIN(content_size.width, int(combined_max.width));
+	return content_size.width;
+}
 
-	return content_size;
+real_t Label::get_desired_height() const {
+	_ensure_shaped();
+	Size2 min_style = theme_cache.normal_style->get_minimum_size();
+	Size2 content_size = minsize + min_style;
+	return content_size.height;
 }
 
 #ifndef DISABLE_DEPRECATED
@@ -1229,9 +1229,6 @@ void Label::_maximum_size_changed() {
 	for (Paragraph &para : paragraphs) {
 		para.lines_dirty = true;
 	}
-	queue_redraw();
-	update_minimum_size();
-	update_desired_size();
 	update_configuration_warnings();
 }
 

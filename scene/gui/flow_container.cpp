@@ -30,6 +30,7 @@
 
 #include "flow_container.h"
 
+#include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
 #include "scene/gui/texture_rect.h"
 #include "scene/theme/theme_db.h"
@@ -416,8 +417,12 @@ Size2 FlowContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 FlowContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t FlowContainer::get_preferred_width() const {
+	return _get_minimum_size(true).width;
+}
+
+real_t FlowContainer::get_desired_height() const {
+	return _get_minimum_size(true).height;
 }
 
 Vector<int> FlowContainer::get_allowed_size_flags_horizontal() const {
@@ -450,7 +455,8 @@ void FlowContainer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
 			_resort();
-			update_minimum_size();
+			// FIXME: TEMP
+			callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 		} break;
 
 		case NOTIFICATION_THEME_CHANGED: {

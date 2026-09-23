@@ -75,6 +75,7 @@ TEST_CASE("[SceneTree][Window]") {
 		w->add_child(c);
 		c->set_size(Size2i(100, 100));
 		c->set_position(Size2i(-50, -50));
+		SceneTree::get_singleton()->process(0);
 
 		CHECK_FALSE(c->mouse_over);
 		SEND_GUI_MOUSE_MOTION_EVENT(Point2i(110, 10), MouseButtonMask::NONE, Key::NONE);

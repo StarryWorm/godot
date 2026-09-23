@@ -86,6 +86,11 @@ public:
 	const StringName pre_sort_children = "pre_sort_children";
 	const StringName sort_children = "sort_children";
 
+	const StringName pre_fit_children_widths = "pre_fit_children_widths";
+	const StringName pre_fit_children_heights = "pre_fit_children_heights";
+	const StringName fit_children_widths = "fit_children_widths";
+	const StringName fit_children_heights = "fit_children_heights";
+
 	const StringName finished = "finished";
 	const StringName animation_finished = "animation_finished";
 	const StringName animation_changed = "animation_changed";

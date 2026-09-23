@@ -250,6 +250,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point without click mask") {
 	TextureButton *texture_button = memnew(TextureButton);
 	Control *control = texture_button;
 	texture_button->set_size(Size2(20, 15));
+	SceneTree::get_singleton()->process(0);
 
 	CHECK(control->has_point(Point2(10, 7)));
 	CHECK_FALSE(control->has_point(Point2(25, 7)));
@@ -281,6 +282,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point with click mask (keep stretch)")
 
 TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch scale") {
 	TextureButton *texture_button = memnew(TextureButton);
+	SceneTree::get_singleton()->get_root()->add_child(texture_button);
 
 	Ref<ImageTexture> tex = make_test_texture(10, 10);
 	texture_button->set_texture_normal(tex);
@@ -293,7 +295,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch scal
 	texture_button->set_click_mask(mask);
 	texture_button->set_stretch_mode(TextureButton::STRETCH_SCALE);
 	texture_button->set_size(Size2(40, 40));
-	texture_button->notification(Control::NOTIFICATION_DRAW);
+	SceneTree::get_singleton()->process(0);
 
 	Control *control = texture_button;
 	CHECK(control->has_point(Point2(20.0f, 20.0f)));
@@ -303,6 +305,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch scal
 
 TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch tile") {
 	TextureButton *texture_button = memnew(TextureButton);
+	SceneTree::get_singleton()->get_root()->add_child(texture_button);
 
 	Ref<ImageTexture> tex = make_test_texture(4, 4);
 	texture_button->set_texture_normal(tex);
@@ -316,7 +319,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch tile
 	texture_button->set_click_mask(mask);
 	texture_button->set_stretch_mode(TextureButton::STRETCH_TILE);
 	texture_button->set_size(Size2(12, 12));
-	texture_button->notification(Control::NOTIFICATION_DRAW);
+	SceneTree::get_singleton()->process(0);
 
 	Control *control = texture_button;
 	CHECK_FALSE(control->has_point(Point2(1.0f, 1.0f)));
@@ -329,6 +332,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch tile
 
 TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch keep aspect covered") {
 	TextureButton *texture_button = memnew(TextureButton);
+	SceneTree::get_singleton()->get_root()->add_child(texture_button);
 
 	Ref<ImageTexture> tex = make_test_texture(10, 10);
 	texture_button->set_texture_normal(tex);
@@ -341,7 +345,7 @@ TEST_CASE("[SceneTree][TextureButton] has_point with click mask and stretch keep
 	texture_button->set_click_mask(mask);
 	texture_button->set_stretch_mode(TextureButton::STRETCH_KEEP_ASPECT_COVERED);
 	texture_button->set_size(Size2(20, 20));
-	texture_button->notification(Control::NOTIFICATION_DRAW);
+	SceneTree::get_singleton()->process(0);
 
 	Control *control = texture_button;
 	CHECK(control->has_point(Point2(10.0f, 10.0f)));

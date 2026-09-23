@@ -37,6 +37,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "core/config/project_settings.h"
 #include "core/input/input_map.h"
 #include "core/math/geometry_2d.h"
+#include "core/math/math_defs.h"
 #include "core/math/transform_2d.h"
 #include "core/object/callable_mp.h"
 #include "core/object/class_db.h"
@@ -47,6 +48,7 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #include "scene/main/canvas_layer.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/window.h"
+#include "scene/scene_string_names.h"
 #include "scene/theme/theme_db.h"
 #include "scene/theme/theme_owner.h"
 #include "servers/display/accessibility_server.h"
@@ -56,36 +58,6 @@ STATIC_ASSERT_INCOMPLETE_TYPE(class, RenderingServer);
 #ifdef TOOLS_ENABLED
 #include "editor/scene/gui/control_editor_plugin.h"
 #endif // TOOLS_ENABLED
-
-class LayoutRecheckCallable : public CallableCustom {
-private:
-	ObjectID owner_id;
-	Callable callback;
-	uint32_t h;
-
-	static bool compare_equal(const CallableCustom *p_a, const CallableCustom *p_b) { return p_a == p_b; }
-	static bool compare_less(const CallableCustom *p_a, const CallableCustom *p_b) { return p_a < p_b; }
-
-public:
-	virtual bool is_valid() const override { return callback.is_valid(); }
-	virtual uint32_t hash() const override { return h; }
-	virtual String get_as_text() const override { return "LayoutRecheckCallable"; }
-	virtual CompareEqualFunc get_compare_equal_func() const override { return compare_equal; }
-	virtual CompareLessFunc get_compare_less_func() const override { return compare_less; }
-	virtual ObjectID get_object() const override { return ObjectID(); }
-	virtual StringName get_method() const override { return StringName(); }
-	virtual void call(const Variant **p_arguments, int p_argcount, Variant &r_return_value, Callable::CallError &r_call_error) const override {
-		Control *owner = Object::cast_to<Control>(ObjectDB::get_instance(owner_id));
-		if (owner && !owner->is_queued_for_deletion()) {
-			owner->call_on_all_layout_pending_finished(callback);
-		}
-	}
-
-	LayoutRecheckCallable(ObjectID p_owner_id, const Callable &p_callback) :
-			owner_id(p_owner_id), callback(p_callback) {
-		h = (uint32_t)hash_murmur3_one_64((uint64_t)this);
-	}
-};
 
 // Editor plugin interoperability.
 
@@ -125,31 +97,29 @@ void Control::_edit_set_state(const Dictionary &p_state) {
 	Array anchors = state["anchors"];
 
 	// If anchors are not in their default position, force the anchor layout mode in place of position.
-	LayoutMode _layout = (LayoutMode)(int)state["layout_mode"];
-	if (_layout == LayoutMode::LAYOUT_MODE_POSITION) {
+	LS::LayoutMode _layout = (LS::LayoutMode)(int)state["layout_mode"];
+	if (_layout == LS::LayoutMode::LAYOUT_MODE_POSITION) {
 		bool anchors_mode = ((real_t)anchors[0] != 0.0 || (real_t)anchors[1] != 0.0 || (real_t)anchors[2] != 0.0 || (real_t)anchors[3] != 0.0);
 		if (anchors_mode) {
-			_layout = LayoutMode::LAYOUT_MODE_ANCHORS;
+			_layout = LS::LayoutMode::LAYOUT_MODE_ANCHORS;
 		}
 	}
 
 	_set_layout_mode(_layout);
-	if (_layout == LayoutMode::LAYOUT_MODE_ANCHORS || _layout == LayoutMode::LAYOUT_MODE_UNCONTROLLED) {
+	if (_layout == LS::LayoutMode::LAYOUT_MODE_ANCHORS) {
 		_set_anchors_layout_preset((int)state["anchors_layout_preset"]);
 	}
 
-	data.anchor[SIDE_LEFT] = anchors[0];
-	data.anchor[SIDE_TOP] = anchors[1];
-	data.anchor[SIDE_RIGHT] = anchors[2];
-	data.anchor[SIDE_BOTTOM] = anchors[3];
+	set_anchor(SIDE_LEFT, anchors[0]);
+	set_anchor(SIDE_TOP, anchors[1]);
+	set_anchor(SIDE_RIGHT, anchors[2]);
+	set_anchor(SIDE_BOTTOM, anchors[3]);
 
 	Array offsets = state["offsets"];
-	data.offset[SIDE_LEFT] = offsets[0];
-	data.offset[SIDE_TOP] = offsets[1];
-	data.offset[SIDE_RIGHT] = offsets[2];
-	data.offset[SIDE_BOTTOM] = offsets[3];
-
-	_size_changed();
+	set_offset(SIDE_LEFT, offsets[0]);
+	set_offset(SIDE_TOP, offsets[1]);
+	set_offset(SIDE_RIGHT, offsets[2]);
+	set_offset(SIDE_BOTTOM, offsets[3]);
 }
 
 void Control::_edit_set_position(const Point2 &p_position) {
@@ -686,8 +656,7 @@ void Control::_validate_property(PropertyInfo &p_property) const {
 		}
 
 		// Use the layout mode to display or hide advanced anchoring properties.
-		LayoutMode _layout = _get_layout_mode();
-		bool use_anchors = (_layout == LayoutMode::LAYOUT_MODE_ANCHORS || _layout == LayoutMode::LAYOUT_MODE_UNCONTROLLED);
+		bool use_anchors = (_get_layout_mode() == LS::LayoutMode::LAYOUT_MODE_ANCHORS);
 		if (!use_anchors && p_property.name == "anchors_preset") {
 			p_property.usage ^= PROPERTY_USAGE_EDITOR;
 		}
@@ -725,7 +694,7 @@ bool Control::_property_can_revert(const StringName &p_name) const {
 
 bool Control::_property_get_revert(const StringName &p_name, Variant &r_property) const {
 	if (p_name == "layout_mode") {
-		r_property = _get_default_layout_mode();
+		r_property = LS::get_singleton()->get_default_layout_mode(layout_rid);
 		return true;
 	} else if (p_name == "anchors_preset") {
 		r_property = LayoutPreset::PRESET_TOP_LEFT;
@@ -834,6 +803,16 @@ Transform2D Control::get_transform() const {
 	return xform;
 }
 
+void Control::_top_level_changed() {
+	// If the `Control` is set as top-level, it acts as if it were the root `Control` for layout purposes.
+	if (is_set_as_top_level()) {
+		LS::get_singleton()->set_control_parent(layout_rid, RID());
+	} else {
+		RID parent_rid = get_parent_control() ? get_parent_control()->layout_rid : RID();
+		LS::get_singleton()->set_control_parent(layout_rid, parent_rid);
+	}
+}
+
 void Control::_top_level_changed_on_parent() {
 	// Update root control status.
 	_notification(NOTIFICATION_EXIT_CANVAS);
@@ -848,60 +827,26 @@ void Control::_set_anchor(Side p_side, real_t p_anchor) {
 
 void Control::set_anchor(Side p_side, real_t p_anchor, bool p_keep_offset, bool p_push_opposite_anchor) {
 	ERR_MAIN_THREAD_GUARD;
-	ERR_FAIL_INDEX((int)p_side, 4);
-
-	Rect2 parent_rect = get_parent_anchorable_rect();
-	real_t parent_range = (p_side == SIDE_LEFT || p_side == SIDE_RIGHT) ? parent_rect.size.x : parent_rect.size.y;
-	real_t previous_pos = data.offset[p_side] + data.anchor[p_side] * parent_range;
-	real_t previous_opposite_pos = data.offset[(p_side + 2) % 4] + data.anchor[(p_side + 2) % 4] * parent_range;
-
-	data.anchor[p_side] = p_anchor;
-
-	if (((p_side == SIDE_LEFT || p_side == SIDE_TOP) && data.anchor[p_side] > data.anchor[(p_side + 2) % 4]) ||
-			((p_side == SIDE_RIGHT || p_side == SIDE_BOTTOM) && data.anchor[p_side] < data.anchor[(p_side + 2) % 4])) {
-		if (p_push_opposite_anchor) {
-			data.anchor[(p_side + 2) % 4] = data.anchor[p_side];
-		} else {
-			data.anchor[p_side] = data.anchor[(p_side + 2) % 4];
-		}
-	}
-
-	if (!p_keep_offset) {
-		data.offset[p_side] = previous_pos - data.anchor[p_side] * parent_range;
-		if (p_push_opposite_anchor) {
-			data.offset[(p_side + 2) % 4] = previous_opposite_pos - data.anchor[(p_side + 2) % 4] * parent_range;
-		}
-	}
-	if (is_inside_tree()) {
-		_size_changed();
-	}
-
-	queue_redraw();
+	LS::get_singleton()->set_anchor(layout_rid, p_side, p_anchor, p_keep_offset, p_push_opposite_anchor);
 }
 
 real_t Control::get_anchor(Side p_side) const {
 	ERR_READ_THREAD_GUARD_V(0);
 	ERR_FAIL_INDEX_V(int(p_side), 4, 0.0);
 
-	return data.anchor[p_side];
+	return LS::get_singleton()->get_anchors(layout_rid)[p_side];
 }
 
 void Control::set_offset(Side p_side, real_t p_value) {
 	ERR_MAIN_THREAD_GUARD;
-	ERR_FAIL_INDEX((int)p_side, 4);
-	if (data.offset[p_side] == p_value) {
-		return;
-	}
-
-	data.offset[p_side] = p_value;
-	_size_changed();
+	LS::get_singleton()->set_offset(layout_rid, p_side, p_value);
 }
 
 real_t Control::get_offset(Side p_side) const {
 	ERR_READ_THREAD_GUARD_V(0);
 	ERR_FAIL_INDEX_V((int)p_side, 4, 0);
 
-	return data.offset[p_side];
+	return LS::get_singleton()->get_offsets(layout_rid)[p_side];
 }
 
 void Control::set_anchor_and_offset(Side p_side, real_t p_anchor, real_t p_pos, bool p_push_opposite_anchor) {
@@ -913,178 +858,86 @@ void Control::set_anchor_and_offset(Side p_side, real_t p_anchor, real_t p_pos, 
 void Control::set_begin(const Point2 &p_point) {
 	ERR_MAIN_THREAD_GUARD;
 	ERR_FAIL_COND(!std::isfinite(p_point.x) || !std::isfinite(p_point.y));
-	if (data.offset[0] == p_point.x && data.offset[1] == p_point.y) {
-		return;
-	}
-
-	data.offset[0] = p_point.x;
-	data.offset[1] = p_point.y;
-	_size_changed();
+	LS::get_singleton()->set_offset(layout_rid, SIDE_LEFT, p_point.x);
+	LS::get_singleton()->set_offset(layout_rid, SIDE_TOP, p_point.y);
 }
 
 Point2 Control::get_begin() const {
 	ERR_READ_THREAD_GUARD_V(Vector2());
-	return Point2(data.offset[0], data.offset[1]);
+	Vector4 offsets = LS::get_singleton()->get_offsets(layout_rid);
+	return Point2(offsets[0], offsets[1]);
 }
 
 void Control::set_end(const Point2 &p_point) {
 	ERR_MAIN_THREAD_GUARD;
-	if (data.offset[2] == p_point.x && data.offset[3] == p_point.y) {
-		return;
-	}
-
-	data.offset[2] = p_point.x;
-	data.offset[3] = p_point.y;
-	_size_changed();
+	ERR_FAIL_COND(!std::isfinite(p_point.x) || !std::isfinite(p_point.y));
+	LS::get_singleton()->set_offset(layout_rid, SIDE_RIGHT, p_point.x);
+	LS::get_singleton()->set_offset(layout_rid, SIDE_BOTTOM, p_point.y);
 }
 
 Point2 Control::get_end() const {
 	ERR_READ_THREAD_GUARD_V(Point2());
-	return Point2(data.offset[2], data.offset[3]);
+	Vector4 offsets = LS::get_singleton()->get_offsets(layout_rid);
+	return Point2(offsets[2], offsets[3]);
 }
 
-void Control::set_h_grow_direction(GrowDirection p_direction) {
+void Control::set_h_grow_direction(LS::GrowDirection p_direction) {
 	ERR_MAIN_THREAD_GUARD;
-	if (data.h_grow == p_direction) {
-		return;
-	}
-
-	ERR_FAIL_INDEX((int)p_direction, 3);
-
-	data.h_grow = p_direction;
-	_size_changed();
+	LS::get_singleton()->set_h_grow_direction(layout_rid, p_direction);
 }
 
-Control::GrowDirection Control::get_h_grow_direction() const {
-	ERR_READ_THREAD_GUARD_V(GROW_DIRECTION_BEGIN);
-	return data.h_grow;
+LS::GrowDirection Control::get_h_grow_direction() const {
+	ERR_READ_THREAD_GUARD_V(LS::GROW_DIRECTION_BEGIN);
+	return LS::get_singleton()->get_h_grow_direction(layout_rid);
 }
 
-void Control::set_v_grow_direction(GrowDirection p_direction) {
+void Control::set_v_grow_direction(LS::GrowDirection p_direction) {
 	ERR_MAIN_THREAD_GUARD;
-	if (data.v_grow == p_direction) {
-		return;
-	}
-
-	ERR_FAIL_INDEX((int)p_direction, 3);
-
-	data.v_grow = p_direction;
-	_size_changed();
+	LS::get_singleton()->set_v_grow_direction(layout_rid, p_direction);
 }
 
-Control::GrowDirection Control::get_v_grow_direction() const {
-	ERR_READ_THREAD_GUARD_V(GROW_DIRECTION_BEGIN);
-	return data.v_grow;
-}
-
-void Control::_compute_layout_rect(Rect2 p_rect, bool p_keep_offsets) {
-	Size2 parent_rect_size = get_parent_anchorable_rect().size;
-
-	if (p_keep_offsets) {
-		// If computing anchors, we need to ensure the parent rect size is valid to avoid division by zero.
-		ERR_FAIL_COND(parent_rect_size.x == 0.0);
-		ERR_FAIL_COND(parent_rect_size.y == 0.0);
-	}
-
-	real_t x = p_rect.position.x;
-	real_t y = p_rect.position.y;
-
-	if (_get_layout_mode() != LayoutMode::LAYOUT_MODE_CONTAINER) {
-		float left_grow_factor =
-				(data.h_grow == GROW_DIRECTION_BEGIN) ? 1.0f
-				: (data.h_grow == GROW_DIRECTION_END) ? 0.0f
-													  : 0.5f;
-		float top_grow_factor =
-				(data.v_grow == GROW_DIRECTION_BEGIN) ? 1.0f
-				: (data.v_grow == GROW_DIRECTION_END) ? 0.0f
-													  : 0.5f;
-
-		Size2 size_diff = p_rect.size - data.size_cache;
-
-		x -= size_diff.x * (is_layout_rtl() ? (1.0f - left_grow_factor) : left_grow_factor);
-		y -= size_diff.y * top_grow_factor;
-	}
-
-	if (is_layout_rtl()) {
-		x = parent_rect_size.x - x - p_rect.size.x;
-	}
-
-	if (p_keep_offsets) {
-		data.anchor[0] = (x - data.offset[0]) / parent_rect_size.x;
-		data.anchor[1] = (y - data.offset[1]) / parent_rect_size.y;
-		data.anchor[2] = (x + p_rect.size.x - data.offset[2]) / parent_rect_size.x;
-		data.anchor[3] = (y + p_rect.size.y - data.offset[3]) / parent_rect_size.y;
-	} else {
-		data.offset[0] = x - (data.anchor[0] * parent_rect_size.x);
-		data.offset[1] = y - (data.anchor[1] * parent_rect_size.y);
-		data.offset[2] = x + p_rect.size.x - (data.anchor[2] * parent_rect_size.x);
-		data.offset[3] = y + p_rect.size.y - (data.anchor[3] * parent_rect_size.y);
-	}
+LS::GrowDirection Control::get_v_grow_direction() const {
+	ERR_READ_THREAD_GUARD_V(LS::GROW_DIRECTION_BEGIN);
+	return LS::get_singleton()->get_v_grow_direction(layout_rid);
 }
 
 /// Presets and layout modes.
 
-void Control::_set_layout_mode(LayoutMode p_mode) {
-	bool list_changed = false;
+void Control::_set_layout_mode(LS::LayoutMode p_mode) {
+	bool changed = LS::get_singleton()->get_layout_mode(layout_rid) != p_mode;
+	LS::get_singleton()->set_layout_mode(layout_rid, p_mode);
 
-	if (data.stored_layout_mode != p_mode) {
-		list_changed = true;
-		data.stored_layout_mode = p_mode;
+	if (!changed) {
+		return;
 	}
 
-	if (data.stored_layout_mode == LayoutMode::LAYOUT_MODE_POSITION) {
+	if (p_mode == LS::LayoutMode::LAYOUT_MODE_POSITION) {
 		data.stored_use_custom_anchors = false;
 		set_anchors_and_offsets_preset(LayoutPreset::PRESET_TOP_LEFT, LayoutPresetMode::PRESET_MODE_KEEP_SIZE);
 		set_grow_direction_preset(LayoutPreset::PRESET_TOP_LEFT);
 	}
 
-	if (list_changed) {
-		notify_property_list_changed();
-	}
+	notify_property_list_changed();
 }
 
-void Control::_update_layout_mode() {
-	LayoutMode computed_layout = _get_layout_mode();
-	if (data.stored_layout_mode != computed_layout) {
-		data.stored_layout_mode = computed_layout;
-		notify_property_list_changed();
-	}
+LS::LayoutMode Control::_get_layout_mode() const {
+	return LS::get_singleton()->get_layout_mode(layout_rid);
 }
 
-Control::LayoutMode Control::_get_layout_mode() const {
-	Control *parent_control = get_parent_control();
-	// In these modes the property is read-only.
-	if (!parent_control) {
-		return LayoutMode::LAYOUT_MODE_UNCONTROLLED;
-	} else if (Object::cast_to<Container>(parent_control)) {
-		return LayoutMode::LAYOUT_MODE_CONTAINER;
+void Control::_set_children_default_layout_mode(LS::LayoutMode p_mode) {
+	if (p_mode == _get_children_default_layout_mode()) {
+		return;
 	}
-
-	// If anchors are not in the top-left position, this is definitely in anchors mode.
-	if (_get_anchors_layout_preset() != (int)LayoutPreset::PRESET_TOP_LEFT) {
-		return LayoutMode::LAYOUT_MODE_ANCHORS;
-	}
-
-	// Only position/anchors modes are valid for non-container control parent.
-	if (data.stored_layout_mode == LayoutMode::LAYOUT_MODE_POSITION || data.stored_layout_mode == LayoutMode::LAYOUT_MODE_ANCHORS) {
-		return data.stored_layout_mode;
-	}
-
-	// Otherwise fallback to position mode.
-	return LayoutMode::LAYOUT_MODE_POSITION;
+	LS::get_singleton()->set_default_children_layout_mode(layout_rid, p_mode);
+	notify_property_list_changed();
 }
 
-Control::LayoutMode Control::_get_default_layout_mode() const {
-	Control *parent_control = get_parent_control();
-	// In these modes the property is read-only.
-	if (!parent_control) {
-		return LayoutMode::LAYOUT_MODE_UNCONTROLLED;
-	} else if (Object::cast_to<Container>(parent_control)) {
-		return LayoutMode::LAYOUT_MODE_CONTAINER;
-	}
+LS::LayoutMode Control::_get_children_default_layout_mode() const {
+	return LS::get_singleton()->get_default_children_layout_mode(layout_rid);
+}
 
-	// Otherwise fallback to the position mode.
-	return LayoutMode::LAYOUT_MODE_POSITION;
+RID Control::get_layout_rid() const {
+	return layout_rid;
 }
 
 void Control::_set_anchors_layout_preset(int p_preset) {
@@ -1096,7 +949,7 @@ void Control::_set_anchors_layout_preset(int p_preset) {
 		return; // Keep settings as is.
 	}
 
-	if (data.stored_layout_mode != LayoutMode::LAYOUT_MODE_UNCONTROLLED && data.stored_layout_mode != LayoutMode::LAYOUT_MODE_ANCHORS) {
+	if (LS::get_singleton()->get_layout_mode(layout_rid) != LS::LayoutMode::LAYOUT_MODE_ANCHORS) {
 		// In other modes the anchor preset is non-operational and shouldn't be set to anything.
 		return;
 	}
@@ -1146,7 +999,7 @@ void Control::_set_anchors_layout_preset(int p_preset) {
 
 int Control::_get_anchors_layout_preset() const {
 	// If this is a layout mode that doesn't rely on anchors, avoid excessive checks.
-	if (data.stored_layout_mode != LayoutMode::LAYOUT_MODE_UNCONTROLLED && data.stored_layout_mode != LayoutMode::LAYOUT_MODE_ANCHORS) {
+	if (LS::get_singleton()->get_layout_mode(layout_rid) != LS::LayoutMode::LAYOUT_MODE_ANCHORS) {
 		return LayoutPreset::PRESET_TOP_LEFT;
 	}
 
@@ -1352,6 +1205,7 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 	}
 
 	Rect2 parent_rect = get_parent_anchorable_rect();
+	Vector4 anchors = LS::get_singleton()->get_anchors(layout_rid);
 
 	real_t x = parent_rect.size.x;
 	if (is_layout_rtl()) {
@@ -1367,21 +1221,21 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 		case PRESET_LEFT_WIDE:
 		case PRESET_HCENTER_WIDE:
 		case PRESET_FULL_RECT:
-			data.offset[0] = x * (0.0 - data.anchor[0]) + p_margin + parent_rect.position.x;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_LEFT, x * (0.0 - anchors[0]) + p_margin + parent_rect.position.x);
 			break;
 
 		case PRESET_CENTER_TOP:
 		case PRESET_CENTER_BOTTOM:
 		case PRESET_CENTER:
 		case PRESET_VCENTER_WIDE:
-			data.offset[0] = x * (0.5 - data.anchor[0]) - new_size.x / 2 + parent_rect.position.x;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_LEFT, x * (0.5 - anchors[0]) - new_size.x / 2 + parent_rect.position.x);
 			break;
 
 		case PRESET_TOP_RIGHT:
 		case PRESET_BOTTOM_RIGHT:
 		case PRESET_CENTER_RIGHT:
 		case PRESET_RIGHT_WIDE:
-			data.offset[0] = x * (1.0 - data.anchor[0]) - new_size.x - p_margin + parent_rect.position.x;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_LEFT, x * (1.0 - anchors[0]) - new_size.x - p_margin + parent_rect.position.x);
 			break;
 	}
 
@@ -1395,21 +1249,21 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 		case PRESET_TOP_WIDE:
 		case PRESET_VCENTER_WIDE:
 		case PRESET_FULL_RECT:
-			data.offset[1] = parent_rect.size.y * (0.0 - data.anchor[1]) + p_margin + parent_rect.position.y;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_TOP, parent_rect.size.y * (0.0 - anchors[1]) + p_margin + parent_rect.position.y);
 			break;
 
 		case PRESET_CENTER_LEFT:
 		case PRESET_CENTER_RIGHT:
 		case PRESET_CENTER:
 		case PRESET_HCENTER_WIDE:
-			data.offset[1] = parent_rect.size.y * (0.5 - data.anchor[1]) - new_size.y / 2 + parent_rect.position.y;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_TOP, parent_rect.size.y * (0.5 - anchors[1]) - new_size.y / 2 + parent_rect.position.y);
 			break;
 
 		case PRESET_BOTTOM_LEFT:
 		case PRESET_BOTTOM_RIGHT:
 		case PRESET_CENTER_BOTTOM:
 		case PRESET_BOTTOM_WIDE:
-			data.offset[1] = parent_rect.size.y * (1.0 - data.anchor[1]) - new_size.y - p_margin + parent_rect.position.y;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_TOP, parent_rect.size.y * (1.0 - anchors[1]) - new_size.y - p_margin + parent_rect.position.y);
 			break;
 	}
 
@@ -1419,14 +1273,14 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 		case PRESET_BOTTOM_LEFT:
 		case PRESET_CENTER_LEFT:
 		case PRESET_LEFT_WIDE:
-			data.offset[2] = x * (0.0 - data.anchor[2]) + new_size.x + p_margin + parent_rect.position.x;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_RIGHT, x * (0.0 - anchors[2]) + new_size.x + p_margin + parent_rect.position.x);
 			break;
 
 		case PRESET_CENTER_TOP:
 		case PRESET_CENTER_BOTTOM:
 		case PRESET_CENTER:
 		case PRESET_VCENTER_WIDE:
-			data.offset[2] = x * (0.5 - data.anchor[2]) + new_size.x / 2 + parent_rect.position.x;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_RIGHT, x * (0.5 - anchors[2]) + new_size.x / 2 + parent_rect.position.x);
 			break;
 
 		case PRESET_TOP_RIGHT:
@@ -1437,7 +1291,7 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 		case PRESET_BOTTOM_WIDE:
 		case PRESET_HCENTER_WIDE:
 		case PRESET_FULL_RECT:
-			data.offset[2] = x * (1.0 - data.anchor[2]) - p_margin + parent_rect.position.x;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_RIGHT, x * (1.0 - anchors[2]) - p_margin + parent_rect.position.x);
 			break;
 	}
 
@@ -1447,14 +1301,14 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 		case PRESET_TOP_RIGHT:
 		case PRESET_CENTER_TOP:
 		case PRESET_TOP_WIDE:
-			data.offset[3] = parent_rect.size.y * (0.0 - data.anchor[3]) + new_size.y + p_margin + parent_rect.position.y;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_BOTTOM, parent_rect.size.y * (0.0 - anchors[3]) + new_size.y + p_margin + parent_rect.position.y);
 			break;
 
 		case PRESET_CENTER_LEFT:
 		case PRESET_CENTER_RIGHT:
 		case PRESET_CENTER:
 		case PRESET_HCENTER_WIDE:
-			data.offset[3] = parent_rect.size.y * (0.5 - data.anchor[3]) + new_size.y / 2 + parent_rect.position.y;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_BOTTOM, parent_rect.size.y * (0.5 - anchors[3]) + new_size.y / 2 + parent_rect.position.y);
 			break;
 
 		case PRESET_BOTTOM_LEFT:
@@ -1465,11 +1319,9 @@ void Control::set_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resiz
 		case PRESET_BOTTOM_WIDE:
 		case PRESET_VCENTER_WIDE:
 		case PRESET_FULL_RECT:
-			data.offset[3] = parent_rect.size.y * (1.0 - data.anchor[3]) - p_margin + parent_rect.position.y;
+			LS::get_singleton()->set_offset(layout_rid, SIDE_BOTTOM, parent_rect.size.y * (1.0 - anchors[3]) - p_margin + parent_rect.position.y);
 			break;
 	}
-
-	_size_changed();
 }
 
 void Control::set_anchors_and_offsets_preset(LayoutPreset p_preset, LayoutPresetMode p_resize_mode, int p_margin) {
@@ -1486,13 +1338,13 @@ void Control::set_grow_direction_preset(LayoutPreset p_preset) {
 		case PRESET_BOTTOM_LEFT:
 		case PRESET_CENTER_LEFT:
 		case PRESET_LEFT_WIDE:
-			set_h_grow_direction(GrowDirection::GROW_DIRECTION_END);
+			set_h_grow_direction(LS::GROW_DIRECTION_END);
 			break;
 		case PRESET_TOP_RIGHT:
 		case PRESET_BOTTOM_RIGHT:
 		case PRESET_CENTER_RIGHT:
 		case PRESET_RIGHT_WIDE:
-			set_h_grow_direction(GrowDirection::GROW_DIRECTION_BEGIN);
+			set_h_grow_direction(LS::GROW_DIRECTION_BEGIN);
 			break;
 		case PRESET_CENTER_TOP:
 		case PRESET_CENTER_BOTTOM:
@@ -1502,7 +1354,7 @@ void Control::set_grow_direction_preset(LayoutPreset p_preset) {
 		case PRESET_VCENTER_WIDE:
 		case PRESET_HCENTER_WIDE:
 		case PRESET_FULL_RECT:
-			set_h_grow_direction(GrowDirection::GROW_DIRECTION_BOTH);
+			set_h_grow_direction(LS::GROW_DIRECTION_BOTH);
 			break;
 	}
 
@@ -1512,14 +1364,14 @@ void Control::set_grow_direction_preset(LayoutPreset p_preset) {
 		case PRESET_TOP_RIGHT:
 		case PRESET_CENTER_TOP:
 		case PRESET_TOP_WIDE:
-			set_v_grow_direction(GrowDirection::GROW_DIRECTION_END);
+			set_v_grow_direction(LS::GROW_DIRECTION_END);
 			break;
 
 		case PRESET_BOTTOM_LEFT:
 		case PRESET_BOTTOM_RIGHT:
 		case PRESET_CENTER_BOTTOM:
 		case PRESET_BOTTOM_WIDE:
-			set_v_grow_direction(GrowDirection::GROW_DIRECTION_BEGIN);
+			set_v_grow_direction(LS::GROW_DIRECTION_BEGIN);
 			break;
 
 		case PRESET_CENTER_LEFT:
@@ -1530,7 +1382,7 @@ void Control::set_grow_direction_preset(LayoutPreset p_preset) {
 		case PRESET_VCENTER_WIDE:
 		case PRESET_HCENTER_WIDE:
 		case PRESET_FULL_RECT:
-			set_v_grow_direction(GrowDirection::GROW_DIRECTION_BOTH);
+			set_v_grow_direction(LS::GROW_DIRECTION_BOTH);
 			break;
 	}
 }
@@ -1543,22 +1395,12 @@ void Control::_set_position(const Point2 &p_point) {
 
 void Control::set_position(const Point2 &p_point, bool p_keep_offsets) {
 	ERR_MAIN_THREAD_GUARD;
-
-#ifdef TOOLS_ENABLED
-	// Can't compute anchors, set position directly and return immediately.
-	if (saving && !is_inside_tree()) {
-		data.pos_cache = p_point;
-		return;
-	}
-#endif // TOOLS_ENABLED
-
-	_compute_layout_rect(Rect2(p_point, data.size_cache), p_keep_offsets);
-	_size_changed();
+	LS::get_singleton()->set_position(layout_rid, p_point, p_keep_offsets);
 }
 
 Size2 Control::get_position() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	return data.pos_cache;
+	return LS::get_singleton()->get_position(layout_rid);
 }
 
 void Control::_set_global_position(const Point2 &p_point) {
@@ -1586,51 +1428,18 @@ Point2 Control::get_screen_position() const {
 }
 
 void Control::_set_size(const Size2 &p_size) {
-#ifdef DEBUG_ENABLED
-	if (data.size_warning && (data.anchor[SIDE_LEFT] != data.anchor[SIDE_RIGHT] || data.anchor[SIDE_TOP] != data.anchor[SIDE_BOTTOM])) {
-		WARN_PRINT("Nodes with non-equal opposite anchors will have their size overridden after _ready(). \nIf you want to set size, change the anchors or consider using set_deferred().");
-	}
-#endif // DEBUG_ENABLED
 	set_size(p_size);
 }
 
 void Control::set_size(const Size2 &p_size, bool p_keep_offsets) {
 	ERR_MAIN_THREAD_GUARD;
 	ERR_FAIL_COND(!std::isfinite(p_size.x) || !std::isfinite(p_size.y));
-	Size2 new_size = p_size;
-	Size2 min = get_combined_minimum_size();
-	if (new_size.x < min.x) {
-		new_size.x = min.x;
-	}
-	if (new_size.y < min.y) {
-		new_size.y = min.y;
-	}
-
-	Size2 max = get_combined_maximum_size();
-	if (max.x >= 0 && new_size.x > max.x) {
-		new_size.x = max.x;
-	}
-	if (max.y >= 0 && new_size.y > max.y) {
-		new_size.y = max.y;
-	}
-
-#ifdef TOOLS_ENABLED
-	// Can't compute anchors, set size directly and return immediately.
-	if (saving && !is_inside_tree()) {
-		data.size_cache = new_size;
-		return;
-	}
-#endif // TOOLS_ENABLED
-
-	data.expanded_by_desired_size = false;
-
-	_compute_layout_rect(Rect2(data.pos_cache, new_size), p_keep_offsets);
-	_size_changed();
+	LS::get_singleton()->set_size(layout_rid, p_size, p_keep_offsets);
 }
 
 Size2 Control::get_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	return data.size_cache;
+	return LS::get_singleton()->get_size(layout_rid);
 }
 
 void Control::reset_size() {
@@ -1638,16 +1447,11 @@ void Control::reset_size() {
 	set_size(Size2());
 }
 
+// FIXME: This should probably be completely removed, considering it bypasses the layout system. Or reworked to use set_anchor() & set_offset().
 void Control::set_rect(const Rect2 &p_rect) {
 	ERR_MAIN_THREAD_GUARD;
-	for (int i = 0; i < 4; i++) {
-		data.anchor[i] = ANCHOR_BEGIN;
-	}
-
-	_compute_layout_rect(p_rect);
-	if (is_inside_tree()) {
-		_size_changed();
-	}
+	LS::get_singleton()->set_horizontal_layout(layout_rid, p_rect.position.x, p_rect.size.x);
+	LS::get_singleton()->set_vertical_layout(layout_rid, p_rect.position.y, p_rect.size.y);
 }
 
 Rect2 Control::get_rect() const {
@@ -1769,113 +1573,31 @@ Vector2 Control::get_combined_pivot_offset() const {
 
 void Control::set_propagate_maximum_size(bool p_propagate) {
 	ERR_MAIN_THREAD_GUARD;
-	if (data.propagate_maximum_size == p_propagate) {
-		return;
-	}
-	data.propagate_maximum_size = p_propagate;
-	update_maximum_size();
+	LS::get_singleton()->set_propagate_maximum_size(layout_rid, p_propagate);
 }
 
 bool Control::is_propagating_maximum_size() {
 	ERR_READ_THREAD_GUARD_V(false);
-	return data.propagate_maximum_size;
-}
-
-void Control::_update_maximum_size() {
-	if (!is_inside_tree()) {
-		data.updating_last_maximum_size = false;
-		return;
-	}
-
-	Size2 maxsize = get_combined_maximum_size();
-	data.updating_last_maximum_size = false;
-
-	if (maxsize != data.last_maximum_size) {
-		data.last_maximum_size = maxsize;
-		_size_changed();
-		emit_signal(SceneStringName(maximum_size_changed));
-	}
+	return LS::get_singleton()->is_propagating_maximum_size(layout_rid);
 }
 
 void Control::update_maximum_size() {
 	ERR_MAIN_THREAD_GUARD;
-	if (!is_inside_tree() || data.block_maximum_size_adjust) {
+	if (!is_inside_tree()) {
 		return;
 	}
-
-	data.maximum_size_valid = false;
-
-	Size2 parent_max = data.propagate_maximum_size ? get_inner_combined_maximum_size().min(get_combined_maximum_size()) : Size2(-1, -1);
-	parent_max = parent_max.maxf(-1.0f);
-
-	for (Node *child : iterate_children()) {
-		Control *child_control = Object::cast_to<Control>(child);
-		if (child_control && !child_control->is_set_as_top_level()) {
-			if (child_control->data.parent_maximum_size_cache == parent_max) {
-				continue;
-			}
-			child_control->data.parent_maximum_size_cache = parent_max;
-			child_control->update_maximum_size();
-		}
-	}
-
-	if (!is_visible_in_tree()) {
-		// Invalidate the last maximum size so it will update when made visible.
-		data.last_maximum_size = Size2(-1, -1);
-		return;
-	}
-
-	if (data.updating_last_maximum_size) {
-		return;
-	}
-	data.updating_last_maximum_size = true;
-
-	// Keep minimum size propagation in sync so parent containers can relayout correctly.
-	if (!data.updating_last_minimum_size) {
-		data.updating_last_minimum_size = true;
-		callable_mp(this, &Control::_update_minimum_size).call_deferred();
-	}
-	// Same with desired size.
-	if (!data.updating_last_desired_size) {
-		data.updating_last_desired_size = true;
-		callable_mp(this, &Control::_update_desired_size).call_deferred();
-	}
-
-	callable_mp(this, &Control::_update_maximum_size).call_deferred();
-}
-
-void Control::set_block_maximum_size_adjust(bool p_block) {
-	ERR_MAIN_THREAD_GUARD;
-	data.block_maximum_size_adjust = p_block;
+	LS::get_singleton()->update_maximum_size(layout_rid);
 }
 
 void Control::set_custom_maximum_size(const Size2 &p_custom) {
 	ERR_MAIN_THREAD_GUARD;
-	if (p_custom == data.custom_maximum_size) {
-		return;
-	}
-
-	if (!p_custom.is_finite()) {
-		// Prevent infinite loop.
-		return;
-	}
-
-	Size2 normalized = p_custom;
-	if (normalized.x < 0) {
-		normalized.x = -1;
-	}
-	if (normalized.y < 0) {
-		normalized.y = -1;
-	}
-
-	data.custom_maximum_size = normalized;
-	update_maximum_size();
+	LS::get_singleton()->set_custom_maximum_size(layout_rid, p_custom);
 	update_configuration_warnings();
 }
 
 Size2 Control::get_custom_maximum_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	return data.custom_maximum_size;
+	return LS::get_singleton()->get_custom_maximum_size(layout_rid);
 }
 
 Size2 Control::get_maximum_size() const {
@@ -1885,48 +1607,9 @@ Size2 Control::get_maximum_size() const {
 	return ms;
 }
 
-void Control::_update_maximum_size_cache() const {
-	Size2 maxsize = get_maximum_size();
-	if (data.custom_maximum_size.x >= 0) {
-		if (maxsize.x >= 0) {
-			maxsize.x = MIN(maxsize.x, data.custom_maximum_size.x);
-		} else {
-			maxsize.x = data.custom_maximum_size.x;
-		}
-	}
-	if (data.custom_maximum_size.y >= 0) {
-		if (maxsize.y >= 0) {
-			maxsize.y = MIN(maxsize.y, data.custom_maximum_size.y);
-		} else {
-			maxsize.y = data.custom_maximum_size.y;
-		}
-	}
-
-	if (data.parent_maximum_size_cache.x >= 0) {
-		if (maxsize.x >= 0) {
-			maxsize.x = MIN(maxsize.x, data.parent_maximum_size_cache.x);
-		} else {
-			maxsize.x = data.parent_maximum_size_cache.x;
-		}
-	}
-	if (data.parent_maximum_size_cache.y >= 0) {
-		if (maxsize.y >= 0) {
-			maxsize.y = MIN(maxsize.y, data.parent_maximum_size_cache.y);
-		} else {
-			maxsize.y = data.parent_maximum_size_cache.y;
-		}
-	}
-
-	data.maximum_size_cache = maxsize;
-	data.maximum_size_valid = true;
-}
-
 Size2 Control::get_combined_maximum_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	if (!data.maximum_size_valid) {
-		_update_maximum_size_cache();
-	}
-	return data.maximum_size_cache;
+	return LS::get_singleton()->get_combined_maximum_size(layout_rid);
 }
 
 Size2 Control::get_inner_combined_maximum_size() const {
@@ -1934,70 +1617,15 @@ Size2 Control::get_inner_combined_maximum_size() const {
 }
 
 void Control::set_parent_maximum_size_cache(const Size2 &p_parent_max) {
-	const Size2 normalized = p_parent_max.maxf(-1.0f);
-	if (data.parent_maximum_size_cache == normalized) {
-		return;
-	}
-	data.parent_maximum_size_cache = normalized;
-	update_maximum_size();
-}
-
-void Control::_update_minimum_size() {
-	if (!is_inside_tree()) {
-		data.updating_last_minimum_size = false;
-		return;
-	}
-
-	Size2 minsize = get_combined_minimum_size();
-	data.updating_last_minimum_size = false;
-
-	if (minsize != data.last_minimum_size) {
-		data.last_minimum_size = minsize;
-		_size_changed();
-		emit_signal(SceneStringName(minimum_size_changed));
-	}
+	LS::get_singleton()->set_parent_maximum_size_cache(layout_rid, p_parent_max);
 }
 
 void Control::update_minimum_size() {
 	ERR_MAIN_THREAD_GUARD;
-	if (!is_inside_tree() || data.block_minimum_size_adjust) {
+	if (!is_inside_tree()) {
 		return;
 	}
-
-	// Invalidate cache upwards.
-	Control *invalidate = this;
-	while (invalidate && invalidate->data.minimum_size_valid) {
-		invalidate->data.minimum_size_valid = false;
-		if (invalidate->is_set_as_top_level()) {
-			break; // Do not go further up.
-		}
-
-		Window *parent_window = invalidate->get_parent_window();
-		if (parent_window && parent_window->is_wrapping_controls()) {
-			parent_window->child_controls_changed();
-			break; // Stop on a window as well.
-		}
-
-		invalidate = invalidate->get_parent_control();
-	}
-
-	if (!is_visible_in_tree()) {
-		// Invalidate the last minimum size so it will update when made visible.
-		data.last_minimum_size = Size2(-1, -1);
-		return;
-	}
-
-	if (data.updating_last_minimum_size) {
-		return;
-	}
-	data.updating_last_minimum_size = true;
-
-	callable_mp(this, &Control::_update_minimum_size).call_deferred();
-}
-
-void Control::set_block_minimum_size_adjust(bool p_block) {
-	ERR_MAIN_THREAD_GUARD;
-	data.block_minimum_size_adjust = p_block;
+	LS::get_singleton()->update_minimum_size(layout_rid);
 }
 
 Size2 Control::get_minimum_size() const {
@@ -2009,46 +1637,13 @@ Size2 Control::get_minimum_size() const {
 
 void Control::set_custom_minimum_size(const Size2 &p_custom) {
 	ERR_MAIN_THREAD_GUARD;
-	if (p_custom == data.custom_minimum_size) {
-		return;
-	}
-
-	if (!p_custom.is_finite()) {
-		// Prevent infinite loop.
-		return;
-	}
-
-	data.custom_minimum_size = p_custom;
-	update_minimum_size();
+	LS::get_singleton()->set_custom_minimum_size(layout_rid, p_custom);
 	update_configuration_warnings();
 }
 
 Size2 Control::get_custom_minimum_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	return data.custom_minimum_size;
-}
-
-void Control::_update_desired_size_cache() const {
-	Size2 desired_size = get_desired_size();
-
-	data.desired_size_cache = desired_size;
-	data.desired_size_valid = true;
-}
-
-void Control::_update_desired_size() {
-	if (!is_inside_tree()) {
-		data.updating_last_desired_size = false;
-		return;
-	}
-
-	Size2 desired_size = get_desired_size();
-	data.updating_last_desired_size = false;
-
-	if (desired_size != data.last_desired_size) {
-		data.last_desired_size = desired_size;
-		grow_to_desired_size();
-		emit_signal("_desired_size_changed");
-	}
+	return LS::get_singleton()->get_custom_minimum_size(layout_rid);
 }
 
 void Control::update_desired_size() {
@@ -2056,44 +1651,12 @@ void Control::update_desired_size() {
 	if (!is_inside_tree()) {
 		return;
 	}
-
-	// Invalidate cache upwards.
-	Control *invalidate = this;
-	while (invalidate && invalidate->data.desired_size_valid) {
-		invalidate->data.desired_size_valid = false;
-		if (invalidate->is_set_as_top_level()) {
-			break; // Do not go further up.
-		}
-
-		Window *parent_window = invalidate->get_parent_window();
-		if (parent_window && parent_window->is_wrapping_controls()) {
-			parent_window->child_controls_changed();
-			break; // Stop on a window as well.
-		}
-
-		invalidate = invalidate->get_parent_control();
-	}
-
-	if (!is_visible_in_tree()) {
-		// Invalidate the last desired size so it will update when made visible.
-		data.last_desired_size = Size2(-1, -1);
-		return;
-	}
-
-	if (data.updating_last_desired_size) {
-		return;
-	}
-	data.updating_last_desired_size = true;
-
-	callable_mp(this, &Control::_update_desired_size).call_deferred();
+	LS::get_singleton()->update_desired_size(layout_rid);
 }
 
 Size2 Control::get_bound_desired_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	if (!data.desired_size_valid) {
-		_update_desired_size_cache();
-	}
-	Size2 desired_size = data.desired_size_cache;
+	Size2 desired_size = LS::get_singleton()->get_desired_size(layout_rid);
 	desired_size = desired_size.max(get_combined_minimum_size());
 	Size2 max_size = get_combined_maximum_size();
 	if (max_size.x >= 0) {
@@ -2109,37 +1672,31 @@ Size2 Control::get_desired_size() const {
 	return Size2();
 }
 
-void Control::grow_to_desired_size() {
-	ERR_MAIN_THREAD_GUARD;
-	if (!is_inside_tree()) {
-		return;
-	}
-
-	Size2 desired_size = get_bound_desired_size();
-	if (desired_size <= get_combined_minimum_size()) {
-		return;
-	}
-
-	if (data.expanded_by_desired_size) {
-		set_size(desired_size);
-		data.expanded_by_desired_size = true;
-	} else if (desired_size.x > get_size().x || desired_size.y > get_size().y) {
-		set_size(desired_size);
-		data.expanded_by_desired_size = true;
-	}
+real_t Control::get_preferred_width() const {
+	ERR_READ_THREAD_GUARD_V(0.0);
+	real_t width = 0.0;
+	GDVIRTUAL_CALL(_get_preferred_width, width);
+	return width;
 }
 
-bool Control::is_expanded_by_desired_size() const {
-	ERR_READ_THREAD_GUARD_V(false);
-	return data.expanded_by_desired_size;
+real_t Control::get_desired_height() const {
+	ERR_READ_THREAD_GUARD_V(0.0);
+	real_t height = 0.0;
+	GDVIRTUAL_CALL(_get_desired_height, height);
+	return height;
+}
+
+void Control::update_layout() {
+	ERR_MAIN_THREAD_GUARD;
+	LS::get_singleton()->update_layout(layout_rid);
 }
 
 void Control::add_child_notify(Node *p_child) {
 	CanvasItem::add_child_notify(p_child);
 
 	Control *child_control = Object::cast_to<Control>(p_child);
-	if (child_control && data.propagate_maximum_size) {
-		child_control->set_parent_maximum_size_cache(get_inner_combined_maximum_size().min(get_combined_maximum_size()));
+	if (child_control) {
+		LS::get_singleton()->update_maximum_size(child_control->layout_rid);
 	}
 }
 
@@ -2154,48 +1711,17 @@ void Control::remove_child_notify(Node *p_child) {
 
 bool Control::is_layout_pending() const {
 	ERR_MAIN_THREAD_GUARD_V(false);
-	return data.layout_pending;
+	return LS::get_singleton()->is_layout_dirty(layout_rid);
 }
 
 bool Control::is_layout_pending_in_tree() const {
 	ERR_MAIN_THREAD_GUARD_V(false);
-	const Control *current_node = this;
-	while (current_node != nullptr) {
-		if (current_node->is_layout_pending()) {
-			return true;
-		}
-		current_node = current_node->get_parent_control();
-	}
-	return false;
-}
-
-void Control::layout_pending_start() {
-	ERR_MAIN_THREAD_GUARD;
-	data.layout_pending = true;
-}
-
-void Control::layout_pending_finish() {
-	ERR_MAIN_THREAD_GUARD;
-	data.layout_pending = false;
-	emit_signal(SNAME("_layout_pending_finished"));
-}
-
-Control *Control::get_layout_pending_control_in_tree() const {
-	Control *current_node = const_cast<Control *>(this);
-	while (current_node != nullptr) {
-		if (current_node->is_layout_pending()) {
-			return current_node;
-		}
-		current_node = current_node->get_parent_control();
-	}
-	return nullptr;
+	return LS::get_singleton()->is_layout_dirty_in_tree(layout_rid);
 }
 
 void Control::call_on_all_layout_pending_finished(const Callable &p_callable) {
-	Control *pending_control = get_layout_pending_control_in_tree();
-	if (pending_control != nullptr) {
-		Callable recheck(memnew(LayoutRecheckCallable(get_instance_id(), p_callable)));
-		pending_control->connect(SNAME("_layout_pending_finished"), recheck, CONNECT_ONE_SHOT);
+	if (is_layout_pending_in_tree()) {
+		LS::get_singleton()->add_post_layout_callback(p_callable);
 	} else if (p_callable.is_valid()) {
 		p_callable.call();
 	}
@@ -2206,137 +1732,42 @@ void Control::call_on_all_layout_pending_finished(const Callable &p_callable) {
 #endif // DEBUG_ENABLED
 }
 
-void Control::_update_minimum_size_cache() const {
-	Size2 minsize = get_minimum_size();
-	minsize = minsize.max(data.custom_minimum_size);
-
-	data.minimum_size_cache = minsize;
-	data.minimum_size_valid = true;
-
-	// Keep the desired size cache in sync so it will update if needed when the minimum size changes. This is needed for get_bound_desired_size to work correctly.
-	data.desired_size_valid = false;
+void Control::queue_redraw() {
+	ERR_THREAD_GUARD; // Calling from thread is safe.
+	if (!is_inside_tree()) {
+		return;
+	}
+	LS::get_singleton()->queue_redraw(layout_rid);
 }
 
 Size2 Control::get_combined_minimum_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	if (!data.minimum_size_valid) {
-		_update_minimum_size_cache();
-	}
-	return data.minimum_size_cache;
+	return LS::get_singleton()->get_combined_minimum_size(layout_rid);
 }
 
 Size2 Control::get_bound_minimum_size() const {
 	ERR_READ_THREAD_GUARD_V(Size2());
-	Size2 min_size = get_combined_minimum_size();
-	Size2 max_size = get_combined_maximum_size();
-
-	if (max_size.x >= 0 && min_size.x > max_size.x) {
-		min_size.x = max_size.x;
-	}
-	if (max_size.y >= 0 && min_size.y > max_size.y) {
-		min_size.y = max_size.y;
-	}
-
-	return min_size;
+	return LS::get_singleton()->get_bound_minimum_size(layout_rid);
 }
 
-void Control::_size_changed() {
-	Rect2 parent_rect = get_parent_anchorable_rect();
-
-	real_t edge_pos[4];
-
-	for (int i = 0; i < 4; i++) {
-		real_t area = parent_rect.size[i & 1];
-		edge_pos[i] = data.offset[i] + (data.anchor[i] * area);
+void Control::_fit_contained_children(LS::Axis p_axis) {
+	if (!is_inside_tree()) {
+		return;
 	}
 
-	Point2 new_pos_cache = Point2(edge_pos[0], edge_pos[1]);
-	Size2 new_size_cache = Point2(edge_pos[2], edge_pos[3]) - new_pos_cache;
+	if (p_axis == LS::AXIS_HORIZONTAL) {
+		notification(NOTIFICATION_PRE_FIT_CHILDREN_WIDTHS);
+		emit_signal(SceneStringName(pre_fit_children_widths));
 
-	Size2 maximum_size = get_combined_maximum_size();
-	Size2 minimum_size = get_combined_minimum_size();
+		notification(NOTIFICATION_FIT_CHILDREN_WIDTHS);
+		emit_signal(SceneStringName(fit_children_widths));
+	} else {
+		notification(NOTIFICATION_PRE_FIT_CHILDREN_HEIGHTS);
+		emit_signal(SceneStringName(pre_fit_children_heights));
 
-	if (minimum_size.width > new_size_cache.width) {
-		if (data.h_grow == GROW_DIRECTION_BEGIN) {
-			new_pos_cache.x += new_size_cache.width - minimum_size.width;
-		} else if (data.h_grow == GROW_DIRECTION_BOTH) {
-			new_pos_cache.x += 0.5 * (new_size_cache.width - minimum_size.width);
-		}
-
-		new_size_cache.width = minimum_size.width;
+		notification(NOTIFICATION_FIT_CHILDREN_HEIGHTS);
+		emit_signal(SceneStringName(fit_children_heights));
 	}
-
-	if (maximum_size.width >= 0 && maximum_size.width < new_size_cache.width) {
-		if (data.h_grow == GROW_DIRECTION_BEGIN) {
-			new_pos_cache.x += new_size_cache.width - maximum_size.width;
-		} else if (data.h_grow == GROW_DIRECTION_BOTH) {
-			new_pos_cache.x += 0.5 * (new_size_cache.width - maximum_size.width);
-		}
-
-		new_size_cache.width = maximum_size.width;
-	}
-
-	if (is_layout_rtl()) {
-		new_pos_cache.x = parent_rect.size.x + 2 * parent_rect.position.x - new_pos_cache.x - new_size_cache.x;
-	}
-
-	if (minimum_size.height > new_size_cache.height) {
-		if (data.v_grow == GROW_DIRECTION_BEGIN) {
-			new_pos_cache.y += new_size_cache.height - minimum_size.height;
-		} else if (data.v_grow == GROW_DIRECTION_BOTH) {
-			new_pos_cache.y += 0.5 * (new_size_cache.height - minimum_size.height);
-		}
-
-		new_size_cache.height = minimum_size.height;
-	}
-
-	if (maximum_size.height >= 0 && maximum_size.height < new_size_cache.height) {
-		if (data.v_grow == GROW_DIRECTION_BEGIN) {
-			new_pos_cache.y += new_size_cache.height - maximum_size.height;
-		} else if (data.v_grow == GROW_DIRECTION_BOTH) {
-			new_pos_cache.y += 0.5 * (new_size_cache.height - maximum_size.height);
-		}
-
-		new_size_cache.height = maximum_size.height;
-	}
-
-	bool pos_changed = new_pos_cache != data.pos_cache;
-	bool size_changed = new_size_cache != data.size_cache;
-	// Below helps in getting rid of floating point errors for signaling resized.
-	bool approx_pos_changed = !new_pos_cache.is_equal_approx(data.pos_cache);
-	bool approx_size_changed = !new_size_cache.is_equal_approx(data.size_cache);
-
-	if (pos_changed) {
-		data.pos_cache = new_pos_cache;
-	}
-	if (size_changed) {
-		data.size_cache = new_size_cache;
-	}
-
-	if (is_inside_tree()) {
-		if (approx_pos_changed || approx_size_changed) {
-			// Ensure global transform is marked as dirty before `NOTIFICATION_RESIZED` / `item_rect_changed` signal
-			// so an up to date global transform could be obtained when handling these.
-			_notify_transform();
-
-			item_rect_changed(approx_size_changed);
-			if (approx_size_changed) {
-				notification(NOTIFICATION_RESIZED);
-			}
-		}
-
-		if (pos_changed && !approx_size_changed) {
-			_update_canvas_item_transform();
-		}
-
-		queue_accessibility_update();
-	} else if (pos_changed) {
-		_notify_transform();
-	}
-}
-
-void Control::_clear_size_warning() {
-	data.size_warning = false;
 }
 
 // Container sizing.
@@ -2348,6 +1779,7 @@ void Control::set_h_size_flags(BitField<SizeFlags> p_flags) {
 	}
 	data.h_size_flags = p_flags;
 	emit_signal(SceneStringName(size_flags_changed));
+	LS::get_singleton()->update_parent_layout(layout_rid);
 }
 
 BitField<Control::SizeFlags> Control::get_h_size_flags() const {
@@ -2362,6 +1794,7 @@ void Control::set_v_size_flags(BitField<SizeFlags> p_flags) {
 	}
 	data.v_size_flags = p_flags;
 	emit_signal(SceneStringName(size_flags_changed));
+	LS::get_singleton()->update_parent_layout(layout_rid);
 }
 
 BitField<Control::SizeFlags> Control::get_v_size_flags() const {
@@ -2377,6 +1810,7 @@ void Control::set_stretch_ratio(real_t p_ratio) {
 
 	data.expand = p_ratio;
 	emit_signal(SceneStringName(size_flags_changed));
+	LS::get_singleton()->update_parent_layout(layout_rid);
 }
 
 real_t Control::get_stretch_ratio() const {
@@ -4435,6 +3869,8 @@ void Control::set_layout_direction(Control::LayoutDirection p_direction) {
 	data.layout_dir = p_direction;
 
 	propagate_notification(NOTIFICATION_LAYOUT_DIRECTION_CHANGED);
+
+	LS::get_singleton()->update_layout(layout_rid);
 }
 
 Control::LayoutDirection Control::get_layout_direction() const {
@@ -4681,7 +4117,7 @@ void Control::_notification(int p_notification) {
 			AccessibilityServer::get_singleton()->update_set_live(ae, get_accessibility_live());
 
 			AccessibilityServer::get_singleton()->update_set_transform(ae, get_transform());
-			AccessibilityServer::get_singleton()->update_set_bounds(ae, Rect2(Vector2(), data.size_cache));
+			AccessibilityServer::get_singleton()->update_set_bounds(ae, Rect2(Vector2(), LS::get_singleton()->get_size(layout_rid)));
 			AccessibilityServer::get_singleton()->update_set_tooltip(ae, data.tooltip);
 			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_CLIPS_CHILDREN, data.clip_contents);
 			AccessibilityServer::get_singleton()->update_set_flag(ae, AccessibilityServerEnums::AccessibilityFlags::FLAG_TOUCH_PASSTHROUGH, data.mouse_filter == MOUSE_FILTER_PASS);
@@ -4754,7 +4190,10 @@ void Control::_notification(int p_notification) {
 
 			data.theme_owner->assign_theme_on_parented(this);
 
-			_update_layout_mode();
+			if (data.parent_control) {
+				LS::get_singleton()->set_control_parent(layout_rid, data.parent_control->layout_rid);
+				LS::get_singleton()->set_control_as_internal_child(layout_rid, is_internal());
+			}
 
 			_update_focus_behavior_recursive();
 			_update_mouse_behavior_recursive();
@@ -4763,6 +4202,9 @@ void Control::_notification(int p_notification) {
 		case NOTIFICATION_UNPARENTED: {
 			data.parent_control = nullptr;
 			data.parent_window = nullptr;
+
+			LS::get_singleton()->set_control_parent(layout_rid, RID());
+			LS::get_singleton()->set_control_as_internal_child(layout_rid, false);
 
 			data.theme_owner->clear_theme_on_unparented(this);
 		} break;
@@ -4775,7 +4217,7 @@ void Control::_notification(int p_notification) {
 		case NOTIFICATION_POST_ENTER_TREE: {
 			data.is_rtl_dirty = true;
 			update_maximum_size();
-			_size_changed();
+			update_layout();
 		} break;
 
 		case NOTIFICATION_EXIT_TREE: {
@@ -4783,12 +4225,6 @@ void Control::_notification(int p_notification) {
 
 			release_focus();
 			get_viewport()->_gui_remove_control(this);
-		} break;
-
-		case NOTIFICATION_READY: {
-#ifdef DEBUG_ENABLED
-			connect(SceneStringName(ready), callable_mp(this, &Control::_clear_size_warning), CONNECT_DEFERRED | CONNECT_ONE_SHOT);
-#endif // DEBUG_ENABLED
 		} break;
 
 		case NOTIFICATION_ENTER_CANVAS: {
@@ -4826,24 +4262,29 @@ void Control::_notification(int p_notification) {
 			data.parent_canvas_item = get_parent_item();
 
 			if (data.parent_canvas_item) {
-				data.parent_canvas_item->connect(SceneStringName(item_rect_changed), callable_mp(this, &Control::_size_changed));
+				if (!Object::cast_to<Control>(data.parent_canvas_item)) {
+					// Only connect this if the parent isn't a `Control`
+					data.parent_canvas_item->connect(SceneStringName(item_rect_changed), callable_mp(this, &Control::update_layout));
+				}
 			} else {
 				// Connect viewport.
 				Viewport *viewport = get_viewport();
 				ERR_FAIL_NULL(viewport);
-				viewport->connect("size_changed", callable_mp(this, &Control::_size_changed));
+				viewport->connect("size_changed", callable_mp(this, &Control::update_layout));
 			}
 		} break;
 
 		case NOTIFICATION_EXIT_CANVAS: {
 			if (data.parent_canvas_item) {
-				data.parent_canvas_item->disconnect(SceneStringName(item_rect_changed), callable_mp(this, &Control::_size_changed));
+				if (!Object::cast_to<Control>(data.parent_canvas_item)) {
+					data.parent_canvas_item->disconnect(SceneStringName(item_rect_changed), callable_mp(this, &Control::update_layout));
+				}
 				data.parent_canvas_item = nullptr;
 			} else {
 				// Disconnect viewport.
 				Viewport *viewport = get_viewport();
 				ERR_FAIL_NULL(viewport);
-				viewport->disconnect("size_changed", callable_mp(this, &Control::_size_changed));
+				viewport->disconnect("size_changed", callable_mp(this, &Control::update_layout));
 			}
 
 			if (data.RI) {
@@ -4857,6 +4298,7 @@ void Control::_notification(int p_notification) {
 		} break;
 
 		case NOTIFICATION_CHILD_ORDER_CHANGED: {
+			update_layout();
 			// Some parents need to know the order of the children to draw (like TabContainer),
 			// so we update them just in case.
 			queue_redraw();
@@ -4890,7 +4332,7 @@ void Control::_notification(int p_notification) {
 			queue_redraw();
 
 			update_minimum_size();
-			_size_changed();
+			update_layout();
 		} break;
 
 		case NOTIFICATION_VISIBILITY_CHANGED: {
@@ -4899,8 +4341,7 @@ void Control::_notification(int p_notification) {
 					get_viewport()->_gui_hide_control(this);
 				}
 			} else {
-				update_maximum_size();
-				_size_changed();
+				LS::get_singleton()->update_visibility(layout_rid);
 			}
 		} break;
 
@@ -4914,7 +4355,7 @@ void Control::_notification(int p_notification) {
 				queue_redraw();
 
 				update_minimum_size();
-				_size_changed();
+				update_layout();
 			}
 		} break;
 	}
@@ -5166,7 +4607,7 @@ void Control::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "propagate_maximum_size"), "set_propagate_maximum_size", "is_propagating_maximum_size");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "clip_contents"), "set_clip_contents", "is_clipping_contents");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "layout_mode", PROPERTY_HINT_ENUM, "Position,Anchors,Container,Uncontrolled", PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_INTERNAL), "_set_layout_mode", "_get_layout_mode");
-	ADD_PROPERTY_DEFAULT("layout_mode", LayoutMode::LAYOUT_MODE_POSITION);
+	ADD_PROPERTY_DEFAULT("layout_mode", LS::LayoutMode::LAYOUT_MODE_POSITION);
 
 	constexpr struct {
 		const char *name;
@@ -5366,9 +4807,9 @@ void Control::_bind_methods() {
 	BIND_ENUM_CONSTANT(MOUSE_FILTER_PASS);
 	BIND_ENUM_CONSTANT(MOUSE_FILTER_IGNORE);
 
-	BIND_ENUM_CONSTANT(GROW_DIRECTION_BEGIN);
-	BIND_ENUM_CONSTANT(GROW_DIRECTION_END);
-	BIND_ENUM_CONSTANT(GROW_DIRECTION_BOTH);
+	BIND_ENUM_CONSTANT(LS::GROW_DIRECTION_BEGIN);
+	BIND_ENUM_CONSTANT(LS::GROW_DIRECTION_END);
+	BIND_ENUM_CONSTANT(LS::GROW_DIRECTION_BOTH);
 
 	BIND_ENUM_CONSTANT(ANCHOR_BEGIN);
 	BIND_ENUM_CONSTANT(ANCHOR_END);
@@ -5421,7 +4862,7 @@ void Control::_bind_methods() {
 	GDVIRTUAL_BIND(_gui_input, "event");
 }
 
-Control::Control() {
+Control::Control() : layout_rid(LS::get_singleton()->add_control(this)) {
 	_define_ancestry(AncestralClass::CONTROL);
 
 	data.theme_owner = memnew(ThemeOwner(this));
@@ -5433,6 +4874,8 @@ Control::~Control() {
 	memdelete(data.theme_owner);
 
 	memdelete(data.offset_transform);
+
+	LS::get_singleton()->free_control(layout_rid);
 
 	// Resources need to be disconnected.
 	for (KeyValue<StringName, Ref<Texture2D>> &E : data.theme_icon_override) {

@@ -438,8 +438,6 @@ void GraphEdit::_scrollbar_moved(double) {
 void GraphEdit::_update_scroll_offset() {
 	ERR_FAIL_NULL_MSG(connections_layer, "connections_layer is missing.");
 
-	set_block_minimum_size_adjust(true);
-
 	for (int i = 0; i < get_child_count(); i++) {
 		GraphElement *graph_element = Object::cast_to<GraphElement>(get_child(i));
 		if (!graph_element) {
@@ -455,7 +453,6 @@ void GraphEdit::_update_scroll_offset() {
 	}
 
 	connections_layer->set_position(-scroll_offset);
-	set_block_minimum_size_adjust(false);
 	awaiting_scroll_offset_update = false;
 
 	// In Godot, signals on value change are avoided by convention.
@@ -472,8 +469,6 @@ void GraphEdit::_update_scrollbars() {
 
 	h_scrollbar->set_value_no_signal(scroll_offset.x);
 	v_scrollbar->set_value_no_signal(scroll_offset.y);
-
-	set_block_minimum_size_adjust(true);
 
 	// Determine the graph "canvas" size in screen space.
 	Rect2 screen_rect;
@@ -520,8 +515,6 @@ void GraphEdit::_update_scrollbars() {
 	// Avoid scrollbar overlapping.
 	h_scrollbar->set_anchor_and_offset(SIDE_RIGHT, ANCHOR_END, v_scrollbar->is_visible() ? -vmin.width : 0);
 	v_scrollbar->set_anchor_and_offset(SIDE_BOTTOM, ANCHOR_END, h_scrollbar->is_visible() ? -hmin.height : 0);
-
-	set_block_minimum_size_adjust(false);
 
 	if (!awaiting_scroll_offset_update) {
 		callable_mp(this, &GraphEdit::_update_scroll_offset).call_deferred();
@@ -728,7 +721,7 @@ void GraphEdit::add_child_notify(Node *p_child) {
 		if (connections_layer != nullptr) {
 			graph_element->connect(SceneStringName(item_rect_changed), callable_mp((CanvasItem *)connections_layer, &CanvasItem::queue_redraw));
 		}
-		graph_element->connect(SceneStringName(item_rect_changed), callable_mp((CanvasItem *)minimap, &GraphEditMinimap::queue_redraw));
+		graph_element->connect(SceneStringName(item_rect_changed), callable_mp((CanvasItem *)minimap, &CanvasItem::queue_redraw));
 
 		graph_element->set_scale(Vector2(zoom, zoom));
 		_graph_element_moved(graph_element);
@@ -812,7 +805,7 @@ void GraphEdit::remove_child_notify(Node *p_child) {
 
 		// In case of the whole GraphEdit being destroyed these references can already be freed.
 		if (minimap != nullptr && minimap->is_inside_tree()) {
-			graph_element->disconnect(SceneStringName(item_rect_changed), callable_mp((CanvasItem *)minimap, &GraphEditMinimap::queue_redraw));
+			graph_element->disconnect(SceneStringName(item_rect_changed), callable_mp((CanvasItem *)minimap, &CanvasItem::queue_redraw));
 		}
 	}
 }
