@@ -39,333 +39,115 @@
 #include "core/variant/variant.h"
 #include "core/variant/variant_internal.h"
 
+#include <type_traits>
+
 typedef void (*VariantFunc)(Variant &r_ret, Variant &p_self, const Variant **p_args);
 typedef void (*VariantConstructFunc)(Variant &r_ret, const Variant **p_args);
 
-template <typename R, typename... P>
-static _FORCE_INLINE_ void vc_static_method_call(R (*p_method)(P...), const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
+template <typename M>
+using VcClass = typename BinderTraits<M, !std::is_member_function_pointer_v<M>>::Class;
+
+template <typename M>
+static _FORCE_INLINE_ void vc_method_call(M p_method, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
+	if constexpr (std::is_void_v<typename BinderTraits<M>::Signature::Ret>) {
+		VariantInternal::clear(&r_ret);
+	}
+	call_with_variant_args_dv(&VariantInternalAccessor<VcClass<M>>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
+}
+
+template <typename M>
+static _FORCE_INLINE_ void vc_static_method_call(M p_method, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
 	call_with_variant_args_dv(BINDER_NO_INSTANCE, p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
 }
 
-template <typename... P>
-static _FORCE_INLINE_ void vc_static_method_call(void (*p_method)(P...), const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(BINDER_NO_INSTANCE, p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_method_call(R (T::*p_method)(P...), Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_method_call(R (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_method_call(void (T::*p_method)(P...), Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_method_call(void (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename From, typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_method_call(R (T::*p_method)(P...), Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
+template <typename From, typename M>
+static _FORCE_INLINE_ void vc_convert_method_call(M p_method, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
+	using T = VcClass<M>;
 	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
 	call_with_variant_args_dv(&converted, p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
 }
 
-template <typename From, typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_method_call(R (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
-	call_with_variant_args_dv(&converted, p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
+template <typename M>
+static _FORCE_INLINE_ void vc_method_call_static(M p_method, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
+	call_with_variant_args_dv(&VariantInternalAccessor<VcClass<M>>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
 }
 
-template <typename From, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_method_call(void (T::*p_method)(P...), Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
-	call_with_variant_args_dv(&converted, p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
+template <typename M>
+static _FORCE_INLINE_ void vc_validated_call(M p_method, Variant *p_base, const Variant **p_args, Variant *r_ret) {
+	call_with_validated_args(&VariantInternalAccessor<VcClass<M>>::get(p_base), p_method, p_args, r_ret);
 }
 
-template <typename From, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_method_call(void (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
-	call_with_variant_args_dv(&converted, p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_method_call_static(R (*p_method)(T *, P...), Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_method_call_static(void (*p_method)(T *, P...), Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) {
-	call_with_variant_args_dv(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, p_argcount, r_ret, r_error, p_defvals);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_validated_call(R (T::*p_method)(P...), Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, r_ret);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_validated_call(R (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, r_ret);
-}
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_validated_call(void (T::*p_method)(P...), Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, r_ret);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_validated_call(void (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, r_ret);
-}
-
-template <typename From, typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_validated_call(R (T::*p_method)(P...), Variant *p_base, const Variant **p_args, Variant *r_ret) {
+template <typename From, typename M>
+static _FORCE_INLINE_ void vc_convert_validated_call(M p_method, Variant *p_base, const Variant **p_args, Variant *r_ret) {
+	using T = VcClass<M>;
 	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
 	call_with_validated_args(&converted, p_method, p_args, r_ret);
 }
 
-template <typename From, typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_validated_call(R (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
-	call_with_validated_args(&converted, p_method, p_args, r_ret);
+template <typename M>
+static _FORCE_INLINE_ void vc_validated_call_static(M p_method, Variant *p_base, const Variant **p_args, Variant *r_ret) {
+	call_with_validated_args(&VariantInternalAccessor<VcClass<M>>::get(p_base), p_method, p_args, r_ret);
 }
 
-template <typename From, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_validated_call(void (T::*p_method)(P...), Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
-	call_with_validated_args(&converted, p_method, p_args, r_ret);
-}
-
-template <typename From, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_validated_call(void (T::*p_method)(P...) const, Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	T converted(static_cast<T>(VariantInternalAccessor<From>::get(p_base)));
-	call_with_validated_args(&converted, p_method, p_args, r_ret);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_validated_call_static(R (*p_method)(T *, P...), Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, r_ret);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_validated_call_static(void (*p_method)(T *, P...), Variant *p_base, const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(&VariantInternalAccessor<T>::get(p_base), p_method, p_args, r_ret);
-}
-
-template <typename R, typename... P>
-static _FORCE_INLINE_ void vc_validated_static_call(R (*p_method)(P...), const Variant **p_args, Variant *r_ret) {
+template <typename M>
+static _FORCE_INLINE_ void vc_validated_static_call(M p_method, const Variant **p_args, Variant *r_ret) {
 	call_with_validated_args(BINDER_NO_INSTANCE, p_method, p_args, r_ret);
 }
 
-template <typename... P>
-static _FORCE_INLINE_ void vc_validated_static_call(void (*p_method)(P...), const Variant **p_args, Variant *r_ret) {
-	call_with_validated_args(BINDER_NO_INSTANCE, p_method, p_args, r_ret);
+template <typename M>
+static _FORCE_INLINE_ void vc_ptrcall(M p_method, void *p_base, const void **p_args, void *r_ret) {
+	call_with_ptr_args(reinterpret_cast<VcClass<M> *>(p_base), p_method, p_args, r_ret);
 }
 
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_ptrcall(R (T::*p_method)(P...), void *p_base, const void **p_args, void *r_ret) {
-	call_with_ptr_args(reinterpret_cast<T *>(p_base), p_method, p_args, r_ret);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_ptrcall(R (T::*p_method)(P...) const, void *p_base, const void **p_args, void *r_ret) {
-	call_with_ptr_args(reinterpret_cast<T *>(p_base), p_method, p_args, r_ret);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_ptrcall(void (T::*p_method)(P...), void *p_base, const void **p_args, void *r_ret) {
-	call_with_ptr_args(reinterpret_cast<T *>(p_base), p_method, p_args, r_ret);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_ptrcall(void (T::*p_method)(P...) const, void *p_base, const void **p_args, void *r_ret) {
-	call_with_ptr_args(reinterpret_cast<T *>(p_base), p_method, p_args, r_ret);
-}
-
-template <typename From, typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_ptrcall(R (T::*p_method)(P...), void *p_base, const void **p_args, void *r_ret) {
-	T converted(*reinterpret_cast<From *>(p_base));
+template <typename From, typename M>
+static _FORCE_INLINE_ void vc_convert_ptrcall(M p_method, void *p_base, const void **p_args, void *r_ret) {
+	VcClass<M> converted(*reinterpret_cast<From *>(p_base));
 	call_with_ptr_args(&converted, p_method, p_args, r_ret);
 }
 
-template <typename From, typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_ptrcall(R (T::*p_method)(P...) const, void *p_base, const void **p_args, void *r_ret) {
-	T converted(*reinterpret_cast<From *>(p_base));
-	call_with_ptr_args(&converted, p_method, p_args, r_ret);
+template <typename M>
+static _FORCE_INLINE_ void vc_static_ptrcall(M p_method, const void **p_args, void *r_ret) {
+	call_with_ptr_args(BINDER_NO_INSTANCE, p_method, p_args, r_ret);
 }
 
-template <typename From, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_ptrcall(void (T::*p_method)(P...), void *p_base, const void **p_args, void *r_ret) {
-	T converted(*reinterpret_cast<From *>(p_base));
-	call_with_ptr_args(&converted, p_method, p_args);
-}
-
-template <typename From, typename T, typename... P>
-static _FORCE_INLINE_ void vc_convert_ptrcall(void (T::*p_method)(P...) const, void *p_base, const void **p_args, void *r_ret) {
-	T converted(*reinterpret_cast<From *>(p_base));
-	call_with_ptr_args(&converted, p_method, p_args, r_ret);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ int vc_get_argument_count(R (T::*p_method)(P...)) {
-	return sizeof...(P);
-}
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ int vc_get_argument_count(R (T::*p_method)(P...) const) {
-	return sizeof...(P);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ int vc_get_argument_count(void (T::*p_method)(P...)) {
-	return sizeof...(P);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ int vc_get_argument_count(void (T::*p_method)(P...) const) {
-	return sizeof...(P);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ int vc_get_argument_count(R (*p_method)(T *, P...)) {
-	return sizeof...(P);
+template <typename T, typename M>
+static _FORCE_INLINE_ int vc_get_argument_count(M p_method) {
+	return (int)MethodSignatureOf<T, M>::arg_count;
 }
 
 template <typename R, typename... P>
-static _FORCE_INLINE_ int vc_get_argument_count_static(R (*p_method)(P...)) {
-	return sizeof...(P);
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_argument_type(R (T::*p_method)(P...), int p_arg) {
-	return call_get_argument_type<P...>(p_arg);
-}
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_argument_type(R (T::*p_method)(P...) const, int p_arg) {
+static _FORCE_INLINE_ Variant::Type vc_get_signature_argument_type(BinderSignature<R, P...>, int p_arg) {
 	return call_get_argument_type<P...>(p_arg);
 }
 
-template <typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_argument_type(void (T::*p_method)(P...), int p_arg) {
-	return call_get_argument_type<P...>(p_arg);
+template <typename T, typename M>
+static _FORCE_INLINE_ Variant::Type vc_get_argument_type(M p_method, int p_arg) {
+	return vc_get_signature_argument_type(MethodSignatureOf<T, M>{}, p_arg);
 }
 
-template <typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_argument_type(void (T::*p_method)(P...) const, int p_arg) {
-	return call_get_argument_type<P...>(p_arg);
+template <typename T, typename M>
+static _FORCE_INLINE_ Variant::Type vc_get_return_type(M p_method) {
+	using Ret = typename MethodSignatureOf<T, M>::Ret;
+	if constexpr (std::is_void_v<Ret>) {
+		return Variant::NIL;
+	} else {
+		return GetTypeInfo<Ret>::VARIANT_TYPE;
+	}
 }
 
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_argument_type(R (*p_method)(T *, P...), int p_arg) {
-	return call_get_argument_type<P...>(p_arg);
+template <typename T, typename M>
+static _FORCE_INLINE_ bool vc_has_return_type(M p_method) {
+	return !std::is_void_v<typename MethodSignatureOf<T, M>::Ret>;
 }
 
-template <typename R, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_argument_type_static(R (*p_method)(P...), int p_arg) {
-	return call_get_argument_type<P...>(p_arg);
+template <typename M>
+static _FORCE_INLINE_ bool vc_is_const(M p_method) {
+	return BinderTraits<M>::is_const;
 }
 
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_return_type(R (T::*p_method)(P...)) {
-	return GetTypeInfo<R>::VARIANT_TYPE;
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_return_type(R (T::*p_method)(P...) const) {
-	return GetTypeInfo<R>::VARIANT_TYPE;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_return_type(void (T::*p_method)(P...)) {
-	return Variant::NIL;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_return_type(void (T::*p_method)(P...) const) {
-	return Variant::NIL;
-}
-
-template <typename R, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_return_type(R (*p_method)(P...)) {
-	return GetTypeInfo<R>::VARIANT_TYPE;
-}
-
-template <typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_return_type(void (*p_method)(P...)) {
-	return Variant::NIL;
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ bool vc_has_return_type(R (T::*p_method)(P...)) {
-	return true;
-}
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ bool vc_has_return_type(R (T::*p_method)(P...) const) {
-	return true;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ bool vc_has_return_type(void (T::*p_method)(P...)) {
-	return false;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ bool vc_has_return_type(void (T::*p_method)(P...) const) {
-	return false;
-}
-
-template <typename... P>
-static _FORCE_INLINE_ bool vc_has_return_type_static(void (*p_method)(P...)) {
-	return false;
-}
-
-template <typename R, typename... P>
-static _FORCE_INLINE_ bool vc_has_return_type_static(R (*p_method)(P...)) {
-	return true;
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ bool vc_is_const(R (T::*p_method)(P...)) {
-	return false;
-}
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ bool vc_is_const(R (T::*p_method)(P...) const) {
-	return true;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ bool vc_is_const(void (T::*p_method)(P...)) {
-	return false;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ bool vc_is_const(void (T::*p_method)(P...) const) {
-	return true;
-}
-
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_base_type(R (T::*p_method)(P...)) {
-	return GetTypeInfo<T>::VARIANT_TYPE;
-}
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_base_type(R (T::*p_method)(P...) const) {
-	return GetTypeInfo<T>::VARIANT_TYPE;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_base_type(void (T::*p_method)(P...)) {
-	return GetTypeInfo<T>::VARIANT_TYPE;
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ Variant::Type vc_get_base_type(void (T::*p_method)(P...) const) {
-	return GetTypeInfo<T>::VARIANT_TYPE;
+template <typename M>
+static _FORCE_INLINE_ Variant::Type vc_get_base_type(M p_method) {
+	return GetTypeInfo<VcClass<M>>::VARIANT_TYPE;
 }
 
 template <typename R, typename T, typename... P>
@@ -396,19 +178,19 @@ static constexpr VcMethodC<R, T, P...> vc_member(R (T::*p_method)(P...) const) {
 			vc_ptrcall(vc_member(m_method_ptr), p_base, p_args, r_ret); \
 		} \
 		static int get_argument_count() { \
-			return vc_get_argument_count(m_method_ptr); \
+			return vc_get_argument_count<m_class>(vc_member(m_method_ptr)); \
 		} \
 		static Variant::Type get_argument_type(int p_arg) { \
-			return vc_get_argument_type(m_method_ptr, p_arg); \
+			return vc_get_argument_type<m_class>(vc_member(m_method_ptr), p_arg); \
 		} \
 		static Variant::Type get_return_type() { \
-			return vc_get_return_type(m_method_ptr); \
+			return vc_get_return_type<m_class>(vc_member(m_method_ptr)); \
 		} \
 		static bool has_return_type() { \
-			return vc_has_return_type(m_method_ptr); \
+			return vc_has_return_type<m_class>(vc_member(m_method_ptr)); \
 		} \
 		static bool is_const() { \
-			return vc_is_const(m_method_ptr); \
+			return vc_is_const(vc_member(m_method_ptr)); \
 		} \
 		static bool is_static() { \
 			return false; \
@@ -417,7 +199,7 @@ static constexpr VcMethodC<R, T, P...> vc_member(R (T::*p_method)(P...) const) {
 			return false; \
 		} \
 		static Variant::Type get_base_type() { \
-			return vc_get_base_type(m_method_ptr); \
+			return vc_get_base_type(vc_member(m_method_ptr)); \
 		} \
 		static StringName get_name() { \
 			return #m_exposed_name; \
@@ -436,19 +218,19 @@ static constexpr VcMethodC<R, T, P...> vc_member(R (T::*p_method)(P...) const) {
 			vc_convert_ptrcall<m_class>(vc_member(m_method_ptr), p_base, p_args, r_ret); \
 		} \
 		static int get_argument_count() { \
-			return vc_get_argument_count(m_method_ptr); \
+			return vc_get_argument_count<m_class>(vc_member(m_method_ptr)); \
 		} \
 		static Variant::Type get_argument_type(int p_arg) { \
-			return vc_get_argument_type(m_method_ptr, p_arg); \
+			return vc_get_argument_type<m_class>(vc_member(m_method_ptr), p_arg); \
 		} \
 		static Variant::Type get_return_type() { \
-			return vc_get_return_type(m_method_ptr); \
+			return vc_get_return_type<m_class>(vc_member(m_method_ptr)); \
 		} \
 		static bool has_return_type() { \
-			return vc_has_return_type(m_method_ptr); \
+			return vc_has_return_type<m_class>(vc_member(m_method_ptr)); \
 		} \
 		static bool is_const() { \
-			return vc_is_const(m_method_ptr); \
+			return vc_is_const(vc_member(m_method_ptr)); \
 		} \
 		static bool is_static() { \
 			return false; \
@@ -465,45 +247,35 @@ static constexpr VcMethodC<R, T, P...> vc_member(R (T::*p_method)(P...) const) {
 	};
 
 template <typename R, typename... P>
-static _FORCE_INLINE_ void vc_static_ptrcall(R (*p_method)(P...), const void **p_args, void *r_ret) {
-	call_with_ptr_args(BINDER_NO_INSTANCE, p_method, p_args, r_ret);
-}
-
-template <typename... P>
-static _FORCE_INLINE_ void vc_static_ptrcall(void (*p_method)(P...), const void **p_args, void *r_ret) {
-	call_with_ptr_args(BINDER_NO_INSTANCE, p_method, p_args, r_ret);
-}
+using VcFunction = R (*)(P...);
 
 template <typename R, typename... P>
-using VcStaticFunction = R (*)(P...);
-
-template <typename R, typename... P>
-static constexpr VcStaticFunction<R, P...> vc_static_function(R (*p_function)(P...)) {
+static constexpr VcFunction<R, P...> vc_function(R (*p_function)(P...)) {
 	return p_function;
 }
 
 #define STATIC_METHOD_CLASS(m_class, m_exposed_name, m_method_name, m_method_ptr) \
 	struct Method_##m_class##_##m_method_name { \
 		static void call(Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) { \
-			vc_static_method_call(vc_static_function(m_method_ptr), p_args, p_argcount, r_ret, p_defvals, r_error); \
+			vc_static_method_call(vc_function(m_method_ptr), p_args, p_argcount, r_ret, p_defvals, r_error); \
 		} \
 		static void validated_call(Variant *p_base, const Variant **p_args, int p_argcount, Variant *r_ret) { \
-			vc_validated_static_call(vc_static_function(m_method_ptr), p_args, r_ret); \
+			vc_validated_static_call(vc_function(m_method_ptr), p_args, r_ret); \
 		} \
 		static void ptrcall(void *p_base, const void **p_args, void *r_ret, int p_argcount) { \
-			vc_static_ptrcall(vc_static_function(m_method_ptr), p_args, r_ret); \
+			vc_static_ptrcall(vc_function(m_method_ptr), p_args, r_ret); \
 		} \
 		static int get_argument_count() { \
-			return vc_get_argument_count_static(m_method_ptr); \
+			return vc_get_argument_count<BinderNoInstance>(vc_function(m_method_ptr)); \
 		} \
 		static Variant::Type get_argument_type(int p_arg) { \
-			return vc_get_argument_type_static(m_method_ptr, p_arg); \
+			return vc_get_argument_type<BinderNoInstance>(vc_function(m_method_ptr), p_arg); \
 		} \
 		static Variant::Type get_return_type() { \
-			return vc_get_return_type(m_method_ptr); \
+			return vc_get_return_type<BinderNoInstance>(vc_function(m_method_ptr)); \
 		} \
 		static bool has_return_type() { \
-			return vc_has_return_type_static(m_method_ptr); \
+			return vc_has_return_type<BinderNoInstance>(vc_function(m_method_ptr)); \
 		} \
 		static bool is_const() { \
 			return false; \
@@ -522,46 +294,28 @@ static constexpr VcStaticFunction<R, P...> vc_static_function(R (*p_function)(P.
 		} \
 	};
 
-template <typename R, typename T, typename... P>
-static _FORCE_INLINE_ void vc_ptrcall(R (*p_method)(T *, P...), void *p_base, const void **p_args, void *r_ret) {
-	call_with_ptr_args(reinterpret_cast<T *>(p_base), p_method, p_args, r_ret);
-}
-
-template <typename T, typename... P>
-static _FORCE_INLINE_ void vc_ptrcall(void (*p_method)(T *, P...), void *p_base, const void **p_args, void *r_ret) {
-	call_with_ptr_args(reinterpret_cast<T *>(p_base), p_method, p_args, r_ret);
-}
-
-template <typename R, typename T, typename... P>
-using VcInstanceFunction = R (*)(T *, P...);
-
-template <typename R, typename T, typename... P>
-static constexpr VcInstanceFunction<R, T, P...> vc_instance_function(R (*p_function)(T *, P...)) {
-	return p_function;
-}
-
 #define FUNCTION_CLASS(m_class, m_exposed_name, m_method_name, m_method_ptr, m_const) \
 	struct Method_##m_class##_##m_method_name { \
 		static void call(Variant *p_base, const Variant **p_args, int p_argcount, Variant &r_ret, const Vector<Variant> &p_defvals, Callable::CallError &r_error) { \
-			vc_method_call_static(vc_instance_function(m_method_ptr), p_base, p_args, p_argcount, r_ret, p_defvals, r_error); \
+			vc_method_call_static(vc_function(m_method_ptr), p_base, p_args, p_argcount, r_ret, p_defvals, r_error); \
 		} \
 		static void validated_call(Variant *p_base, const Variant **p_args, int p_argcount, Variant *r_ret) { \
-			vc_validated_call_static(vc_instance_function(m_method_ptr), p_base, p_args, r_ret); \
+			vc_validated_call_static(vc_function(m_method_ptr), p_base, p_args, r_ret); \
 		} \
 		static void ptrcall(void *p_base, const void **p_args, void *r_ret, int p_argcount) { \
-			vc_ptrcall(vc_instance_function(m_method_ptr), p_base, p_args, r_ret); \
+			vc_ptrcall(vc_function(m_method_ptr), p_base, p_args, r_ret); \
 		} \
 		static int get_argument_count() { \
-			return vc_get_argument_count(m_method_ptr); \
+			return vc_get_argument_count<m_class>(vc_function(m_method_ptr)); \
 		} \
 		static Variant::Type get_argument_type(int p_arg) { \
-			return vc_get_argument_type(m_method_ptr, p_arg); \
+			return vc_get_argument_type<m_class>(vc_function(m_method_ptr), p_arg); \
 		} \
 		static Variant::Type get_return_type() { \
-			return vc_get_return_type(m_method_ptr); \
+			return vc_get_return_type<m_class>(vc_function(m_method_ptr)); \
 		} \
 		static bool has_return_type() { \
-			return vc_has_return_type_static(m_method_ptr); \
+			return vc_has_return_type<m_class>(vc_function(m_method_ptr)); \
 		} \
 		static bool is_const() { \
 			return m_const; \

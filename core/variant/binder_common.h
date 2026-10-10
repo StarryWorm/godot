@@ -62,6 +62,7 @@ inline constexpr BinderNoInstance *BINDER_NO_INSTANCE = nullptr;
 
 template <typename R, typename... P>
 struct BinderSignature {
+	using Ret = R;
 	static constexpr size_t arg_count = sizeof...(P);
 };
 
@@ -71,6 +72,7 @@ struct BinderTraits;
 // Represents a non-const class method called on an instance.
 template <typename R, typename T, typename... P>
 struct BinderTraits<R (T::*)(P...), false> {
+	using Class = T;
 	using Signature = BinderSignature<R, P...>;
 	static constexpr bool is_const = false;
 };
@@ -78,6 +80,7 @@ struct BinderTraits<R (T::*)(P...), false> {
 // Represents a const class method called on an instance.
 template <typename R, typename T, typename... P>
 struct BinderTraits<R (T::*)(P...) const, false> {
+	using Class = T;
 	using Signature = BinderSignature<R, P...>;
 	static constexpr bool is_const = true;
 };
@@ -85,6 +88,7 @@ struct BinderTraits<R (T::*)(P...) const, false> {
 // Represents a class method called on an instance, where the instance is passed as the first argument.
 template <typename R, typename T, typename... P>
 struct BinderTraits<R (*)(T *, P...), true> {
+	using Class = T;
 	using Signature = BinderSignature<R, P...>;
 	static constexpr bool is_const = false;
 };
