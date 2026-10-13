@@ -1131,7 +1131,7 @@ bool Variant::in(const Variant &p_index, bool *r_valid) const {
 		*r_valid = valid;
 	}
 	if (valid) {
-		ERR_FAIL_COND_V(ret.type != BOOL, false);
+		ERR_FAIL_COND_V(ret.get_type() != BOOL, false);
 		return VariantInternalAccessor<bool>::get(&ret);
 	} else {
 		return false;

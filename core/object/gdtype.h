@@ -30,12 +30,13 @@
 
 #pragma once
 
-#include "core/object/method_info.h"
 #include "core/string/string_name.h"
 #include "core/templates/a_hash_map.h"
-#include "core/templates/vector.h"
+#include "core/templates/local_vector.h"
 
 class MethodBind;
+struct MethodInfo;
+struct PropertyInfo;
 
 class GDType {
 public:

@@ -48,12 +48,12 @@ class VariantInternal {
 public:
 	// Set type.
 	_FORCE_INLINE_ static void set_type(Variant &r_variant, Variant::Type p_type) {
-		r_variant.type = p_type;
+		r_variant.gdtype = Variant::variant_gdtypes[p_type];
 	}
 
 	_FORCE_INLINE_ static void initialize(Variant *r_variant, Variant::Type p_type) {
 		r_variant->clear();
-		r_variant->type = p_type;
+		r_variant->gdtype = Variant::variant_gdtypes[p_type];
 
 		switch (p_type) {
 			case Variant::STRING:
@@ -225,7 +225,7 @@ public:
 
 	template <typename T>
 	_FORCE_INLINE_ static void init_generic(Variant *r_variant) {
-		r_variant->type = GetTypeInfo<T>::VARIANT_TYPE;
+		r_variant->gdtype = Variant::variant_gdtypes[GetTypeInfo<T>::VARIANT_TYPE];
 	}
 
 	// Should be in the same order as Variant::Type for consistency.
@@ -234,108 +234,108 @@ public:
 	// Object is a special case, handled via `object_reset_data`.
 	_FORCE_INLINE_ static void init_string(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, String);
-		r_variant->type = Variant::STRING;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::STRING];
 	}
 	_FORCE_INLINE_ static void init_transform2d(Variant *r_variant) {
 		r_variant->_data._transform2d = VariantPools::alloc<Transform2D>();
 		memnew_placement(r_variant->_data._transform2d, Transform2D);
-		r_variant->type = Variant::TRANSFORM2D;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::TRANSFORM2D];
 	}
 	_FORCE_INLINE_ static void init_quaternion(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, Quaternion);
-		r_variant->type = Variant::QUATERNION;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::QUATERNION];
 	}
 	_FORCE_INLINE_ static void init_aabb(Variant *r_variant) {
 		r_variant->_data._aabb = VariantPools::alloc<AABB>();
 		memnew_placement(r_variant->_data._aabb, AABB);
-		r_variant->type = Variant::AABB;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::AABB];
 	}
 	_FORCE_INLINE_ static void init_basis(Variant *r_variant) {
 		r_variant->_data._basis = VariantPools::alloc<Basis>();
 		memnew_placement(r_variant->_data._basis, Basis);
-		r_variant->type = Variant::BASIS;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::BASIS];
 	}
 	_FORCE_INLINE_ static void init_transform3d(Variant *r_variant) {
 		r_variant->_data._transform3d = VariantPools::alloc<Transform3D>();
 		memnew_placement(r_variant->_data._transform3d, Transform3D);
-		r_variant->type = Variant::TRANSFORM3D;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::TRANSFORM3D];
 	}
 	_FORCE_INLINE_ static void init_projection(Variant *r_variant) {
 		r_variant->_data._projection = VariantPools::alloc<Projection>();
 		memnew_placement(r_variant->_data._projection, Projection);
-		r_variant->type = Variant::PROJECTION;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PROJECTION];
 	}
 	_FORCE_INLINE_ static void init_color(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, Color);
-		r_variant->type = Variant::COLOR;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::COLOR];
 	}
 	_FORCE_INLINE_ static void init_string_name(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, StringName);
-		r_variant->type = Variant::STRING_NAME;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::STRING_NAME];
 	}
 	_FORCE_INLINE_ static void init_node_path(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, NodePath);
-		r_variant->type = Variant::NODE_PATH;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::NODE_PATH];
 	}
 	_FORCE_INLINE_ static void init_callable(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, Callable);
-		r_variant->type = Variant::CALLABLE;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::CALLABLE];
 	}
 	_FORCE_INLINE_ static void init_signal(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, Signal);
-		r_variant->type = Variant::SIGNAL;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::SIGNAL];
 	}
 	_FORCE_INLINE_ static void init_dictionary(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, Dictionary);
-		r_variant->type = Variant::DICTIONARY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::DICTIONARY];
 	}
 	_FORCE_INLINE_ static void init_array(Variant *r_variant) {
 		memnew_placement(r_variant->_data._mem, Array);
-		r_variant->type = Variant::ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::ARRAY];
 	}
 	_FORCE_INLINE_ static void init_byte_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<uint8_t>::create(Vector<uint8_t>());
-		r_variant->type = Variant::PACKED_BYTE_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_BYTE_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_int32_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<int32_t>::create(Vector<int32_t>());
-		r_variant->type = Variant::PACKED_INT32_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_INT32_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_int64_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<int64_t>::create(Vector<int64_t>());
-		r_variant->type = Variant::PACKED_INT64_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_INT64_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_float32_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<float>::create(Vector<float>());
-		r_variant->type = Variant::PACKED_FLOAT32_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_FLOAT32_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_float64_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<double>::create(Vector<double>());
-		r_variant->type = Variant::PACKED_FLOAT64_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_FLOAT64_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_string_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<String>::create(Vector<String>());
-		r_variant->type = Variant::PACKED_STRING_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_STRING_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_vector2_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<Vector2>::create(Vector<Vector2>());
-		r_variant->type = Variant::PACKED_VECTOR2_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_VECTOR2_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_vector3_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<Vector3>::create(Vector<Vector3>());
-		r_variant->type = Variant::PACKED_VECTOR3_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_VECTOR3_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_color_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<Color>::create(Vector<Color>());
-		r_variant->type = Variant::PACKED_COLOR_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_COLOR_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_vector4_array(Variant *r_variant) {
 		r_variant->_data.packed_array = Variant::PackedArrayRef<Vector4>::create(Vector<Vector4>());
-		r_variant->type = Variant::PACKED_VECTOR4_ARRAY;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::PACKED_VECTOR4_ARRAY];
 	}
 	_FORCE_INLINE_ static void init_object(Variant *r_variant) {
 		object_reset_data(r_variant);
-		r_variant->type = Variant::OBJECT;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::OBJECT];
 	}
 
 	_FORCE_INLINE_ static void clear(Variant *r_variant) {
@@ -363,7 +363,7 @@ public:
 	// case where the object is `RefCounted`. You *must* ensure that the destructor of this
 	// `Variant` is never called, and that the assigned object always outlives the `Variant`.
 	_FORCE_INLINE_ static void object_assign_without_ref_unsafe(Variant *r_variant, Object *p_object) {
-		r_variant->type = Variant::OBJECT;
+		r_variant->gdtype = Variant::variant_gdtypes[Variant::OBJECT];
 		Variant::ObjData &obj_data = r_variant->_get_obj();
 		obj_data.id = p_object->get_instance_id();
 		obj_data.obj = p_object;
@@ -381,7 +381,7 @@ public:
 	}
 
 	_FORCE_INLINE_ static void *get_opaque_pointer(Variant *p_variant) {
-		switch (p_variant->type) {
+		switch (p_variant->get_type()) {
 			case Variant::NIL:
 				return nullptr;
 			case Variant::BOOL:
@@ -467,7 +467,7 @@ public:
 	}
 
 	_FORCE_INLINE_ static const void *get_opaque_pointer(const Variant *p_variant) {
-		switch (p_variant->type) {
+		switch (p_variant->get_type()) {
 			case Variant::NIL:
 				return nullptr;
 			case Variant::BOOL:

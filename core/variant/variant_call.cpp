@@ -1216,7 +1216,7 @@ struct _VariantCall {
 #ifdef DEBUG_ENABLED
 		ERR_FAIL_COND(variant_constants[p_type].has(p_constant_name));
 #endif // DEBUG_ENABLED
-		const_cast<GDType &>(Variant::_get_gdtype_for_type(static_cast<Variant::Type>(p_type))).bind_integer_constant(StringName(), p_constant_name, p_constant_value);
+		const_cast<VariantGDType &>(Variant::_get_gdtype_for_type(static_cast<Variant::Type>(p_type))).bind_integer_constant(StringName(), p_constant_name, p_constant_value);
 	}
 
 	static void add_variant_constant(int p_type, const StringName &p_constant_name, const Variant &p_constant_value) {
@@ -1231,7 +1231,7 @@ struct _VariantCall {
 #ifdef DEBUG_ENABLED
 		ERR_FAIL_COND(variant_constants[p_type].has(p_enumeration_name));
 #endif // DEBUG_ENABLED
-		const_cast<GDType &>(Variant::_get_gdtype_for_type(static_cast<Variant::Type>(p_type))).bind_integer_constant(p_enum_type_name, p_enumeration_name, p_enum_value);
+		const_cast<VariantGDType &>(Variant::_get_gdtype_for_type(static_cast<Variant::Type>(p_type))).bind_integer_constant(p_enum_type_name, p_enumeration_name, p_enum_value);
 	}
 
 #ifndef DISABLE_DEPRECATED
@@ -1388,7 +1388,7 @@ static void register_builtin_compat_method(const Vector<String> &p_argnames, con
 #endif
 
 void Variant::callp(const StringName &p_method, const Variant **p_args, int p_argcount, Variant &r_ret, Callable::CallError &r_error) {
-	if (type == Variant::OBJECT) {
+	if (get_type() == Variant::OBJECT) {
 		//call object
 		Object *obj = _get_obj().obj;
 		if (!obj) {
@@ -1407,7 +1407,7 @@ void Variant::callp(const StringName &p_method, const Variant **p_args, int p_ar
 	} else {
 		r_error.error = Callable::CallError::CALL_OK;
 
-		const VariantBuiltInMethodInfo *imf = builtin_method_info[type].getptr(p_method);
+		const VariantBuiltInMethodInfo *imf = builtin_method_info[get_type()].getptr(p_method);
 
 		if (!imf) {
 			r_error.error = Callable::CallError::CALL_ERROR_INVALID_METHOD;
@@ -1419,7 +1419,7 @@ void Variant::callp(const StringName &p_method, const Variant **p_args, int p_ar
 }
 
 void Variant::call_const(const StringName &p_method, const Variant **p_args, int p_argcount, Variant &r_ret, Callable::CallError &r_error) {
-	if (type == Variant::OBJECT) {
+	if (get_type() == Variant::OBJECT) {
 		//call object
 		Object *obj = _get_obj().obj;
 		if (!obj) {
@@ -1439,7 +1439,7 @@ void Variant::call_const(const StringName &p_method, const Variant **p_args, int
 	} else {
 		r_error.error = Callable::CallError::CALL_OK;
 
-		const VariantBuiltInMethodInfo *imf = builtin_method_info[type].getptr(p_method);
+		const VariantBuiltInMethodInfo *imf = builtin_method_info[get_type()].getptr(p_method);
 
 		if (!imf) {
 			r_error.error = Callable::CallError::CALL_ERROR_INVALID_METHOD;
@@ -1474,7 +1474,7 @@ void Variant::call_static(Variant::Type p_type, const StringName &p_method, cons
 }
 
 bool Variant::has_method(const StringName &p_method) const {
-	if (type == OBJECT) {
+	if (get_type() == OBJECT) {
 		Object *obj = get_validated_object();
 		if (!obj) {
 			return false;
@@ -1483,7 +1483,7 @@ bool Variant::has_method(const StringName &p_method) const {
 		return obj->has_method(p_method);
 	}
 
-	return builtin_method_info[type].has(p_method);
+	return builtin_method_info[get_type()].has(p_method);
 }
 
 bool Variant::has_builtin_method(Variant::Type p_type, const StringName &p_method) {
@@ -1637,14 +1637,14 @@ Vector<uint32_t> Variant::get_builtin_method_compatibility_hashes(Variant::Type 
 }
 
 void Variant::get_method_list(List<MethodInfo> *p_list) const {
-	if (type == OBJECT) {
+	if (get_type() == OBJECT) {
 		Object *obj = get_validated_object();
 		if (obj) {
 			obj->get_method_list(p_list);
 		}
 	} else {
-		for (const StringName &E : builtin_method_names[type]) {
-			const VariantBuiltInMethodInfo *method = builtin_method_info[type].getptr(E);
+		for (const StringName &E : builtin_method_names[get_type()]) {
+			const VariantBuiltInMethodInfo *method = builtin_method_info[get_type()].getptr(E);
 			ERR_CONTINUE(!method);
 			p_list->push_back(method->get_method_info(E));
 		}

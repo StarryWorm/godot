@@ -238,17 +238,17 @@ Variant::PTRGetter Variant::get_member_ptr_getter(Variant::Type p_type, const St
 }
 
 void Variant::set_named(const StringName &p_member, const Variant &p_value, bool &r_valid) {
-	uint32_t s = variant_setters_getters[type].size();
+	uint32_t s = variant_setters_getters[get_type()].size();
 	if (s) {
 		for (uint32_t i = 0; i < s; i++) {
-			if (variant_setters_getters_names[type][i] == p_member) {
-				variant_setters_getters[type][i].setter(this, &p_value, r_valid);
+			if (variant_setters_getters_names[get_type()][i] == p_member) {
+				variant_setters_getters[get_type()][i].setter(this, &p_value, r_valid);
 				return;
 			}
 		}
 		r_valid = false;
 
-	} else if (type == Variant::OBJECT) {
+	} else if (get_type() == Variant::OBJECT) {
 		Object *obj = get_validated_object();
 		if (!obj) {
 			r_valid = false;
@@ -256,7 +256,7 @@ void Variant::set_named(const StringName &p_member, const Variant &p_value, bool
 			obj->set(p_member, p_value, &r_valid);
 			return;
 		}
-	} else if (type == Variant::DICTIONARY) {
+	} else if (get_type() == Variant::DICTIONARY) {
 		Dictionary &dict = VariantInternalAccessor<Dictionary>::get(this);
 		r_valid = dict.set(p_member, p_value);
 	} else {
@@ -265,19 +265,19 @@ void Variant::set_named(const StringName &p_member, const Variant &p_value, bool
 }
 
 Variant Variant::get_named(const StringName &p_member, bool &r_valid) const {
-	uint32_t s = variant_setters_getters[type].size();
+	uint32_t s = variant_setters_getters[get_type()].size();
 	if (s) {
 		for (uint32_t i = 0; i < s; i++) {
-			if (variant_setters_getters_names[type][i] == p_member) {
+			if (variant_setters_getters_names[get_type()][i] == p_member) {
 				Variant ret;
-				variant_setters_getters[type][i].getter(this, &ret);
+				variant_setters_getters[get_type()][i].getter(this, &ret);
 				r_valid = true;
 				return ret;
 			}
 		}
 	}
 
-	switch (type) {
+	switch (get_type()) {
 		case Variant::OBJECT: {
 			Object *obj = get_validated_object();
 			if (!obj) {
@@ -295,7 +295,7 @@ Variant Variant::get_named(const StringName &p_member, bool &r_valid) const {
 			}
 		} break;
 		default: {
-			if (Variant::has_builtin_method(type, p_member)) {
+			if (Variant::has_builtin_method(get_type(), p_member)) {
 				r_valid = true;
 				return Callable(memnew(VariantCallable(*this, p_member)));
 			}
@@ -975,17 +975,17 @@ Variant::PTRIndexedGetter Variant::get_member_ptr_indexed_getter(Variant::Type p
 }
 
 void Variant::set_indexed(int64_t p_index, const Variant &p_value, bool &r_valid, bool &r_oob) {
-	if (likely(variant_indexed_setters_getters[type].valid)) {
-		variant_indexed_setters_getters[type].setter(this, p_index, &p_value, &r_valid, &r_oob);
+	if (likely(variant_indexed_setters_getters[get_type()].valid)) {
+		variant_indexed_setters_getters[get_type()].setter(this, p_index, &p_value, &r_valid, &r_oob);
 	} else {
 		r_valid = false;
 		r_oob = false;
 	}
 }
 Variant Variant::get_indexed(int64_t p_index, bool &r_valid, bool &r_oob) const {
-	if (likely(variant_indexed_setters_getters[type].valid)) {
+	if (likely(variant_indexed_setters_getters[get_type()].valid)) {
 		Variant ret;
-		variant_indexed_setters_getters[type].getter(this, p_index, &ret, &r_oob);
+		variant_indexed_setters_getters[get_type()].getter(this, p_index, &ret, &r_oob);
 		r_valid = !r_oob;
 		return ret;
 	} else {
@@ -996,8 +996,8 @@ Variant Variant::get_indexed(int64_t p_index, bool &r_valid, bool &r_oob) const 
 }
 
 uint64_t Variant::get_indexed_size() const {
-	if (likely(variant_indexed_setters_getters[type].valid && variant_indexed_setters_getters[type].get_indexed_size)) {
-		return variant_indexed_setters_getters[type].get_indexed_size(this);
+	if (likely(variant_indexed_setters_getters[get_type()].valid && variant_indexed_setters_getters[get_type()].get_indexed_size)) {
+		return variant_indexed_setters_getters[get_type()].get_indexed_size(this);
 	} else {
 		return 0;
 	}
@@ -1157,16 +1157,16 @@ Variant::PTRKeyedChecker Variant::get_member_ptr_keyed_checker(Variant::Type p_t
 }
 
 void Variant::set_keyed(const Variant &p_key, const Variant &p_value, bool &r_valid) {
-	if (likely(variant_keyed_setters_getters[type].valid)) {
-		variant_keyed_setters_getters[type].validated_setter(this, &p_key, &p_value, &r_valid);
+	if (likely(variant_keyed_setters_getters[get_type()].valid)) {
+		variant_keyed_setters_getters[get_type()].validated_setter(this, &p_key, &p_value, &r_valid);
 	} else {
 		r_valid = false;
 	}
 }
 Variant Variant::get_keyed(const Variant &p_key, bool &r_valid) const {
-	if (likely(variant_keyed_setters_getters[type].valid)) {
+	if (likely(variant_keyed_setters_getters[get_type()].valid)) {
 		Variant ret;
-		variant_keyed_setters_getters[type].validated_getter(this, &p_key, &ret, &r_valid);
+		variant_keyed_setters_getters[get_type()].validated_getter(this, &p_key, &ret, &r_valid);
 		return ret;
 	} else {
 		r_valid = false;
@@ -1174,8 +1174,8 @@ Variant Variant::get_keyed(const Variant &p_key, bool &r_valid) const {
 	}
 }
 bool Variant::has_key(const Variant &p_key, bool &r_valid) const {
-	if (likely(variant_keyed_setters_getters[type].valid)) {
-		return variant_keyed_setters_getters[type].validated_checker(this, &p_key, &r_valid);
+	if (likely(variant_keyed_setters_getters[get_type()].valid)) {
+		return variant_keyed_setters_getters[get_type()].validated_checker(this, &p_key, &r_valid);
 	} else {
 		r_valid = false;
 		return false;
@@ -1186,7 +1186,7 @@ void Variant::set(const Variant &p_index, const Variant &p_value, bool *r_valid,
 	if (r_err_code) {
 		*r_err_code = VariantSetError::SET_OK;
 	}
-	if (type == DICTIONARY || type == OBJECT) {
+	if (get_type() == DICTIONARY || get_type() == OBJECT) {
 		bool valid;
 		set_keyed(p_index, p_value, valid);
 		if (r_valid) {
@@ -1237,7 +1237,7 @@ Variant Variant::get(const Variant &p_index, bool *r_valid, VariantGetError *r_e
 		*r_err_code = VariantGetError::GET_OK;
 	}
 	Variant ret;
-	if (type == DICTIONARY || type == OBJECT) {
+	if (get_type() == DICTIONARY || get_type() == OBJECT) {
 		bool valid;
 		ret = get_keyed(p_index, valid);
 		if (r_valid) {
@@ -1286,25 +1286,25 @@ Variant Variant::get(const Variant &p_index, bool *r_valid, VariantGetError *r_e
 }
 
 void Variant::get_property_list(List<PropertyInfo> *p_list) const {
-	if (type == DICTIONARY) {
+	if (get_type() == DICTIONARY) {
 		const Dictionary *dic = reinterpret_cast<const Dictionary *>(_data._mem);
 		for (const KeyValue<Variant, Variant> &kv : *dic) {
 			if (kv.key.is_string()) {
 				p_list->push_back(PropertyInfo(dic->get_valid(kv.key).get_type(), kv.key));
 			}
 		}
-	} else if (type == OBJECT) {
+	} else if (get_type() == OBJECT) {
 		Object *obj = get_validated_object();
 		ERR_FAIL_NULL(obj);
 		obj->get_property_list(p_list);
 
 	} else {
 		List<StringName> members;
-		get_member_list(type, &members);
+		get_member_list(get_type(), &members);
 		for (const StringName &E : members) {
 			PropertyInfo pi;
 			pi.name = E;
-			pi.type = get_member_type(type, E);
+			pi.type = get_member_type(get_type(), E);
 			p_list->push_back(pi);
 		}
 	}
@@ -1312,7 +1312,7 @@ void Variant::get_property_list(List<PropertyInfo> *p_list) const {
 
 bool Variant::iter_init(Variant &r_iter, bool &r_valid) const {
 	r_valid = true;
-	switch (type) {
+	switch (get_type()) {
 		case INT: {
 			r_iter = 0;
 			return _data._int > 0;
@@ -1518,7 +1518,7 @@ bool Variant::iter_init(Variant &r_iter, bool &r_valid) const {
 
 bool Variant::iter_next(Variant &r_iter, bool &r_valid) const {
 	r_valid = true;
-	switch (type) {
+	switch (get_type()) {
 		case INT: {
 			int64_t idx = r_iter;
 			idx++;
@@ -1776,7 +1776,7 @@ bool Variant::iter_next(Variant &r_iter, bool &r_valid) const {
 
 Variant Variant::iter_get(const Variant &r_iter, bool &r_valid) const {
 	r_valid = true;
-	switch (type) {
+	switch (get_type()) {
 		case INT: {
 			return r_iter;
 		} break;
@@ -1980,7 +1980,7 @@ Variant Variant::duplicate_deep(ResourceDeepDuplicateMode p_deep_subresources_mo
 }
 
 Variant Variant::recursive_duplicate(bool p_deep, ResourceDeepDuplicateMode p_deep_subresources_mode, int p_recursion_count) const {
-	switch (type) {
+	switch (get_type()) {
 		case OBJECT: {
 			// If the root target of duplicate() is a Resource, we can't early-reject because that
 			// resource itself must be duplicated, much as if Resource::duplicate() had been called.

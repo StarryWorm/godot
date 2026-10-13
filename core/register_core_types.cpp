@@ -145,6 +145,8 @@ void register_core_types() {
 	register_global_constants();
 	CoreStringNames::create();
 
+	Variant::register_types();
+
 	GDREGISTER_CLASS(Object);
 	GDREGISTER_CLASS(RefCounted);
 	GDREGISTER_CLASS(CoreBind::WeakRef);
@@ -153,8 +155,6 @@ void register_core_types() {
 	GDREGISTER_CLASS(Time);
 	_time = memnew(Time);
 	ResourceLoader::initialize();
-
-	Variant::register_types();
 
 	GDREGISTER_CLASS(ResourceFormatLoader);
 	GDREGISTER_CLASS(ResourceFormatSaver);

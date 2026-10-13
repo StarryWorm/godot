@@ -62,6 +62,8 @@
 #include "core/variant/callable.h"
 #include "core/variant/dictionary.h"
 #include "core/variant/variant_deep_duplicate.h"
+#include "core/variant/variant_gdtype.h"
+#include "core/variant/variant_types.h"
 
 class GDType;
 class Object;
@@ -94,57 +96,56 @@ typedef Vector<Vector4> PackedVector4Array;
 class _WARN_UNUSED_ Variant {
 public:
 	// If this changes the table in variant_op must be updated
-	enum Type {
-		NIL,
+	using Type = VariantType::Type;
+	static constexpr Type NIL = VariantType::NIL;
 
-		// atomic types
-		BOOL,
-		INT,
-		FLOAT,
-		STRING,
+	// atomic types
+	static constexpr Type BOOL = VariantType::BOOL;
+	static constexpr Type INT = VariantType::INT;
+	static constexpr Type FLOAT = VariantType::FLOAT;
+	static constexpr Type STRING = VariantType::STRING;
 
-		// math types
-		VECTOR2,
-		VECTOR2I,
-		RECT2,
-		RECT2I,
-		VECTOR3,
-		VECTOR3I,
-		TRANSFORM2D,
-		VECTOR4,
-		VECTOR4I,
-		PLANE,
-		QUATERNION,
-		AABB,
-		BASIS,
-		TRANSFORM3D,
-		PROJECTION,
+	// math types
+	static constexpr Type VECTOR2 = VariantType::VECTOR2;
+	static constexpr Type VECTOR2I = VariantType::VECTOR2I;
+	static constexpr Type RECT2 = VariantType::RECT2;
+	static constexpr Type RECT2I = VariantType::RECT2I;
+	static constexpr Type VECTOR3 = VariantType::VECTOR3;
+	static constexpr Type VECTOR3I = VariantType::VECTOR3I;
+	static constexpr Type TRANSFORM2D = VariantType::TRANSFORM2D;
+	static constexpr Type VECTOR4 = VariantType::VECTOR4;
+	static constexpr Type VECTOR4I = VariantType::VECTOR4I;
+	static constexpr Type PLANE = VariantType::PLANE;
+	static constexpr Type QUATERNION = VariantType::QUATERNION;
+	static constexpr Type AABB = VariantType::AABB;
+	static constexpr Type BASIS = VariantType::BASIS;
+	static constexpr Type TRANSFORM3D = VariantType::TRANSFORM3D;
+	static constexpr Type PROJECTION = VariantType::PROJECTION;
 
-		// misc types
-		COLOR,
-		STRING_NAME,
-		NODE_PATH,
-		RID,
-		OBJECT,
-		CALLABLE,
-		SIGNAL,
-		DICTIONARY,
-		ARRAY,
+	// misc types
+	static constexpr Type COLOR = VariantType::COLOR;
+	static constexpr Type STRING_NAME = VariantType::STRING_NAME;
+	static constexpr Type NODE_PATH = VariantType::NODE_PATH;
+	static constexpr Type RID = VariantType::RID;
+	static constexpr Type OBJECT = VariantType::OBJECT;
+	static constexpr Type CALLABLE = VariantType::CALLABLE;
+	static constexpr Type SIGNAL = VariantType::SIGNAL;
+	static constexpr Type DICTIONARY = VariantType::DICTIONARY;
+	static constexpr Type ARRAY = VariantType::ARRAY;
 
-		// typed arrays
-		PACKED_BYTE_ARRAY,
-		PACKED_INT32_ARRAY,
-		PACKED_INT64_ARRAY,
-		PACKED_FLOAT32_ARRAY,
-		PACKED_FLOAT64_ARRAY,
-		PACKED_STRING_ARRAY,
-		PACKED_VECTOR2_ARRAY,
-		PACKED_VECTOR3_ARRAY,
-		PACKED_COLOR_ARRAY,
-		PACKED_VECTOR4_ARRAY,
+	// typed arrays
+	static constexpr Type PACKED_BYTE_ARRAY = VariantType::PACKED_BYTE_ARRAY;
+	static constexpr Type PACKED_INT32_ARRAY = VariantType::PACKED_INT32_ARRAY;
+	static constexpr Type PACKED_INT64_ARRAY = VariantType::PACKED_INT64_ARRAY;
+	static constexpr Type PACKED_FLOAT32_ARRAY = VariantType::PACKED_FLOAT32_ARRAY;
+	static constexpr Type PACKED_FLOAT64_ARRAY = VariantType::PACKED_FLOAT64_ARRAY;
+	static constexpr Type PACKED_STRING_ARRAY = VariantType::PACKED_STRING_ARRAY;
+	static constexpr Type PACKED_VECTOR2_ARRAY = VariantType::PACKED_VECTOR2_ARRAY;
+	static constexpr Type PACKED_VECTOR3_ARRAY = VariantType::PACKED_VECTOR3_ARRAY;
+	static constexpr Type PACKED_COLOR_ARRAY = VariantType::PACKED_COLOR_ARRAY;
+	static constexpr Type PACKED_VECTOR4_ARRAY = VariantType::PACKED_VECTOR4_ARRAY;
 
-		VARIANT_MAX
-	};
+	static constexpr Type VARIANT_MAX = VariantType::VARIANT_MAX;
 
 	enum {
 		// Maximum recursion depth allowed when serializing variants.
@@ -165,9 +166,10 @@ private:
 	// Basis/Transform3D (48, 96 if double), Projection (64, 128 if double),
 	// and PackedArray/Array/Dictionary (platform-dependent).
 
-	Type type = NIL;
+	static VariantGDType *variant_gdtypes[Variant::VARIANT_MAX];
+	mutable const VariantGDType *gdtype = nullptr;
 
-	static GDType &_get_gdtype_for_type(Variant::Type p_type);
+	static VariantGDType &_get_gdtype_for_type(Variant::Type p_type);
 	static void _register_variant_gdtypes();
 	static void _unregister_variant_gdtypes();
 
@@ -317,10 +319,10 @@ private:
 	};
 
 	_FORCE_INLINE_ void clear() {
-		if (unlikely(needs_deinit[type])) { // Make it fast for types that don't need deinit.
+		if (unlikely(needs_deinit[get_type()])) { // Make it fast for types that don't need deinit.
 			_clear_internal();
 		}
-		type = NIL;
+		gdtype = nullptr;
 	}
 
 	static void _register_variant_operators();
@@ -359,7 +361,7 @@ private:
 
 	template <typename T>
 	_ALWAYS_INLINE_ T _to_float() const {
-		switch (type) {
+		switch (get_type()) {
 			case NIL:
 				return 0;
 			case BOOL:
@@ -384,8 +386,12 @@ private:
 
 public:
 	_FORCE_INLINE_ Type get_type() const {
-		return type;
+		return gdtype ? gdtype->variant_type : NIL;
 	}
+	_FORCE_INLINE_ const VariantGDType *get_gdtype() const {
+		return gdtype;
+	}
+
 	static String get_type_name(Variant::Type p_type);
 	static Variant::Type get_type_by_name(const String &p_type_name);
 	static bool can_convert(Type p_type_from, Type p_type_to);
@@ -394,13 +400,13 @@ public:
 
 	bool is_ref_counted() const;
 	_FORCE_INLINE_ bool is_num() const {
-		return type == INT || type == FLOAT;
+		return get_type() == INT || get_type() == FLOAT;
 	}
 	_FORCE_INLINE_ bool is_string() const {
-		return type == STRING || type == STRING_NAME;
+		return get_type() == STRING || get_type() == STRING_NAME;
 	}
 	_FORCE_INLINE_ bool is_array() const {
-		return type >= ARRAY;
+		return get_type() >= ARRAY;
 	}
 	bool is_shared() const;
 	bool is_zero() const;
@@ -863,9 +869,9 @@ public:
 			return;
 		}
 		clear();
-		type = p_variant.type;
+		gdtype = p_variant.gdtype;
 		_data = p_variant._data;
-		p_variant.type = NIL;
+		p_variant.gdtype = nullptr;
 	}
 
 	static void register_types();
@@ -873,13 +879,13 @@ public:
 
 	Variant(const Variant &p_variant);
 	Variant(Variant &&p_variant) {
-		type = p_variant.type;
+		gdtype = p_variant.gdtype;
 		_data = p_variant._data;
-		p_variant.type = NIL;
+		p_variant.gdtype = nullptr;
 	}
 	_FORCE_INLINE_ Variant() {}
 	_FORCE_INLINE_ ~Variant() {
-		if (unlikely(needs_deinit[type])) { // Make it fast for types that don't need deinit.
+		if (unlikely(needs_deinit[get_type()])) { // Make it fast for types that don't need deinit.
 			_clear_internal();
 		}
 	}

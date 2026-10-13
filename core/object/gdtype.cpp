@@ -31,6 +31,7 @@
 #include "gdtype.h"
 
 #include "core/object/method_bind.h"
+#include "core/object/method_info.h"
 #include "core/os/memory.h"
 #include "core/os/thread.h"
 
