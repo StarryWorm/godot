@@ -146,7 +146,7 @@ public:
 	int get_title_bar_control_count() const;
 
 	virtual Size2 get_minimum_size() const override;
-	virtual Size2 get_desired_size() const override;
+	virtual real_t _get_desired_size(LS::Axis p_axis, real_t p_for_size) const override;
 	virtual Size2 get_inner_combined_maximum_size() const override;
 
 	virtual Vector<int> get_allowed_size_flags_horizontal() const override { return { SIZE_FILL, SIZE_SHRINK_BEGIN, SIZE_SHRINK_CENTER, SIZE_SHRINK_END, SIZE_MAXIMIZE }; }

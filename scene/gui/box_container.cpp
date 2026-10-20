@@ -349,8 +349,8 @@ Size2 BoxContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 BoxContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t BoxContainer::_get_desired_size(LS::Axis p_axis, real_t p_for_size) const {
+	return _get_minimum_size(true)[(int)p_axis];
 }
 
 void BoxContainer::_notification(int p_what) {

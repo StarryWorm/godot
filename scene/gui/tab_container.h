@@ -249,8 +249,8 @@ public:
 	Control *get_current_tab_control() const;
 
 	virtual Size2 get_minimum_size() const override;
+	virtual real_t _get_desired_size(LS::Axis p_axis, real_t p_for_size) const override;
 	virtual Size2 get_inner_combined_maximum_size() const override;
-	virtual Size2 get_desired_size() const override;
 
 	void set_popup(Node *p_popup);
 	Popup *get_popup() const;

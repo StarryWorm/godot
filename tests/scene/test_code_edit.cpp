@@ -4096,6 +4096,7 @@ TEST_CASE("[SceneTree][CodeEdit] completion") {
 
 			/* Set size for mouse input. */
 			code_edit->set_size(Size2(100, 100));
+			SceneTree::get_singleton()->process(0);
 
 			/* Test home and end keys close the completion and move the caret */
 			/* => ui_text_caret_line_start */

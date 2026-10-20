@@ -1043,8 +1043,8 @@ Size2 GraphNode::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 GraphNode::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t GraphNode::_get_desired_size(LayoutServer::Axis p_axis, real_t p_for_size) const {
+	return _get_minimum_size(true)[(int)p_axis];
 }
 
 void GraphNode::_port_pos_update() {

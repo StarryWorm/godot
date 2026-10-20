@@ -369,7 +369,7 @@ public:
 
 	Rect2 get_tab_rect(int p_tab) const;
 	Size2 get_minimum_size() const override;
-	Size2 get_desired_size() const override;
+	virtual real_t _get_desired_size(LS::Axis p_axis, real_t p_for_size) const override;
 
 	TabBar();
 };

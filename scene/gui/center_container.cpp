@@ -39,9 +39,9 @@ Size2 CenterContainer::get_minimum_size() const {
 	return Container::_get_minimum_size();
 }
 
-Size2 CenterContainer::get_desired_size() const {
+real_t CenterContainer::_get_desired_size(LS::Axis p_axis, real_t p_for_size) const {
 	if (use_top_left) {
-		return Size2();
+		return 0;
 	}
 	Size2 ds;
 	for (int i = 0; i < get_child_count(); i++) {
@@ -53,7 +53,7 @@ Size2 CenterContainer::get_desired_size() const {
 		ds = ds.max(minsize);
 	}
 
-	return ds;
+	return ds[(int)p_axis];
 }
 
 void CenterContainer::set_use_top_left(bool p_enable) {
@@ -83,13 +83,16 @@ void CenterContainer::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_SORT_CHILDREN: {
 			Size2 size = get_size();
+			bool rtl = is_layout_rtl();
 			for (int i = 0; i < get_child_count(); i++) {
 				Control *c = as_sortable_control(get_child(i));
 				if (!c) {
 					continue;
 				}
 				Size2 minsize = c->get_bound_minimum_size();
-				Point2 ofs = use_top_left ? (-minsize * 0.5).floor() : ((size - minsize) / 2.0).floor();
+				float pos_x = (use_top_left ? (rtl ? (size + minsize * 0.5).floor() : (-minsize * 0.5).floor()) : ((size - minsize) / 2.0).floor()).x;
+				float pos_y = (use_top_left ? (-minsize * 0.5).floor() : ((size - minsize) / 2.0).floor()).y;
+				Point2 ofs = Point2(pos_x, pos_y);
 				fit_child_in_rect(c, Rect2(ofs, minsize));
 			}
 		} break;

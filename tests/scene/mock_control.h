@@ -46,8 +46,12 @@ public:
 		return minimum_size;
 	}
 
-	Size2 get_desired_size() const override {
-		return desired_size;
+	real_t _get_desired_size(LS::Axis p_axis, real_t p_for_size) const override {
+		if (p_axis == LS::Axis::AXIS_X) {
+			return desired_size.x;
+		} else {
+			return desired_size.y;
+		}
 	}
 
 	void set_minimum_size(Size2 p_size) {

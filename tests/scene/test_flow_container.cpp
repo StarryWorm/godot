@@ -258,6 +258,7 @@ TEST_CASE("[SceneTree][FlowContainer] HFlowContainer") {
 		hflow_container->add_child(child_control_2);
 		SceneTree::get_singleton()->process(0);
 
+		print_line("HFlowContainer size: ", hflow_container->get_size());
 		CHECK_MESSAGE(
 				hflow_container->get_size().is_equal_approx(Size2(60, 50)),
 				"HFlowContainer expands to fit desired child sizes while respecting its maximum size.");
@@ -554,6 +555,7 @@ TEST_CASE("[SceneTree][FlowContainer] VFlowContainer") {
 		vflow_container->add_child(child_control_2);
 		SceneTree::get_singleton()->process(0);
 
+		print_line("VFlowContainer size: ", vflow_container->get_size());
 		CHECK_MESSAGE(
 				vflow_container->get_size().is_equal_approx(Size2(50, 60)),
 				"VFlowContainer expands to fit desired child sizes while respecting its maximum size.");

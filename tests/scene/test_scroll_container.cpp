@@ -425,6 +425,7 @@ TEST_CASE("[SceneTree][ScrollContainer] ensure_control_visible and follow_focus"
 		SUBCASE(size_cases[size_case_idx]) {
 			Size2 control_size = container_size / 2 + size_case_idx * container_size;
 			target_control->set_size(control_size);
+			SceneTree::get_singleton()->process(0);
 			REQUIRE_EQ(target_control->get_size(), control_size);
 			int size_flag = 2 * size_case_idx - 1; // Map 0~1 to -1~1.
 
@@ -449,6 +450,7 @@ TEST_CASE("[SceneTree][ScrollContainer] ensure_control_visible and follow_focus"
 				}
 				SUBCASE(location_cases[location_case_idx]) {
 					target_control->set_position(control_position);
+					SceneTree::get_singleton()->process(0);
 					REQUIRE_EQ(target_control->get_position(), control_position);
 
 					SUBCASE("Scrolling when grab focus") {

@@ -41,7 +41,7 @@ Size2 MarginContainer::get_minimum_size() const {
 	return max;
 }
 
-Size2 MarginContainer::get_desired_size() const {
+real_t MarginContainer::_get_desired_size(LS::Axis p_axis, real_t p_for_size) const {
 	Size2 ds;
 
 	for (int i = 0; i < get_child_count(); i++) {
@@ -57,7 +57,7 @@ Size2 MarginContainer::get_desired_size() const {
 	ds.width += (theme_cache.margin_left + theme_cache.margin_right);
 	ds.height += (theme_cache.margin_top + theme_cache.margin_bottom);
 
-	return ds;
+	return ds[(int)p_axis];
 }
 
 Size2 MarginContainer::get_inner_combined_maximum_size() const {

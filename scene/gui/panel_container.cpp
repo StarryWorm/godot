@@ -41,9 +41,8 @@ Size2 PanelContainer::get_minimum_size() const {
 	return ms;
 }
 
-Size2 PanelContainer::get_desired_size() const {
+real_t PanelContainer::_get_desired_size(LS::Axis p_axis, real_t p_for_size) const {
 	Size2 ds;
-
 	for (int i = 0; i < get_child_count(); i++) {
 		Control *c = as_sortable_control(get_child(i), SortableVisibilityMode::VISIBLE);
 		if (!c) {
@@ -56,7 +55,7 @@ Size2 PanelContainer::get_desired_size() const {
 	if (theme_cache.panel_style.is_valid()) {
 		ds += theme_cache.panel_style->get_minimum_size();
 	}
-	return ds;
+	return ds[(int)p_axis];
 }
 
 Size2 PanelContainer::get_inner_combined_maximum_size() const {

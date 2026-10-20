@@ -1111,8 +1111,8 @@ Size2 SplitContainer::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 SplitContainer::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t SplitContainer::_get_desired_size(LayoutServer::Axis p_axis, real_t p_for_size) const {
+	return _get_minimum_size(true)[(int)p_axis];
 }
 
 void SplitContainer::_validate_property(PropertyInfo &p_property) const {

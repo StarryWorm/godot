@@ -356,8 +356,8 @@ Size2 GraphFrame::get_minimum_size() const {
 	return _get_minimum_size(false);
 }
 
-Size2 GraphFrame::get_desired_size() const {
-	return _get_minimum_size(true);
+real_t GraphFrame::_get_desired_size(LS::Axis p_axis, real_t p_for_size) const {
+	return _get_minimum_size(true)[(int)p_axis];
 }
 
 GraphFrame::GraphFrame() {

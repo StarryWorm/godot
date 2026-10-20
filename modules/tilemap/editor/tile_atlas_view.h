@@ -160,7 +160,7 @@ public:
 	}
 
 	// Redraw everything.
-	void queue_redraw();
+	void queue_redraw() override;
 
 	TileAtlasView();
 	~TileAtlasView();

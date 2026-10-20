@@ -489,6 +489,7 @@
 /servers/audio/**/SCsub                       @godotengine/audio @godotengine/buildsystem
 /servers/camera/                              @godotengine/xr
 /servers/camera/**/SCsub                      @godotengine/xr @godotengine/buildsystem
+/servers/layout/                              @godotengine/gui-nodes
 /servers/debugger/                            @godotengine/debugger
 /servers/debugger/**/SCsub                    @godotengine/debugger @godotengine/buildsystem
 /servers/display/                             @godotengine/rendering

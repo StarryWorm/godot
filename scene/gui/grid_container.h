@@ -54,7 +54,7 @@ public:
 	void set_columns(int p_columns);
 	int get_columns() const;
 	virtual Size2 get_minimum_size() const override;
-	virtual Size2 get_desired_size() const override;
+	virtual real_t _get_desired_size(LS::Axis p_axis, real_t p_for_size) const override;
 
 	int get_h_separation() const;
 };

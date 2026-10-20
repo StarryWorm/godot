@@ -48,7 +48,7 @@ protected:
 
 public:
 	virtual Size2 get_minimum_size() const override;
-	virtual Size2 get_desired_size() const override;
+	virtual real_t _get_desired_size(LS::Axis p_axis, real_t p_for_size) const override;
 	virtual Size2 get_inner_combined_maximum_size() const override;
 
 	virtual Vector<int> get_allowed_size_flags_horizontal() const override;

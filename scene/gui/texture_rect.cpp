@@ -120,7 +120,8 @@ void TextureRect::_notification(int p_what) {
 			}
 		} break;
 		case NOTIFICATION_RESIZED: {
-			update_minimum_size();
+			// FIXME: TEMP
+			callable_mp((Control *)this, &Control::update_minimum_size).call_deferred();
 		} break;
 	}
 }
